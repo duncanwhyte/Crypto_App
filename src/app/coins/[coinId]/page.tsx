@@ -3,5 +3,5 @@ export default function Coin({params} : {params: {coinId: string}}) {
         <main>
             {params.coinId}
         </main>
-    )
+    );
 }
