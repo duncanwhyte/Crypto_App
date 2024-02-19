@@ -1,9 +1,9 @@
 import Link from "next/link";
 export default function Navbar() {
     return (
-        <nav className="flex items-center">
+        <nav className="flex justify-between items-center">
             <div>
-                <h1 className="text-xl">CoinMon</h1>
+                <h1 className="text-xl font-bold">CoinMon</h1>
             </div>
             <div>
                 <Link href={"/"}>Home</Link>
@@ -11,7 +11,7 @@ export default function Navbar() {
             </div>
             <div>
             <div>
-                <input placeholder="Search ..." />
+                <input className="inline-block p-2 bg-[#232334] rounded-xl :focus outline-none" placeholder="Search ..." />
             </div>
             <div></div>
             <div></div>

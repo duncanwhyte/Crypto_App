@@ -15,8 +15,15 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 
 body {
+  background: #13121A;
+  color: #FFF;
 
 }
 
