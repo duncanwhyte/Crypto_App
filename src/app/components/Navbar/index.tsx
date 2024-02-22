@@ -2,9 +2,17 @@
 import Link from "next/link";
 import {useState} from "react";
 import {usePathname} from "next/navigation";
+// interface Coin  {
+//     id: string,
+//     symbol: string,
+//     name: string
+// }
 export default function Navbar() {
     const pathName = usePathname();
     const [coinSearchVal, setCoinSearchVal] = useState("");
+    const handleSearchCoin: React.ChangeEventHandler<HTMLInputElement>  = (e) => {
+        setCoinSearchVal(e.target.value);
+    };
     return (
         <nav className="flex justify-between items-center">
             <div className="flex items-center">
@@ -30,14 +38,16 @@ export default function Navbar() {
             </div>
             <div className="flex items-center space-x-4">
             <div className="relative">
-                <input onChange={(e) => setCoinSearchVal(e.target.value)} className="inline-block px-12 py-3 bg-[#232334] rounded-xl :focus outline-none" placeholder="Search..." value={coinSearchVal} />
+                <input onChange={(e) => handleSearchCoin(e)} className="inline-block px-12 py-3 bg-[#232334] rounded-xl :focus outline-none" placeholder="Search..." value={coinSearchVal} />
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 absolute top-3.5 left-4">
   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 </svg>
+<ul className="relative w-full">
+</ul>
             </div>
             <div>
             <div className="min-w-24 relative">
-                <select className="appearance-none bg-[#232334] px-6 py-3 rounded-xl w-full">
+                <select className="appearance-none bg-[#232334] px-6 py-3 rounded-xl w-full focus:outline-none">
                     <option value="USD">USD</option>
                     <option value="GBP">GBP</option>
                     <option value="EUR">EUR</option>
