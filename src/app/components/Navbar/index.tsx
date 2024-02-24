@@ -1,18 +1,45 @@
 "use client";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {usePathname} from "next/navigation";
-// interface Coin  {
-//     id: string,
-//     symbol: string,
-//     name: string
-// }
+interface Coin  {
+    id: string,
+    symbol: string,
+    name: string
+}
 export default function Navbar() {
     const pathName = usePathname();
     const [coinSearchVal, setCoinSearchVal] = useState("");
-    const handleSearchCoin: React.ChangeEventHandler<HTMLInputElement>  = (e) => {
+    const [debouncedCoinVal, setDebouncedCoinVal] = useState("");
+    const [coinList, setCoinList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const handleSearchCoin = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCoinSearchVal(e.target.value);
     };
+    const getCoins = async () => {
+        try {
+            setIsLoading(true);
+            const coinReq = await fetch("https://api.coingecko.com/api/v3/coins/list");
+            const coinData = await coinReq.json();
+            setCoinList(coinData);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            setError(error.message);
+        }
+    };
+    useEffect(() => {
+        getCoins();
+    }, []);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedCoinVal(coinSearchVal);
+        }, 500);
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [coinSearchVal]);
     return (
         <nav className="flex justify-between items-center">
             <div className="flex items-center">
@@ -42,7 +69,10 @@ export default function Navbar() {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 absolute top-3.5 left-4">
   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 </svg>
-<ul className="relative w-full">
+<ul className={`${coinList && coinSearchVal ? "opacity-100" : "opacity-0"} absolute w-full h-44 p-2 bg-[#232334] rounded-xl overflow-x-hidden overflow-y-scroll `}>
+    {isLoading && "Fetching Coins..."}
+    {error && "Could Not Fetch Coins..."}
+    {debouncedCoinVal && coinList && coinList.filter((coin: Coin) => coin.name.includes(debouncedCoinVal)).map((coin: Coin) => <Link key={coin.id} href={`/coins/${coin.id}`}>{coin.name}</Link>)}
 </ul>
             </div>
             <div>
