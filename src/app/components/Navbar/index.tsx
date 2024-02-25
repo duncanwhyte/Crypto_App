@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import {useEffect, useState} from "react";
 import {usePathname} from "next/navigation";
 interface Coin  {
     id: string,
     symbol: string,
     name: string
+    image: string
 }
 export default function Navbar() {
     const pathName = usePathname();
@@ -20,16 +22,14 @@ export default function Navbar() {
     const getCoins = async () => {
         try {
             setIsLoading(true);
-            const coinReq = await fetch("https://api.coingecko.com/api/v3/coins/list");
+            const coinReq = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en");
             const coinData = await coinReq.json();
             setCoinList(coinData);
             setIsLoading(false);
         } catch (error) {
-            let errorMessage: string;
             setIsLoading(false);
             if (error instanceof Error) {
-                errorMessage = error.message;
-                setError(errorMessage);
+                setError(error.message);
             }
         }
     };
@@ -75,18 +75,18 @@ export default function Navbar() {
 </svg>
 <ul className={`${coinList && coinSearchVal ? "opacity-100" : "opacity-0"} absolute w-full h-44 p-2 bg-[#232334] rounded-xl overflow-x-hidden overflow-y-scroll `}>
     {isLoading && "Fetching Coins..."}
-    {error && "Could Not Fetch Coins..."}
-    {debouncedCoinVal && coinList && coinList.filter((coin: Coin) => coin.name.includes(debouncedCoinVal)).map((coin: Coin) => <Link key={coin.id} href={`/coins/${coin.id}`}>{coin.name}</Link>)}
+    {error && error}
+    {debouncedCoinVal && coinList && coinList.filter((coin: Coin) => coin.name.includes(debouncedCoinVal)).map((coin: Coin) => <Link className="flex items-center gap-5" key={coin.id} href={`/coins/${coin.id}`}><Image width={16} height={16} src={`${coin.image}`} alt="Coin Image" />{coin.name}</Link>)}
 </ul>
             </div>
             <div>
             <div className="min-w-24 relative">
                 <select className="appearance-none bg-[#232334] px-6 py-3 rounded-xl w-full focus:outline-none">
-                    <option value="USD">USD</option>
-                    <option value="GBP">GBP</option>
-                    <option value="EUR">EUR</option>
-                    <option value="BTC">BTC</option>
-                    <option value="ETH">ETH</option>
+                    <option value="usd">USD</option>
+                    <option value="gbp">GBP</option>
+                    <option value="eur">EUR</option>
+                    <option value="btc">BTC</option>
+                    <option value="eth">ETH</option>
                 </select>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 absolute top-4 right-1">
   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
