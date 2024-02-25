@@ -13,7 +13,7 @@ export default function Navbar() {
     const [debouncedCoinVal, setDebouncedCoinVal] = useState("");
     const [coinList, setCoinList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState("");
     const handleSearchCoin = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCoinSearchVal(e.target.value);
     };
@@ -25,8 +25,12 @@ export default function Navbar() {
             setCoinList(coinData);
             setIsLoading(false);
         } catch (error) {
+            let errorMessage: string;
             setIsLoading(false);
-            setError(error.message);
+            if (error instanceof Error) {
+                errorMessage = error.message;
+                setError(errorMessage);
+            }
         }
     };
     useEffect(() => {
