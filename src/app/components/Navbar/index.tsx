@@ -45,13 +45,13 @@ export default function Navbar() {
         };
     }, [coinSearchVal]);
     return (
-        <nav className="flex justify-between items-center">
+        <nav className="flex justify-between items-center mb-14">
             <div className="flex items-center">
                 <h1 className="text-xl font-bold">CoinMon</h1>
             </div>
             <div className="flex space-x-4">
                 <div>
-                <Link className={`flex items-center gap-1 ${pathName === "/" ? "#FFFFF" : "text-[#808080]"}`} href={"/"}>
+                <Link className={`flex items-center gap-1 ${pathName === "/" || "/convertor" ? "#FFFFF" : "text-[#808080]"}`} href={"/"}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill={`${pathName === "/" ? "#FFFFF" : "none"}`} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
   <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
 </svg>
@@ -76,7 +76,7 @@ export default function Navbar() {
 <ul className={`${coinList && coinSearchVal ? "opacity-100" : "opacity-0"} absolute w-full h-44 p-2 bg-[#232334] rounded-xl overflow-x-hidden overflow-y-scroll `}>
     {isLoading && "Fetching Coins..."}
     {error && error}
-    {debouncedCoinVal && coinList && coinList.filter((coin: Coin) => coin.name.includes(debouncedCoinVal)).map((coin: Coin) => <Link className="flex items-center gap-5" key={coin.id} href={`/coins/${coin.id}`}><Image width={16} height={16} src={`${coin.image}`} alt="Coin Image" />{coin.name}</Link>)}
+    {debouncedCoinVal && coinList && coinList.filter((coin: Coin) => coin.name.includes(debouncedCoinVal)).map((coin: Coin) => <Link className="flex items-center gap-5" key={coin.id} href={`/coins/${coin.id}`}><Image width={24} height={24} src={`${coin.image}`} alt="Coin Image" />{coin.name}</Link>)}
 </ul>
             </div>
             <div>
