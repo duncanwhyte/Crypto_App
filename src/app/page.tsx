@@ -1,7 +1,11 @@
+"use client";
+import HomePageNavigator from "./components/HomePageNavigator";
 export default function Home() {
   return (
     <main className="">
-      Home page
+      <HomePageNavigator />
+      <div>
+      </div>
     </main>
   );
 }
