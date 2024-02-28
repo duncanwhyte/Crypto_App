@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import {currencyReducer} from "../lib/features/currency/currencySlice";
 export const makeStore = () => {
     return configureStore({
-        reducer: {}
+        reducer: {
+            currencyReducer
+        }
     });
 };
 export type AppStore = ReturnType<typeof makeStore>;
