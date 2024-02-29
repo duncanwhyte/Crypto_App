@@ -81,11 +81,11 @@ export default function Navbar() {
             </div>
             <div className="flex items-center space-x-4">
             <div className="relative">
-                <input onChange={(e) => handleSearchCoin(e)} className="inline-block px-12 py-3 bg-[#232334] rounded-xl :focus outline-none" placeholder="Search..." value={coinSearchVal} />
+                <input onChange={(e) => handleSearchCoin(e)} className={`inline-block px-12 py-3 bg-[#232334] ${coinSearchVal && coinList ? "rounded-t-xl" : "rounded-xl"} :focus outline-none`} placeholder="Search..." value={coinSearchVal} />
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 absolute top-3.5 left-4">
   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 </svg>
-<ul className={`${coinList && coinSearchVal ? "opacity-100" : "opacity-0"} absolute w-full max-h-44 p-2 bg-[#232334] rounded-xl overflow-x-hidden overflow-y-scroll scroll-smooth`}>
+<ul className={`${coinList && coinSearchVal ? "opacity-100" : "opacity-0"} absolute w-full max-h-44 p-2 bg-[#232334] rounded-b-xl overflow-x-hidden overflow-y-scroll scroll-smooth`}>
     {isLoading && "Fetching Coins..."}
     {error && error}
     {debouncedCoinVal && coinList && coinList.filter((coin: Coin) => coin.name.includes(debouncedCoinVal)).map((coin: Coin) => <Link className="flex items-center gap-5" key={coin.id} href={`/coins/${coin.id}`}><Image width={24} height={24} src={`${coin.image}`} alt="Coin Image" />{coin.name}</Link>)}
