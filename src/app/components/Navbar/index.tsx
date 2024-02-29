@@ -11,9 +11,10 @@ interface Coin  {
     image: string
 }
 interface State {
-    currentCurrency: string
+    currentCurrency: string,
+    darkTheme: boolean
 }
-const selectCurrency = (state: State) => state.currentCurrency;
+const selectState = (state: State) => state;
 export default function Navbar() {
     const pathName = usePathname();
     const [coinSearchVal, setCoinSearchVal] = useState("");
@@ -21,7 +22,7 @@ export default function Navbar() {
     const [coinList, setCoinList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
-    const currentCurrency = useAppSelector(selectCurrency);
+    const {currentCurrency} = useAppSelector(selectState);
     const dispatch = useAppDispatch();
     const handleSearchCoin = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCoinSearchVal(e.target.value);
