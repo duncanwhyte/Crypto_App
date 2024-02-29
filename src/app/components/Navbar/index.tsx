@@ -3,12 +3,17 @@ import Link from "next/link";
 import Image from "next/image";
 import {useEffect, useState} from "react";
 import {usePathname} from "next/navigation";
+import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
 interface Coin  {
     id: string,
     symbol: string,
     name: string
     image: string
 }
+interface State {
+    currentCurrency: string
+}
+const selectCurrency = (state: State) => state.currentCurrency;
 export default function Navbar() {
     const pathName = usePathname();
     const [coinSearchVal, setCoinSearchVal] = useState("");
@@ -16,26 +21,32 @@ export default function Navbar() {
     const [coinList, setCoinList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    const currentCurrency = useAppSelector(selectCurrency);
+    const dispatch = useAppDispatch();
     const handleSearchCoin = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCoinSearchVal(e.target.value);
     };
-    const getCoins = async () => {
-        try {
-            setIsLoading(true);
-            const coinReq = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en");
-            const coinData = await coinReq.json();
-            setCoinList(coinData);
-            setIsLoading(false);
-        } catch (error) {
-            setIsLoading(false);
-            if (error instanceof Error) {
-                setError(error.message);
-            }
-        }
+    const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newCurrency: string = e.target.value;
+        dispatch({type: "currency/change", payload: newCurrency});
     };
     useEffect(() => {
+        const getCoins = async () => {
+            try {
+                setIsLoading(true);
+                const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currentCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`);
+                const coinData = await coinReq.json();
+                setCoinList(coinData);
+                setIsLoading(false);
+            } catch (error) {
+                setIsLoading(false);
+                if (error instanceof Error) {
+                    setError(error.message);
+                }
+            }
+        };
         getCoins();
-    }, []);
+    }, [currentCurrency]);
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedCoinVal(coinSearchVal);
@@ -81,7 +92,7 @@ export default function Navbar() {
             </div>
             <div>
             <div className="min-w-24 relative">
-                <select className="appearance-none bg-[#232334] px-6 py-3 rounded-xl w-full focus:outline-none">
+                <select value={currentCurrency} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleCurrencyChange(e)} className="appearance-none bg-[#232334] px-6 py-3 rounded-xl w-full focus:outline-none">
                     <option value="usd">USD</option>
                     <option value="gbp">GBP</option>
                     <option value="eur">EUR</option>

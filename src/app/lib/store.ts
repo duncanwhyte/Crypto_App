@@ -3,7 +3,7 @@ import {currencyReducer} from "../lib/features/currency/currencySlice";
 export const makeStore = () => {
     return configureStore({
         reducer: {
-            currencyReducer
+            currentCurrency: currencyReducer
         }
     });
 };
