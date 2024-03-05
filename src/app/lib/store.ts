@@ -6,8 +6,8 @@ export const makeStore = () => {
         reducer: {
             currentCurrency: currencyReducer,
             darkTheme: themeReducer
-        }
-    });
+        },
+    } );
 };
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
