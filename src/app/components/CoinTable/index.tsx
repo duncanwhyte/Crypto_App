@@ -1,5 +1,8 @@
 "use client";
 import Image from "next/image";
+import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
+import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
+import { useAppSelector } from "@/app/lib/hooks";
 interface Coin {
     name: string;
     id: string;
@@ -14,7 +17,12 @@ interface Coin {
     price_change_percentage_24h_in_currency: number;
     price_change_percentage_7d_in_currency: number;
   }
+  interface State {
+    currentCurrency: string;
+  }
+  const currencySelect = (state: State) => state.currentCurrency;
 export default function CoinTable({coinList}) {
+    const currentCurrency = useAppSelector(currencySelect);
     return (
         <table>
             <tbody>
@@ -32,21 +40,23 @@ export default function CoinTable({coinList}) {
             {coinList.map((coin: Coin, index: number) => {
                 if (index === 10) return;
                 return (
-                    <tr className="bg-[#191925] m-b-2 align-left border-solid border-t-8 border-b-8 border-[#13121A]" key={coin.id}>
+                    <tr className="bg-[#191925] m-b-2 align-left border-solid border-t-8 border-b-8 border-[#13121A] overflow-hidden rounded-xl" key={coin.id}>
                         <td>{index + 1}</td>
-                        <td className="flex justify-between items-center p-5"><Image src={`${coin.image}`} width={30} height={30} alt="Crypto-Coin-Image"/> ({`${coin.symbol}`})</td>
-                        <td>{}{coin.current_price}</td>
-                        <td className={`text-${coin.price_change_percentage_1h_in_currency > 0 ? "green" : "red"}-400 p-5`}>{Math.round(coin.price_change_percentage_1h_in_currency * 100) / 100}</td>
-                        <td className={`text-${coin.price_change_percentage_24h_in_currency > 0 ? "green" : "red"}-400 p-5`}>{Math.round(coin.price_change_percentage_24h_in_currency * 100) / 100}</td>
-                        <td className={`text-${coin.price_change_percentage_7d_in_currency > 0 ? "green" : "red"}-400 p-5`}>{Math.round(coin.price_change_percentage_7d_in_currency * 100) / 100}</td>
+                        <td className="flex"><Image src={`${coin.image}`} width={30} height={30} alt="Crypto-Coin-Image"/>{coin.name}({`${coin.symbol.toUpperCase()}`})</td>
+                        <td>{handleCurrencySymbol(currentCurrency)}{coin.current_price}</td>
+                        <td className={`${coin.price_change_percentage_1h_in_currency > 0 ? "text-green-400" : "text-red-500"} p-5`}>{Math.abs(Math.round(coin.price_change_percentage_1h_in_currency * 100) / 100)}%</td>
+                        <td className={`${coin.price_change_percentage_24h_in_currency > 0 ? "text-green-400" : "text-red-500"} p-5`}>{Math.abs(Math.round(coin.price_change_percentage_24h_in_currency * 100) / 100)}%</td>
+                        <td className={`${coin.price_change_percentage_7d_in_currency > 0 ? "text-green-400" : "text-red-500"} p-5`}>{Math.abs(Math.round(coin.price_change_percentage_7d_in_currency * 100) / 100)}%</td>
                         <td>
                             <div className={"w-full h-2 bg-[#AFE5E5] rounded-xl"}>
-                                <div className={`bg-[#00B1A7] w-[${Math.round(coin.total_volume / coin.market_cap * 100)}%] h-full rounded-xl`}></div>
+                                <div style={{width: `${Math.min(handleTableProgressBar(coin.total_volume, coin.market_cap), 100)}%`}} className="bg-red-400 h-full rounded-xl"></div>
                             </div>
                         </td>
                         <td>
                             <div className={"w-full h-2 bg-[#AFE5E5] rounded-xl"}>
-                                <div className="bg-[#00B1A7] h-full rounded-xl"></div>
+                                <div>
+                                </div>
+                                <div style={{width: `${Math.min(handleTableProgressBar(coin.total_volume, coin.market_cap), 100)}%`}} className={"bg-[#00B1A7] h-full rounded-xl"}></div>
                             </div>
                         </td>
                     </tr>
