@@ -16,7 +16,7 @@ export default function Home() {
         const getCoins = async () => {
             try {
                 setIsLoading(true);
-                const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&price_change_percentage=1h,24h,7d&per_page=15`);
+                const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&price_change_percentage=1h,24h,7d&per_page=2`);
                 const coinData = await coinReq.json();
                 setCoinList(coinData);
                 setIsLoading(false);
@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <main className="">
       <HomePageNavigator />
-      <div className="">
+      <div className="max-w-screen-xl m-auto">
         {error && error}
         {!isLoading && coinList && <CoinTable coinList={coinList} />}
       </div>

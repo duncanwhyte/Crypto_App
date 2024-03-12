@@ -6,6 +6,8 @@ import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useAppSelector } from "@/app/lib/hooks";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import handleTableProgressbarColor from "@/app/utils/handleTableProgressBarColor";
+import handleCurrency from "@/app/utils/handleCurrency";
+import CoinChart from "../CoinChart";
 interface Coin {
     name: string;
     id: string;
@@ -57,9 +59,9 @@ export default function CoinTable({coinList}) {
             }: Coin, index: number) => {
                 if (index === 10) return;
                 return (
-                    <tr className="bg-[#191925] m-b-2 align-left border-solid border-t-8 border-b-8 border-[#13121A] overflow-hidden rounded-xl" key={id}>
+                    <tr className="bg-[#191925] m-b-2 p-2 align-left border-solid border-t-8 border-b-8 border-[#13121A] overflow-hidden rounded-xl" key={id}>
                         <td className={""}>{index + 1}</td>
-                        <td className="flex "><Image src={`${image}`} width={30} height={30} alt="Crypto-Coin-Image"/><Link href={`/coins/${id}}`}>{name}</Link>({`${symbol.toUpperCase()}`})</td>
+                        <td className="flex items-center"><Image src={`${image}`} width={30} height={30} alt="Crypto-Coin-Image"/><Link href={`/coins/${id}}`}>{name}</Link>({`${symbol.toUpperCase()}`})</td>
                         <td>{handleCurrencySymbol(currentCurrency)}{currentPrice}</td>
                         <td className={`${priceChangePercent1hInCurrency > 0 ? "text-green-400" : "text-red-500"} text-center`}>
                             <div className={"flex"}>
@@ -83,23 +85,27 @@ export default function CoinTable({coinList}) {
                             </div>
                             </td>
                         <td>
-                            <div className={" w-full h-2 rounded-xl"}>
+                            <div className={" w-full rounded-xl"}>
                                 <div className={"flex justify-between"}>
+                                    <span className={"text-base shrink"}>{handleCurrencySymbol(currentCurrency)}{handleCurrency(totalVolume)}</span>
+                                    <span className={"text-base shrink"}>{handleCurrencySymbol(currentCurrency)}{handleCurrency(marketCap)}</span>
                                 </div>
-                                <div className={`w-full h-full rounded-xl ${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} opacity-50`}></div>
-                                <div style={{width: `${handleTableProgressBar(totalVolume,  marketCap)}%`}} className={`${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} relative bottom-2 h-full rounded-xl`}></div>
+                                <div className={`w-full h-2 rounded-xl ${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} opacity-50`}></div>
+                                <div style={{width: `${handleTableProgressBar(totalVolume,  marketCap)}%`}} className={`${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} h-2 relative bottom-2 rounded-xl`}></div>
                             </div>
                         </td>
                         <td>
-                            <div className={`w-full h-2 rounded-xl}
-                            `}>
+                            <div className={"w-full rounded-xl"}>
                                 <div className={"flex justify-between"}>
+                                    <span className={"text-base"}>{handleCurrencySymbol(currentCurrency)}{handleCurrency(circulatingSupply)}</span>
+                                    <span className={"text-base"}>{handleCurrencySymbol(currentCurrency)}{handleCurrency(totalSupply)}</span>
                                 </div>
-                                <div  className={`h-full w-full opacity-50 rounded-xl ${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)}`}></div>
-                                <div style={{width: `${handleTableProgressBar(circulatingSupply, totalSupply)}%`}} className={`${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} relative bottom-2 h-full rounded-xl`}></div>
+                                <div  className={`w-full h-2 rounded-xl ${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} opacity-50`}></div>
+                                <div style={{width: `${handleTableProgressBar(circulatingSupply, totalSupply)}%`}} className={`${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} h-2 relative bottom-2 rounded-xl`}></div>
                             </div>
                         </td>
                         <td>
+                            <CoinChart chartColor={handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} id={id}/>
                         </td>
                     </tr>
                 );

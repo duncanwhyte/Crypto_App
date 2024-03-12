@@ -14,7 +14,7 @@ interface State {
     currentCurrency: string,
     darkTheme: boolean
 }
-const selectState = (state: State) => state;
+const selectCurrency = (state: State) => state.currentCurrency;
 export default function Navbar() {
     const pathName = usePathname();
     const [coinSearchVal, setCoinSearchVal] = useState("");
@@ -22,7 +22,7 @@ export default function Navbar() {
     const [coinList, setCoinList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
-    const {currentCurrency} = useAppSelector(selectState);
+    const currentCurrency = useAppSelector(selectCurrency);
     const dispatch = useAppDispatch();
     const handleSearchCoin = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCoinSearchVal(e.target.value);
@@ -35,7 +35,7 @@ export default function Navbar() {
         const getCoins = async () => {
             try {
                 setIsLoading(true);
-                const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&price_change_percentage=1h,24h,7d`);
+                const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}`);
                 const coinData = await coinReq.json();
                 setCoinList(coinData);
                 setIsLoading(false);
