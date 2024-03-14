@@ -7,6 +7,9 @@ export const makeStore = () => {
             currentCurrency: currencyReducer,
             darkTheme: themeReducer
         },
+        middleware: (getDefaultMiddleware) => {
+            getDefaultMiddleware();
+        }
     } );
 };
 export type AppStore = ReturnType<typeof makeStore>;
