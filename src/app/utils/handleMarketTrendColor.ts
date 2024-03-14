@@ -1,5 +1,4 @@
-export default function handleTableProgressbarColor(hour: number, hour24: number, days7: number): string {
-    /// If counter is 
+export default function handleMarketTrendColor(hour: number, hour24: number, days7: number): string {
     let inflationCount: number = 0;
     let deflationCount: number = 0;
     if (hour > 0) {
@@ -20,5 +19,5 @@ export default function handleTableProgressbarColor(hour: number, hour24: number
     if (days7 < 0) {
         deflationCount++;
     }
-    return inflationCount > deflationCount ? "bg-[#00B1A7]" : "bg-red-400";
+    return inflationCount > deflationCount ? "#00B1A7" : "#f87171";
 }

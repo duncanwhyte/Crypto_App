@@ -5,7 +5,7 @@ import priceChangeIcon from "@/app/assets/price-change-icon.svg";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useAppSelector } from "@/app/lib/hooks";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
-import handleTableProgressbarColor from "@/app/utils/handleTableProgressBarColor";
+import handleMarketTrendColor from "@/app/utils/handleMarketTrendColor";
 import handleCurrency from "@/app/utils/handleCurrency";
 import CoinChart from "../CoinChart";
 interface Coin {
@@ -89,27 +89,27 @@ export default function CoinTable({coinList}: {coinList: Coin[]}) {
                             </div>
                             </td>
                         <td className="pr-5">
-                            <div className={" w-full rounded-xl"}>
-                                <div className={"flex"}>
+                            <div className={"rounded-xl"}>
+                                <div className={"flex justify-between"}>
                                     <span className={"shrink"}>{handleCurrencySymbol(currentCurrency)}{handleCurrency(totalVolume)}</span>
                                     <span className={"shrink"}>{handleCurrencySymbol(currentCurrency)}{handleCurrency(marketCap)}</span>
                                 </div>
-                                <div className={`w-full h-2 rounded-xl ${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} opacity-50`}></div>
-                                <div style={{width: `${handleTableProgressBar(totalVolume,  marketCap)}%`}} className={`${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} h-2 relative bottom-2 rounded-xl`}></div>
+                                <div style={{backgroundColor: `${handleMarketTrendColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)}`}} className={"h-2 rounded-xl opacity-50"}></div>
+                                <div style={{width: `${handleTableProgressBar(totalVolume,  marketCap)}%`, backgroundColor: `${handleMarketTrendColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)}`}} className={"h-2 relative bottom-2 rounded-xl"}></div>
                             </div>
                         </td>
                         <td className="pr-5">
-                            <div className={"w-full rounded-xl"}>
-                                <div className={"flex"}>
+                            <div className={"rounded-xl"}>
+                                <div className={"flex justify-between"}>
                                     <span className={"shrink"}>{handleCurrencySymbol(currentCurrency)}{handleCurrency(circulatingSupply)}</span>
                                     <span className={"shrink"}>{handleCurrencySymbol(currentCurrency)}{handleCurrency(totalSupply)}</span>
                                 </div>
-                                <div  className={`w-full h-2 rounded-xl ${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} opacity-50`}></div>
-                                <div style={{width: `${handleTableProgressBar(circulatingSupply, totalSupply)}%`}} className={`${handleTableProgressbarColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} h-2 relative bottom-2 rounded-xl`}></div>
+                                <div style={{backgroundColor: `${handleMarketTrendColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)}`}} className={"w-full h-2 rounded-xl opacity-50"}></div>
+                                <div style={{width: `${handleTableProgressBar(circulatingSupply, totalSupply)}%`, backgroundColor: `${handleMarketTrendColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)}`}} className={"h-2 relative bottom-2 rounded-xl"}></div>
                             </div>
                         </td>
                         <td className={"relative rounded-r-3xl"}>
-                            <CoinChart id={id}/>
+                            <CoinChart chartColor={handleMarketTrendColor(priceChangePercent1hInCurrency, priceChangePercent24hInCurrency, priceChangePercent7dInCurrency)} id={id}/>
                         </td>
                     </tr>
                 );
