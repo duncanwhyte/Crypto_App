@@ -1,13 +1,17 @@
 import { useAppSelector } from "@/app/lib/hooks";
 import handleCoinDates from "@/app/utils/handleCoinDates";
-import { Chart as ChartJs, CategoryScale, LinearScale, LineElement, PointElement} from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Chart as ChartJs, CategoryScale, LinearScale, LineElement, PointElement ,Title, Tooltip, Legend, Filler} from "chart.js";
+import {  Line } from "react-chartjs-2";
 import { useEffect, useState } from "react";
 ChartJs.register(
     CategoryScale,
     LinearScale,
     LineElement,
     PointElement,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
 );
 interface State {
     currentCurrency: string;
@@ -42,15 +46,55 @@ export default function CoinChart({id}: {id : string}) {
             {
                 label: "Prices",
                 data: prices?.map((price: CoinData) => price.price),
-                borderColor: "lightgreen",
+                backgroundColor: (context: any) => {
+                    if (!context.chart.chartArea) return; 
+                    const {ctx, chartArea: {top, bottom}} = context.chart;
+                    const gradient = ctx.createLinearGradient(0, top, 0, bottom);
+                    gradient.addColorStop(0, "salmon");
+                    gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
+                    return gradient;
+                },
+                borderColor: "salmon",
                 borderWidth: 3,
+                pointRadius: 0,
+                fill: true,
             },
         ]
     };
     const options = {
         responsive: true,
+        plugins: {
+            title: {
+                display: false
+            },
+            tooltip: {
+                enabled: false
+            },
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                display: false,
+                grid: {
+                    display: false,
+                    drawBorder: false
+                }
+            },
+            x: {
+                display: false,
+                grid: {
+                    display: false,
+                    drawBorder: false
+                }
+            }
+        },
+        tension: 0.5
     };
     return (
-    <Line data={config} options={options} />
+        <div className={"relative w-full"}>
+            <Line data={config} options={options} />
+        </div>
     );
     }

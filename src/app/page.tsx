@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <main className="">
       <HomePageNavigator />
-      <div className="max-w-screen-xl m-auto">
+      <div className="">
         {error && error}
         {!isLoading && coinList && <CoinTable coinList={coinList} />}
       </div>
