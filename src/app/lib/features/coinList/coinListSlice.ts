@@ -1,9 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-export const fetchCoinList = createAsyncThunk("coinList/getCoinList", async (arg, thunkApi) => {
+export const fetchCoinList = createAsyncThunk("coinList/getCoinList", async (arg: string, thunkApi) => {
     const {currentCurrency} = thunkApi.getState();
-    const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&price_change_percentage=1h,24h,7d&per_page=2`);
-    const coinData = await coinReq.json();
-    return coinData;
+    if (arg === "navbar") {
+        const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&price_change_percentage=1h,24h,7d`);
+        const coinData = await coinReq.json();
+        return coinData;
+    } else {
+        const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&price_change_percentage=1h,24h,7d&per_page=9`);
+        const coinData = await coinReq.json();
+        return coinData;
+    }
 });
 interface CoinState {
     data: any[];

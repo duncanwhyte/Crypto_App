@@ -15,7 +15,7 @@ export default function Home() {
   const coinList = useAppSelector(selectCoinList);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchCoinList());
+    dispatch(fetchCoinList("coinTable"));
   }, [currentCurrency, dispatch]);
   return (
     <main className="">
