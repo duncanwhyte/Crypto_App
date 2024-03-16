@@ -26,7 +26,7 @@ interface Coin {
     currentCurrency: string;
   }
   const currencySelect = (state: State) => state.currentCurrency;
-export default function CoinTable({coinList}: {coinList: Coin[]}) {
+export default function CoinTable({coinList} : {coinList: Coin[]}) {
     const currentCurrency = useAppSelector(currencySelect);
     return (
         <table className="w-full">

@@ -1,15 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
+import coinListSlice from "./features/coinList/coinListSlice";
 import {currencyReducer} from "../lib/features/currency/currencySlice";
 import { themeReducer } from "./features/theme/themeSlice";
 export const makeStore = () => {
     return configureStore({
         reducer: {
             currentCurrency: currencyReducer,
-            darkTheme: themeReducer
+            darkTheme: themeReducer,
+            coinList: coinListSlice.reducer
         },
-        middleware: (getDefaultMiddleware) => {
-            getDefaultMiddleware();
-        }
     } );
 };
 export type AppStore = ReturnType<typeof makeStore>;
