@@ -1,10 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-const fetchGlobalData = createAsyncThunk("globalData/getGlobalData", async (arg, thunkApi) => {
-    const {currentCurrency} = thunkApi.getState();
+const fetchGlobalData = createAsyncThunk("globalData/getGlobalData", async () => {
     const globalDataReq = await fetch("https://api.coingecko.com/api/v3/global?x_cg_pro_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q");
     const globalData = await globalDataReq.json();
-    console.log(globalData);
+    return globalData;
 });
 const initialState = {
     isLoading: "idle",
