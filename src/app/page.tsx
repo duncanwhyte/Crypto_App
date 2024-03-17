@@ -10,18 +10,20 @@ interface State {
 }
 const selectCurrency = (state: State) => state.currentCurrency;
 const selectCoinList = (state: State) => state.coinList.data;
+const selectCoinAmount = (state: State) => state.coinList.coinsToDisplay;
 export default function Home() {
   const currentCurrency = useAppSelector(selectCurrency);
   const coinList = useAppSelector(selectCoinList);
+  const coinsToDisplay = useAppSelector(selectCoinAmount);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchCoinList("coinTable"));
+    dispatch(fetchCoinList());
   }, [currentCurrency, dispatch]);
   return (
     <main className="">
       <HomePageNavigator />
       <div className="">
-        {coinList && <CoinTable coinList={coinList} />}
+        {coinList && <CoinTable coinsToDisplay={coinsToDisplay} coinList={coinList} />}
       </div>
     </main>
   );
