@@ -1,12 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const fetchGlobalData = createAsyncThunk("globalData/getGlobalData", async () => {
-    const globalDataReq = await fetch("https://api.coingecko.com/api/v3/global?x_cg_pro_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q");
+export const fetchGlobalData = createAsyncThunk("globalData/getGlobalData", async () => {
+    const globalDataReq = await fetch("https://api.coingecko.com/api/v3/global?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q");
     const globalData = await globalDataReq.json();
     return globalData;
 });
-const initialState = {
+interface State {
+    isLoading: "idle" | "pending" | "success" | "failed";
+    data: any;
+    error: boolean | string;
+}
+const initialState: State = {
     isLoading: "idle",
     data: [],
+    error: false,
 };
 const globalDataSlice = createSlice({
     name: "globalCoinData",
@@ -23,6 +29,7 @@ const globalDataSlice = createSlice({
         });
         builder.addCase(fetchGlobalData.rejected, (state) => {
             state.isLoading = "failed";
+            state.error = "Global Data Not Found...";
         });
     }
 });
