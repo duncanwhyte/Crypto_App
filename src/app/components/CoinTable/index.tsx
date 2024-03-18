@@ -62,7 +62,7 @@ export default function CoinTable({coinList} : {coinList: Coin[]}) {
                         <td className="px-5 rounded-l-3xl">{index + 1}</td>
                         <td className="pr-5">
                             <div className="flex items-center">
-                            <Image src={`${image}`} width={30} height={30} alt="Crypto-Coin-Image"/><Link href={`/coins/${id}}`}>{name}</Link>({`${symbol.toUpperCase()}`})
+                            <Image src={image} width={30} height={30} alt="Crypto-Coin-Image"/><Link href={`/coins/${id}}`}>{name}</Link>({`${symbol.toUpperCase()}`})
                             </div>
                             </td>
                         <td className="pr-5">{handleCurrencySymbol(currentCurrency)}{currentPrice}</td>
