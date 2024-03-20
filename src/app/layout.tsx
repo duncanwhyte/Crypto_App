@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import Navbar from "./components/Navbar";
+import GlobalCoinMarketDisplay from "./components/GlobalCoinMarketDisplay";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Crypto App",
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="px-20">
           <StoreProvider>
+        <GlobalCoinMarketDisplay />
         <Navbar />
         {children}
         </StoreProvider>
