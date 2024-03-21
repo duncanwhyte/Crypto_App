@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-          <StoreProvider>
+        <StoreProvider>
         <GlobalCoinMarketDisplay />
         <div className="px-20">
         <Navbar />

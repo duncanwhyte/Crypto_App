@@ -14,19 +14,25 @@ export default function GlobalCoinMarketDisplay() {
         dispatch(fetchGlobalData());
     }, [dispatch, currentCurrency]);
     return (
-        <div className="bg-[#1E1932]">
+        <div className="bg-[#1E1932] mb-5">
     <ul className="flex items-center justify-center space-x-5 py-5">
         <li>Coins {globalData?.active_cryptocurrencies}</li>
-        <li>{handleCurrencySymbol(currentCurrency)}{handleCurrency(globalData?.total_volume[`${currentCurrency}`])}</li>
-        <li></li>
+        <li>Exchanges {globalData?.markets}</li>
+        <li>{handleCurrencySymbol(currentCurrency)}{handleCurrency(globalData?.total_market_cap[`${currentCurrency}`])}</li>
         <li className="flex items-center">
-            {Math.round(globalData?.market_cap_percentage["btc"])}%
+        <span className="mr-1">{handleCurrencySymbol(currentCurrency)}{handleCurrency(globalData?.total_volume[`${currentCurrency}`])}</span>
+            <div className="w-12 h-2 rounded-xl bg-neutral-400">
+            <div style={{width: `${Math.round(globalData?.total_volume[`${currentCurrency}`] / globalData?.total_market_cap[`${currentCurrency}`] * 100)}%`}} className="h-full rounded-xl bg-white"></div>
+            </div>
+        </li>
+        <li className="flex items-center">
+            <span className="mr-1">{Math.round(globalData?.market_cap_percentage["btc"])}%</span>
             <div className="w-12 h-2 rounded-xl bg-neutral-400">
             <div style={{width: `${Math.round(globalData?.market_cap_percentage["btc"])}%`}} className="h-full rounded-xl bg-[#F7931A]"></div>
             </div>
         </li>
         <li className="flex items-center">
-            {Math.round(globalData?.market_cap_percentage["eth"])}%
+            <span className="mr-1">{Math.round(globalData?.market_cap_percentage["eth"])}%</span>
             <div className="w-12 h-2 rounded-xl bg-neutral-400">
                 <div style={{width: `${Math.round(globalData?.market_cap_percentage["eth"])}%`}} className="h-full rounded-xl bg-[#849DFF]"></div>
             </div>
