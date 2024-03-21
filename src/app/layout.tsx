@@ -18,13 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="px-20">
           <StoreProvider>
         <GlobalCoinMarketDisplay />
+        <div className="px-20">
         <Navbar />
         {children}
-        </StoreProvider>
         </div>
+        </StoreProvider>
         </body>
     </html>
   );
