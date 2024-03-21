@@ -9,8 +9,12 @@ import bitcoinImg from "@/app/assets/btc.svg";
 import ethereumImg from "@/app/assets/ETH (blue).svg";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import handleCurrency from "@/app/utils/handleCurrency";
-const currencySelector = (state) => state.currentCurrency;
-const globalDataSelector = (state) => state.globalData.data;
+interface State {
+    currentCurrency: string;
+    globalData: any
+}
+const currencySelector = (state: State) => state.currentCurrency;
+const globalDataSelector = (state: State) => state.globalData.data;
 export default function GlobalCoinMarketDisplay() {
     const {data: globalData} = useAppSelector(globalDataSelector);
     const currentCurrency = useAppSelector(currencySelector);
