@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <StoreProvider>
-        {/* <GlobalCoinMarketDisplay /> */}
+        <GlobalCoinMarketDisplay />
         <div className="px-20">
         <Navbar />
         {children}

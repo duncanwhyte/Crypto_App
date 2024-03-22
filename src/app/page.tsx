@@ -23,7 +23,7 @@ export default function Home() {
       <HomePageNavigator />
       <CoinSlider />
       <div className="">
-        {/* {coinList && <CoinTable coinList={coinList} />} */}
+        {coinList && <CoinTable coinList={coinList} />}
       </div>
     </main>
   );
