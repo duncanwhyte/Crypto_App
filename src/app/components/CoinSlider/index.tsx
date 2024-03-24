@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import arrowImg from "@/app/assets/arrow-right.svg";
 import CoinSlide from "../CoinSlide";
 import { useEffect } from "react";
 import { fetchCoinList } from "@/app/lib/features/coinList/coinListSlice";
@@ -30,10 +32,13 @@ export default function CoinSlider() {
         <div className="mb-6">
             <h3>Select the currency to view the statistics</h3>
         </div>
-        <div>
-        <ul className="list-none relative flex w-7xl m-auto space-x-2 overflow-hidden">
+        <div className="relative overflow-hidden h-20">
+        <ul className="list-none w-full h-full flex space-x-2 transition-all">
             {coinList.map((coin: Coin) => <CoinSlide key={coin.id} currency={currentCurrency} coinData={coin} />)}
         </ul>
+        <button className="absolute top-2 right-0 rounded-full p-4 bg-[#6161D6]">
+                <Image src={arrowImg} alt="arrow-image"/>
+            </button>
         </div>
         </div>
     );
