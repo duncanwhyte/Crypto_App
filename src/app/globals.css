@@ -25,6 +25,9 @@ body {
   background: #13121A;
   color: #FFF;
 }
+.slick-next::before, .slick-prev::before {
+  display: none;
+}
 ::-webkit-scrollbar {
   width: 10px;
 }

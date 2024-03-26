@@ -18,7 +18,7 @@ interface Coin {
 export default function CoinSlide({coinData, currency} : {coinData: Coin, currency: string,}) {
     return (
         <li className={"bg-[#191925] rounded-xl flex p-3 hover:bg-[#6161D6] transition-all cursor-pointer"}>
-            <div className="w-60 flex items-center">
+            <div className="flex items-center">
         <div className="w-8 h-8 mr-4">
             <Image width={36} height={36} className="w-8 h-8" src={coinData.image} alt="coin-image" />
         </div>
