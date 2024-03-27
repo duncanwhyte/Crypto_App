@@ -3,8 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import CoinSlide from "../CoinSlide";
-import SliderNextArrow from "../SliderNextArrow/SliderNextArrow";
-import  SliderPrevArrow  from "../SliderPrevArrow/SliderPrevArrow";
+import {SliderNextArrow, SliderPrevArrow} from "../SliderArrows/SliderArrows";
 import { useEffect, useRef } from "react";
 import { fetchCoinList } from "@/app/lib/features/coinList/coinListSlice";
 interface Coin {

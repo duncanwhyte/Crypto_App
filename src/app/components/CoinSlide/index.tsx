@@ -20,7 +20,7 @@ export default function CoinSlide({coinData, currency} : {coinData: Coin, curren
         <li className={"bg-[#191925] rounded-xl flex p-3 hover:bg-[#6161D6] transition-all cursor-pointer"}>
             <div className="flex items-center">
         <div className="w-8 h-8 mr-4">
-            <Image width={36} height={36} className="w-8 h-8" src={coinData.image} alt="coin-image" />
+            <Image width={36} height={36} className={`w-8 h-8 ${coinData.price_change_percentage_1h_in_currency > 0 ? "fill-green-500" : "fill-red-500"}`} src={coinData.image} alt="coin-image" />
         </div>
         <div className="flex flex-col">
         <div>
@@ -28,8 +28,8 @@ export default function CoinSlide({coinData, currency} : {coinData: Coin, curren
         </div>
         <div className="flex justify-around w-full">
             <h3>{handleCurrencySymbol(currency)}{coinData.current_price}{currency.toUpperCase()}</h3>
-            <Image width={16} height={16} className="" src={priceChangeIcon} alt="price-change-icon" />
-            <p>2.35%</p>
+            <Image width={24} height={24} className={`${coinData.price_change_percentage_1h_in_currency > 0 && "rotate-180"}`} src={priceChangeIcon} alt="price-change-icon" />
+            <p className={`${coinData.price_change_percentage_1h_in_currency > 0 ? "text-green-500" : "text-red-500"}`}>{Math.abs(coinData.price_change_percentage_1h_in_currency).toFixed(2)}%</p>
         </div>
         </div>
         </div>
