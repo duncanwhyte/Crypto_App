@@ -1,6 +1,7 @@
 "use client";
 import { useEffect} from "react";
 import HomePageNavigator from "./components/HomePageNavigator";
+import CoinSlider from "./components/CoinSlider";
 import { useAppSelector, useAppDispatch } from "./lib/hooks";
 import { fetchCoinList } from "./lib/features/coinList/coinListSlice";
 import CoinTable from "./components/CoinTable";
@@ -20,6 +21,7 @@ export default function Home() {
   return (
     <main className="">
       <HomePageNavigator />
+      <CoinSlider />
       <div className="">
         {coinList && <CoinTable coinList={coinList} />}
       </div>
