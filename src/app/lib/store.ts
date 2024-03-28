@@ -3,13 +3,15 @@ import coinListSlice from "./features/coinList/coinListSlice";
 import globalDataSlice from "./features/globalCoinData/globalDataSlice";
 import {currencyReducer} from "../lib/features/currency/currencySlice";
 import { themeReducer } from "./features/theme/themeSlice";
+import selectedCoinsSlice from "./features/selectedCoins/selectedCoinsSlice";
 export const makeStore = () => {
     return configureStore({
         reducer: {
             currentCurrency: currencyReducer,
             darkTheme: themeReducer,
             coinList: coinListSlice.reducer,
-            globalData: globalDataSlice.reducer
+            globalData: globalDataSlice.reducer,
+            selectedCoins: selectedCoinsSlice.reducer
         },
     } );
 };
