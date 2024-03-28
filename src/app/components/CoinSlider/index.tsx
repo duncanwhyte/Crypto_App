@@ -32,7 +32,7 @@ const selectCurrency = (state) => state.currentCurrency;
     const currentCurrency = useAppSelector(selectCurrency);
     const dispatch = useAppDispatch();
     const handleAddCoin = (id: string) => {
-        if (id === coin1?.id || id === coin2?.id || coin3?.id) {
+        if (id === coin1?.id || id === coin2?.id || id === coin3?.id) {
             dispatch({type: "selectedCoins/deselectCoin", payload: id});
             return;
         }
