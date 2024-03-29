@@ -1,3 +1,4 @@
+"use client";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -6,6 +7,7 @@ import CoinSlide from "../CoinSlide";
 import {SliderNextArrow, SliderPrevArrow} from "../SliderArrows/SliderArrows";
 import { useEffect, useRef } from "react";
 import { fetchCoinList } from "@/app/lib/features/coinList/coinListSlice";
+import { fetchCoinData } from "@/app/lib/features/selectedCoins/selectedCoinsSlice";
 interface Coin {
     name: string;
     id: string;
@@ -21,12 +23,21 @@ interface Coin {
     price_change_percentage_7d_in_currency: number;
   }
 const selectCoinList = (state) => state.coinList.data;
+const selectUserCoins = (state) => state.selectedCoins.selectedCoins;
 const selectCurrency = (state) => state.currentCurrency;
  function CoinSlider() {
     const coinList = useAppSelector(selectCoinList);
+    const [coin1, coin2, coin3] = useAppSelector(selectUserCoins);
     const sliderRef = useRef<Slider>(null);
     const currentCurrency = useAppSelector(selectCurrency);
     const dispatch = useAppDispatch();
+    const handleAddCoin = (id: string) => {
+        if (id === coin1?.id || id === coin2?.id || id === coin3?.id) {
+            dispatch({type: "selectedCoins/deselectCoin", payload: id});
+            return;
+        }
+        dispatch(fetchCoinData(id));
+    };
     const next = () => {
         sliderRef.current.slickNext();
     };
@@ -62,7 +73,8 @@ const selectCurrency = (state) => state.currentCurrency;
     };
     useEffect(() => {
         dispatch(fetchCoinList());
-    },[dispatch, currentCurrency]);
+        dispatch(fetchCoinData("bitcoin"));
+    },[dispatch]);
     return (
         <div className="mb-10">
         <div className="mb-6">
@@ -71,7 +83,7 @@ const selectCurrency = (state) => state.currentCurrency;
         <div className="">
         <ul className="list-none transition-all relative">
             <Slider ref={(slider: Slider) => {sliderRef.current = slider;}} {...sliderSettings}>
-            {coinList.map((coin: Coin) => <CoinSlide key={coin.id} currency={currentCurrency} coinData={coin} />)}
+            {coinList.map((coin: Coin) => <CoinSlide selected={coin.id === coin1?.id || coin.id === coin2?.id || coin.id === coin3?.id} handleAddCoin={handleAddCoin} key={coin.id} currency={currentCurrency} coinData={coin} />)}
             </Slider>
         </ul>
         </div>
