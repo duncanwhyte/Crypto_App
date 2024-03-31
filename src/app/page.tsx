@@ -5,9 +5,11 @@ import CoinSlider from "./components/CoinSlider";
 import { useAppSelector, useAppDispatch } from "./lib/hooks";
 import { fetchCoinList } from "./lib/features/coinList/coinListSlice";
 import CoinTable from "./components/CoinTable";
+import SelectedCoinsCharts from "./components/SelectedCoinCharts";
 interface State {
   currentCurrency: string,
-  coinList: any
+  coinList: any,
+  selectedCoins: any
 }
 const selectCurrency = (state: State) => state.currentCurrency;
 const selectCoinList = (state: State) => state.coinList.data;
@@ -23,6 +25,7 @@ export default function Home() {
       <HomePageNavigator />
       <CoinSlider />
       <div className="">
+        <SelectedCoinsCharts />
         {coinList && <CoinTable coinList={coinList} />}
       </div>
     </main>
