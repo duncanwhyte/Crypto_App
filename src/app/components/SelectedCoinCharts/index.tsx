@@ -178,23 +178,40 @@ export default function SelectedCoinsCharts() {
             }
         }
     };
+    const currentDate = new Date().toDateString();
     return (
         <div className="flex gap-8 relative">
                 <div className="flex flex-col p-6 items-start w-full bg-[#191932] rounded-xl">
                     <div className="">
                         <h3 className="text-xl text-[#D1D1D1]">Bitcoin (BTC)</h3>
                         <p className="text-2xl font-bold">$13.431 mln</p>
-                        <p className="text-[#D1D1D1]">September 13 2024</p>
+                        <p className="text-[#D1D1D1]">{currentDate}</p>
                     </div>
-                    <Line className="w-full" options={lineChartOptions} data={lineConfig} />
+                    <Line options={lineChartOptions} data={lineConfig} />
+                    <div>
+                        <div className="flex items-center">
+                            {coin1 && <><div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div> {coin1.id}</> }
+                            {coin2 && <><div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div> {coin2.id}</> }
+                            {coin3 && <><div className="w-6 h-6 rounded-sm bg-[#6263D9] text-xl"></div> {coin3.id}</> }
+                        </div>
+                        <div></div>
+                    </div>
                 </div>
                 <div className="w-full flex flex-col items-start relative items-start p-6 bg-[#191932] rounded-xl">
                     <div>
                         <h3 className="text-xl text-[#D1D1D1]">Volume 24h</h3>
                         <p className="text-2xl font-bold">$807.243 bln</p>
-                        <p className="text-[#D1D1D1]">September 13 2024</p>
+                        <p className="text-[#D1D1D1]">{currentDate}</p>
                     </div>
                     <Bar data={barConfig} options={barChartOptions} />
+                    <div>
+                        <div className="flex items-center">
+                            {coin1 && <><div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div> {coin1.id}</> }
+                            {coin2 && <><div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div> {coin2.id}</> }
+                            {coin3 && <><div className="w-6 h-6 rounded-sm bg-[#6263D9] text-xl"></div> {coin3.id}</> }
+                        </div>
+                        <div></div>
+                    </div>
                 </div>
             </div>
     );
