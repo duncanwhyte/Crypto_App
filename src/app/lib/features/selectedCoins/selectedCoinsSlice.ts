@@ -13,7 +13,10 @@ export const fetchCoinData = createAsyncThunk("selectedCoins/getCoinData", async
     const coinData = await coinDataReq.json();
     const newCoin = {
         id: arg,
-        coinData
+        coinData: {
+            prices: coinData.prices.filter((_: number[], index: number) => index % 24 === 0),
+            total_volumes: coinData.total_volumes.filter((_: number[], index: number) => index % 24 === 0) //eslint-disable-line
+        }
     };
     return newCoin;
 });

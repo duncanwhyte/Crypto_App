@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 interface CoinState {
     data: any[];
     isLoading: "idle" | "pending" | "success" | "failed";
@@ -34,6 +34,9 @@ const initialState: CoinState = {
         builder.addCase(fetchCoinList.rejected, (state) => {
             state.isLoading = "failed";
             state.error = "Couldn't Fetch Coins";
+        });
+        builder.addCase("coinList/callCoins", (state) => {
+            state.coinsToDisplay += state.coinsToDisplay;
         });
     }
 });
