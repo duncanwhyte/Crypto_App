@@ -7,7 +7,8 @@ const nextConfig = {
                 protocol: "https",
         }
         ]
-    }
+    },
+    reactStrictMode: false
 };
 
 export default nextConfig;

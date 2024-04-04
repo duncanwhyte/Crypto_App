@@ -4,6 +4,7 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 import {usePathname} from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
+import { fetchCoinList } from "@/app/lib/features/coinList/coinListSlice";
 interface Coin  {
     id: string,
     symbol: string,
@@ -12,17 +13,17 @@ interface Coin  {
 }
 interface State {
     currentCurrency: string,
-    darkTheme: boolean
+    darkTheme: boolean,
+    coinList: any
 }
 const selectCurrency = (state: State) => state.currentCurrency;
+const selectCoinList = (state: State) => state.coinList.data;
 export default function Navbar() {
     const pathName = usePathname();
     const [coinSearchVal, setCoinSearchVal] = useState("");
     const [debouncedCoinVal, setDebouncedCoinVal] = useState("");
-    const [coinList, setCoinList] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
     const currentCurrency = useAppSelector(selectCurrency);
+    const coinList = useAppSelector(selectCoinList);
     const dispatch = useAppDispatch();
     const handleSearchCoin = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCoinSearchVal(e.target.value);
@@ -32,22 +33,8 @@ export default function Navbar() {
         dispatch({type: "currency/change", payload: newCurrency});
     };
     useEffect(() => {
-        const getCoins = async () => {
-            try {
-                setIsLoading(true);
-                const coinReq = await fetch(`https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}`);
-                const coinData = await coinReq.json();
-                setCoinList(coinData);
-                setIsLoading(false);
-            } catch (error) {
-                setIsLoading(false);
-                if (error instanceof Error) {
-                    setError(error.message);
-                }
-            }
-        };
-        getCoins();
-    }, [currentCurrency]);
+        dispatch(fetchCoinList("navbar"));
+    }, [currentCurrency, dispatch]);
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedCoinVal(coinSearchVal);
@@ -86,8 +73,6 @@ export default function Navbar() {
   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 </svg>
 <ul className={`${coinList && coinSearchVal ? "opacity-100" : "opacity-0"} absolute w-full max-h-44 p-2 bg-[#232334] rounded-b-xl overflow-x-hidden overflow-y-scroll scroll-smooth`}>
-    {isLoading && "Fetching Coins..."}
-    {error && error}
     {debouncedCoinVal && coinList && coinList.filter((coin: Coin) => coin.name.includes(debouncedCoinVal)).map((coin: Coin) => <Link className="flex items-center gap-5" key={coin.id} href={`/coins/${coin.id}`}><Image width={24} height={24} src={`${coin.image}`} alt="Coin Image" />{coin.name}</Link>)}
 </ul>
             </div>

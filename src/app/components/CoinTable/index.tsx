@@ -26,7 +26,7 @@ interface Coin {
     currentCurrency: string;
   }
   const currencySelect = (state: State) => state.currentCurrency;
-export default function CoinTable({coinList}: {coinList: Coin[]}) {
+export default function CoinTable({coinList} : {coinList: Coin[]}) {
     const currentCurrency = useAppSelector(currencySelect);
     return (
         <table className="w-full">
@@ -57,13 +57,12 @@ export default function CoinTable({coinList}: {coinList: Coin[]}) {
                 circulating_supply: circulatingSupply, 
                 total_supply: totalSupply
             }: Coin, index: number) => {
-                if (index === 10) return;
                 return (
                     <tr className="bg-[#191925] m-b-2 align-left border-solid border-t-8 border-b-8 border-[#13121A] w-full overflow-hidden" key={id}>
                         <td className="px-5 rounded-l-3xl">{index + 1}</td>
                         <td className="pr-5">
                             <div className="flex items-center">
-                            <Image src={`${image}`} width={30} height={30} alt="Crypto-Coin-Image"/><Link href={`/coins/${id}}`}>{name}</Link>({`${symbol.toUpperCase()}`})
+                            <Image src={image} width={30} height={30} alt="Crypto-Coin-Image"/><Link href={`/coins/${id}}`}>{name}</Link>({`${symbol.toUpperCase()}`})
                             </div>
                             </td>
                         <td className="pr-5">{handleCurrencySymbol(currentCurrency)}{currentPrice}</td>
