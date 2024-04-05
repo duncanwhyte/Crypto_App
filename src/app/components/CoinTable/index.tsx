@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import priceChangeIcon from "@/app/assets/price-change-icon.svg";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
-import { useAppSelector } from "@/app/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import handleMarketTrendColor from "@/app/utils/handleMarketTrendColor";
 import handleCurrency from "@/app/utils/handleCurrency";
@@ -28,6 +29,31 @@ interface Coin {
   const currencySelect = (state: State) => state.currentCurrency;
 export default function CoinTable({coinList} : {coinList: Coin[]}) {
     const currentCurrency = useAppSelector(currencySelect);
+    const dispatch = useAppDispatch();
+    const handleThrottle = (func,delay: number) => {
+        let timer;
+        return () => {
+            if (!timer) {
+                func();
+                timer = setTimeout(() => {
+                    timer = null;
+                }, delay);
+            }
+        };
+    };
+    useEffect(() => {
+        const handleScroll = () => {
+            const { scrollTop,  offsetHeight} = document.documentElement;
+            if (window.innerHeight + scrollTop >= offsetHeight - 50) {
+                dispatch({type: "coinList/callCoins"});
+            }
+            return;
+        };
+        window.addEventListener("scroll" , handleThrottle(handleScroll, 2000));
+        return () => {
+            window.removeEventListener("scroll" , handleThrottle(handleScroll, 2000), true);
+        };
+      }, [dispatch]);
     return (
         <table className="w-full">
             <tbody>
