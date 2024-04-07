@@ -17,7 +17,7 @@ interface Coin {
 }
 export default function CoinSlide({handleAddCoin, coinData, selected, currency} : {handleAddCoin: any, coinData: Coin, selected: boolean | undefined,currency: string,}) {
     return (
-        <li onClick={() => handleAddCoin(coinData.id)} className={`${selected ? "bg-[#6161D6]" : "bg-[#191925]"} rounded-xl flex p-3 hover:bg-[#6161D6] transition-all cursor-pointer`}>
+        <li onClick={() => handleAddCoin(coinData)} className={`${selected ? "bg-[#6161D6]" : "bg-[#191925]"} rounded-xl flex p-3 hover:bg-[#6161D6] transition-all cursor-pointer`}>
             <div className="flex items-center">
         <div className="w-8 h-8 mr-4">
             <Image width={36} height={36} className={`w-8 h-8 ${coinData.price_change_percentage_1h_in_currency > 0 ? "fill-green-500" : "fill-red-500"}`} src={coinData.image} alt="coin-image" />
