@@ -40,6 +40,9 @@ const initialState: CoinState = {
             state.isLoading = "failed";
             state.error = "Couldn't Fetch Coins";
         });
+        builder.addCase("coinList/callCoins", (state) => {
+            state.coinsToDisplay += state.coinsToDisplay;
+        });
     }
 });
 export default coinListSlice;
