@@ -5,8 +5,6 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import CoinSlide from "../CoinSlide";
 import {SliderNextArrow, SliderPrevArrow} from "../SliderArrows/SliderArrows";
-import { useEffect, useRef } from "react";
-import { fetchCoinList } from "@/app/lib/features/coinList/coinListSlice";
 import { fetchCoinData } from "@/app/lib/features/selectedCoins/selectedCoinsSlice";
 interface Coin {
     name: string;
@@ -31,12 +29,12 @@ const selectCurrency = (state) => state.currentCurrency;
     const sliderRef = useRef<Slider>(null);
     const currentCurrency = useAppSelector(selectCurrency);
     const dispatch = useAppDispatch();
-    const handleAddCoin = (id: string) => {
-        if (id === coin1?.id || id === coin2?.id || id === coin3?.id) {
-            dispatch({type: "selectedCoins/deselectCoin", payload: id});
+    const handleAddCoin = (coin: Coin) => {
+        if (coin.id === coin1?.id || coin.id === coin2?.id || coin.id === coin3?.id) {
+            dispatch({type: "selectedCoins/deselectCoin", payload: coin.id});
             return;
         }
-        dispatch(fetchCoinData(id));
+        dispatch(fetchCoinData(coin));
     };
     const next = () => {
         sliderRef.current.slickNext();
@@ -71,10 +69,6 @@ const selectCurrency = (state) => state.currentCurrency;
             }
         ]
     };
-    useEffect(() => {
-        dispatch(fetchCoinList());
-        dispatch(fetchCoinData("bitcoin"));
-    },[dispatch]);
     return (
         <div className="mb-10">
         <div className="mb-6">
