@@ -6,10 +6,12 @@ import { useAppSelector, useAppDispatch } from "./lib/hooks";
 import { fetchCoinList } from "./lib/features/coinList/coinListSlice";
 import CoinTable from "./components/CoinTable";
 import SelectedCoinsCharts from "./components/SelectedCoinCharts";
+import TimeDurationSelector from "./components/TimeDurationSelector";
 interface State {
   currentCurrency: string,
   coinList: any,
-  selectedCoins: any
+  selectedCoins: any,
+  graphTimeDuration: any
 }
 const selectCurrency = (state: State) => state.currentCurrency;
 const selectCoinList = (state: State) => state.coinList.data;
@@ -28,6 +30,7 @@ export default function Home() {
       <CoinSlider />
       <div className="">
         <SelectedCoinsCharts />
+        <TimeDurationSelector />
         {coinList && <CoinTable coinList={coinList} />}
       </div>
     </main>
