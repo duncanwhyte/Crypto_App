@@ -4,7 +4,6 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 import {usePathname} from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
-import { fetchCoinList } from "@/app/lib/features/coinList/coinListSlice";
 interface Coin  {
     id: string,
     symbol: string,
@@ -32,9 +31,6 @@ export default function Navbar() {
         const newCurrency: string = e.target.value;
         dispatch({type: "currency/change", payload: newCurrency});
     };
-    useEffect(() => {
-        dispatch(fetchCoinList("navbar"));
-    }, [currentCurrency, dispatch]);
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedCoinVal(coinSearchVal);

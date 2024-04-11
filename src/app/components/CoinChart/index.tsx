@@ -21,7 +21,7 @@ interface CoinData {
     price: number
 }
 const currencySelect = (state: State) => state.currentCurrency;
-export default function CoinChart({id}: {id : string}) {
+export default function CoinChart({id, chartColor}: {id : string, chartColor: string}) {
     const currentCurrency = useAppSelector(currencySelect);
     const [prices, setPrices] = useState<CoinData[] | null>(null);
     useEffect(() => {
@@ -50,11 +50,11 @@ export default function CoinChart({id}: {id : string}) {
                     if (!context.chart.chartArea) return; 
                     const {ctx, chartArea: {top, bottom}} = context.chart;
                     const gradient = ctx.createLinearGradient(0, top, 0, bottom);
-                    gradient.addColorStop(0, "salmon");
+                    gradient.addColorStop(0, `${chartColor}`);
                     gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
                     return gradient;
                 },
-                borderColor: "salmon",
+                borderColor: `${chartColor}`,
                 borderWidth: 3,
                 pointRadius: 0,
                 fill: true,
@@ -93,7 +93,7 @@ export default function CoinChart({id}: {id : string}) {
         tension: 0.5
     };
     return (
-        <div className={"relative w-full"}>
+        <div className={"relative w-full h-20 pr-5"}>
             <Line data={config} options={options} />
         </div>
     );
