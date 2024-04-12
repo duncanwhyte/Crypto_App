@@ -1,4 +1,5 @@
 import handleCoinDates from "@/app/utils/handleCoinDates";
+import handleCoinFilterPoint from "@/app/utils/handleCoinFilterPoint";
 import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 interface State {
     selectedCoins: any[],
@@ -8,7 +9,9 @@ interface State {
 const deselectCoin = createAction<string>("selectedCoins/deselectCoin");
 const callCoinData = async (arg: any, thunkApi: any) => {
     const {currentCurrency} = thunkApi.getState();
-    const [currentTime, pastTime] = handleCoinDates(7);
+    const {graphTimeDuration} = thunkApi.getState();
+    const [currentTime, pastTime] = handleCoinDates(graphTimeDuration.graphTimeDuration);
+    const filterPoint: number | undefined = handleCoinFilterPoint(graphTimeDuration.graphTimeDuration);
     const coinDataReq = await fetch(`https://api.coingecko.com/api/v3/coins/${arg.id}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`);
     const coinData = await coinDataReq.json();
     const newCoin = {
@@ -20,8 +23,8 @@ const callCoinData = async (arg: any, thunkApi: any) => {
         // eslint-disable-next-line
         current_price: arg.current_price,
         coinData: {
-            prices: coinData.prices.filter((_: number[], index: number) => index % 24 === 0),
-            total_volumes: coinData.total_volumes.filter((_: number[], index: number) => index % 24 === 0) //eslint-disable-line
+            prices: coinData.prices.filter((_: number[], index: number) => index % filterPoint === 0),
+            total_volumes: coinData.total_volumes.filter((_: number[], index: number) => index % filterPoint === 0) //eslint-disable-line
         }
     };
     return newCoin;
