@@ -1,4 +1,4 @@
-export default function handleCoinDateDisplay(date, graphTimeDuration) {
+export default function handleCoinDateDisplay(date, graphTimeDuration: number) {
     switch (graphTimeDuration) {
         case 0.0416666666666667:
             return Intl.DateTimeFormat("en-GB", {
