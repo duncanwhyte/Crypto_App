@@ -1,6 +1,5 @@
 import handleCoinDates from "@/app/utils/handleCoinDates";
 import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import handleCoinChartLabels from "@/app/utils/handleCoinChartLabels";
 interface State {
     selectedCoins: any[],
     isLoading: boolean,
@@ -13,7 +12,6 @@ const callCoinData = async (arg: any, thunkApi: any) => {
     const [currentTime, pastTime] = handleCoinDates(graphTimeDuration.graphTimeDuration);
     const coinDataReq = await fetch(`https://api.coingecko.com/api/v3/coins/${arg.id}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`);
     const coinData = await coinDataReq.json();
-    const [prices, totalVolumes] = handleCoinChartLabels(coinData,graphTimeDuration.graphTimeDuration);
     const newCoin = {
         id: arg.id,
         name: arg.name,
@@ -23,8 +21,8 @@ const callCoinData = async (arg: any, thunkApi: any) => {
         // eslint-disable-next-line
         current_price: arg.current_price,
         coinData: {
-            prices: prices,
-            total_volumes: totalVolumes//eslint-disable-line
+            prices: coinData.prices,
+            total_volumes: coinData.total_volumes//eslint-disable-line
         }
     };
     return newCoin;

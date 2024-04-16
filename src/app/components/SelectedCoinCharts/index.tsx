@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import handleCurrency from "@/app/utils/handleCurrency";
@@ -6,6 +6,7 @@ import { Chart as ChartJs, CategoryScale, LinearScale, LineElement, PointElement
 import {Line, Bar} from "react-chartjs-2";
 import { updateCoinData } from "@/app/lib/features/selectedCoins/selectedCoinsSlice";
 import handleCoinDateDisplay from "@/app/utils/handleCoinDateDisplay";
+import handleCoinLabelCount from "@/app/utils/handleCoinLabelCount";
 ChartJs.register(
     CategoryScale,
     LinearScale,
@@ -24,6 +25,7 @@ export default function SelectedCoinsCharts() {
     const currentCurrency = useAppSelector(selectCurrency);
     const [coin1, coin2, coin3] = useAppSelector(selectUserCoins);
     const graphTimeDuration = useAppSelector(selectGraphTimeDuration);
+    const [labelCount, setLabelCount] = useState(7);
     const dispatch = useAppDispatch();
     const lineConfig = {
         labels: coin1?.coinData.prices.map((price: number[]) => {
@@ -96,12 +98,12 @@ export default function SelectedCoinsCharts() {
                     const {ctx, chartArea: {top, bottom}} = context.chart;
                     const gradient = ctx.createLinearGradient(0, top, 0, bottom);
                     gradient.addColorStop(0, "#9D62D9");
-                    gradient.addColorStop(0.5, "#9D62D9");
+                    gradient.addColorStop(0.9, "#9D62D9");
                     gradient.addColorStop(1, "rgba(0, 0, 0, 0.1)");
                     return gradient;
                 },
                 borderRadius: 3,
-                barThickness: 20,
+                barThickness: graphTimeDuration === 0.0416666666666667 ? 15 : 1,
             },
             {
                 id: 2,
@@ -117,7 +119,7 @@ export default function SelectedCoinsCharts() {
                     return gradient;
                 },
                 borderRadius: 3,
-                barThickness: 20,
+                barThickness: graphTimeDuration === 0.0416666666666667 ? 5 : 1,
             },
             {
                 id: 3,
@@ -133,7 +135,7 @@ export default function SelectedCoinsCharts() {
                     return gradient;
                 },
                 borderRadius: 3,
-                barThickness: 20,
+                barThickness: graphTimeDuration === 0.0416666666666667 ? 5 : 1,
             }
         ]
     };
@@ -149,12 +151,21 @@ export default function SelectedCoinsCharts() {
         },
         scales: {
             x: {
+                beforeFit(axis) {
+                    const labels = axis.chart.config._config.data.labels;
+                    const length = labels.length - 1;
+                    axis.ticks.push({
+                        value: length,
+                        label: handleCoinDateDisplay(coin1?.coinData?.prices[length][0], graphTimeDuration),
+                    });
+                },
                 grid: {
                     display: false,
                     drawBorder: false,
                 },
                 ticks: {
-                    align: "inner"
+                    maxTicksLimit: labelCount,
+                    align: "inner",
                 }
             },
             y: {
@@ -186,10 +197,23 @@ export default function SelectedCoinsCharts() {
                 }
             },
             x: {
+                beforeFit: (axis) => {
+                    const labels = axis.chart.config._config.data.labels;
+                    const length = labels.length - 1;
+                    axis.ticks.push({
+                        label: handleCoinDateDisplay(coin1?.coinData?.prices[length][0], graphTimeDuration),
+                        value: length,
+                    });
+                },
                 stacked: true,
                 grid: {
                     display: false,
                     drawBorder: false
+                },
+                barPercentage: 0.5,
+                ticks: {
+                    maxTicksLimit: labelCount,
+                    align: "inner",
                 }
             }
         }
@@ -206,9 +230,21 @@ export default function SelectedCoinsCharts() {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [graphTimeDuration, currentCurrency]);
+    useEffect(() => {
+            const labels = handleCoinLabelCount(window.innerWidth);
+            setLabelCount(labels);
+            const handleLabelCount = () => {
+                const labels = handleCoinLabelCount(document.documentElement.clientWidth);
+                setLabelCount(labels);
+            };
+            window.addEventListener("resize", handleLabelCount);
+            return () => {
+                window.removeEventListener("resize", handleLabelCount);
+            };
+    }, []);
     const currentDate = new Date().toDateString();
     return (
-        <div className="flex gap-8 mb-14 relative">
+        <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row xl:flex-row gap-8 mb-14 relative">
                 <div className="flex flex-col p-6 items-start w-full bg-[#191932] rounded-xl">
                     <div className="mb-6">
                         {coin1 && !coin2 && !coin3 
