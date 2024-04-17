@@ -1,8 +1,9 @@
 "use client";
 import HomePageNavigator from "../components/HomePageNavigator";
 import { useAppSelector, useAppDispatch } from "../lib/hooks";
-import { useEffect } from "react";
+import { useEffect} from "react";
 import { fetchCoinList } from "../lib/features/coinList/coinListSlice";
+import CoinName from "../components/CoinName";
 import TimeDurationSelector from "../components/TimeDurationSelector";
 import { CoinConvertor } from "../components/Convertors";
 const selectCoinList = (state) => state.coinList.data;
@@ -23,9 +24,18 @@ export default function Convertor() {
                 <h3 className="text-xl">Online currency convertor</h3>
                 <p className="text-base text-[]">{newDate.toLocaleDateString()} {Intl.DateTimeFormat("en-GB", {hour: "2-digit", minute: "2-digit"}).format(newDate)}</p>
             </div>
-            <div className="flex">
-                {coinList && <CoinConvertor selling={true} sellingCoin={coinList[0]} buyingCoin={false} />}
-                {coinList && <CoinConvertor selling={false} buyingCoin={coinList[1]} sellingCoin={false} />}
+            <div className="flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row">
+                <CoinConvertor selling={true} sellingCoin={coinList[0]} buyingCoin={false} />
+                <CoinConvertor selling={false} sellingCoin={false} buyingCoin={coinList[1]} />
+            </div>
+            <div>
+                <div className="bg-[#191932] p-6 rounded-xl">
+                    <div className="space-x-3">
+                    <CoinName id={coinList[0]?.id} name={coinList[0]?.name} symbol={coinList[0]?.symbol} />
+                    <span>to</span>
+                    <CoinName id={coinList[1]?.id} name={coinList[1]?.name} symbol={coinList[1]?.symbol} />
+                    </div>
+                </div>
             </div>
             <div>
                 <TimeDurationSelector />
