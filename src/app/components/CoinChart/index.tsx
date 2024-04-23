@@ -26,7 +26,7 @@ export default function CoinChart({id, chartColor}: {id : string, chartColor: st
     const [prices, setPrices] = useState<CoinData[] | null>(null);
     useEffect(() => {
         const getLast7DaysData = async () => {
-            const [currentTime, pastTime] = handleCoinDates();
+            const [currentTime, pastTime] = handleCoinDates(7);
             const coinChartReq = await fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`);
             const coinChartData = await coinChartReq.json();
             const data: [] = coinChartData.prices.reduce((initVal: [], currVal: number[], index: number) => {

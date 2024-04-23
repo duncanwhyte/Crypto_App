@@ -1,6 +1,12 @@
-import { useAppSelector } from "@/app/lib/hooks";
+import { useEffect, useState } from "react";
+import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
+import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
+import handleCurrency from "@/app/utils/handleCurrency";
 import { Chart as ChartJs, CategoryScale, LinearScale, LineElement, PointElement ,Title, Tooltip, Legend, Filler, BarElement} from "chart.js";
 import {Line, Bar} from "react-chartjs-2";
+import { updateCoinData } from "@/app/lib/features/selectedCoins/selectedCoinsSlice";
+import handleCoinDateDisplay from "@/app/utils/handleCoinDateDisplay";
+import handleCoinLabelCount from "@/app/utils/handleCoinLabelCount";
 ChartJs.register(
     CategoryScale,
     LinearScale,
@@ -13,12 +19,17 @@ ChartJs.register(
     Filler
 );
 const selectUserCoins = (state) => state.selectedCoins.selectedCoins;
+const selectCurrency = (state) => state.currentCurrency;
+const selectGraphTimeDuration = (state) => state.graphTimeDuration.graphTimeDuration;
 export default function SelectedCoinsCharts() {
+    const currentCurrency = useAppSelector(selectCurrency);
     const [coin1, coin2, coin3] = useAppSelector(selectUserCoins);
+    const graphTimeDuration = useAppSelector(selectGraphTimeDuration);
+    const [labelCount, setLabelCount] = useState(7);
+    const dispatch = useAppDispatch();
     const lineConfig = {
         labels: coin1?.coinData.prices.map((price: number[]) => {
-            const dataDate = new Date(price[0]);
-            return dataDate.toDateString();
+            return handleCoinDateDisplay(new Date(price[0]), graphTimeDuration);
         }),
         datasets: [
             {
@@ -74,7 +85,9 @@ export default function SelectedCoinsCharts() {
         ]
     };
     const barConfig = {
-        labels: coin1?.coinData.total_volumes.map((volume: number[]) => new Date(volume[0]).toDateString()),
+        labels: coin1?.coinData.total_volumes.map((volume: number[]) => {
+            return handleCoinDateDisplay(new Date(volume[0]), graphTimeDuration);
+        }),
         datasets: [
             {
                 id: 1,
@@ -90,7 +103,7 @@ export default function SelectedCoinsCharts() {
                     return gradient;
                 },
                 borderRadius: 3,
-                barThickness: 20,
+                barThickness: graphTimeDuration === 0.0416666666666667 ? 15 : 1,
             },
             {
                 id: 2,
@@ -106,7 +119,7 @@ export default function SelectedCoinsCharts() {
                     return gradient;
                 },
                 borderRadius: 3,
-                barThickness: 20,
+                barThickness: graphTimeDuration === 0.0416666666666667 ? 5 : 1,
             },
             {
                 id: 3,
@@ -122,11 +135,12 @@ export default function SelectedCoinsCharts() {
                     return gradient;
                 },
                 borderRadius: 3,
-                barThickness: 20,
+                barThickness: graphTimeDuration === 0.0416666666666667 ? 5 : 1,
             }
         ]
     };
     const lineChartOptions = {
+        responsiveness: true,
         plugins: {
             title: {
                 display: false
@@ -137,10 +151,22 @@ export default function SelectedCoinsCharts() {
         },
         scales: {
             x: {
+                beforeFit(axis) {
+                    const labels = axis.chart.config._config.data.labels;
+                    const length = labels.length - 1;
+                    axis.ticks.push({
+                        value: length,
+                        label: handleCoinDateDisplay(coin1?.coinData?.prices[length][0], graphTimeDuration),
+                    });
+                },
                 grid: {
                     display: false,
                     drawBorder: false,
                 },
+                ticks: {
+                    maxTicksLimit: labelCount,
+                    align: "inner",
+                }
             },
             y: {
                 display: false,
@@ -152,6 +178,7 @@ export default function SelectedCoinsCharts() {
         }
     };
     const barChartOptions = {
+        responsiveness: true,
         plugins: {
             title: {
                 display: false
@@ -170,45 +197,152 @@ export default function SelectedCoinsCharts() {
                 }
             },
             x: {
+                beforeFit: (axis) => {
+                    const labels = axis.chart.config._config.data.labels;
+                    const length = labels.length - 1;
+                    axis.ticks.push({
+                        label: handleCoinDateDisplay(coin1?.coinData?.prices[length][0], graphTimeDuration),
+                        value: length,
+                    });
+                },
                 stacked: true,
                 grid: {
                     display: false,
                     drawBorder: false
+                },
+                barPercentage: 0.5,
+                ticks: {
+                    maxTicksLimit: labelCount,
+                    align: "inner",
                 }
             }
         }
     };
+    useEffect(() => {
+        if (coin1) {
+            dispatch(updateCoinData(coin1));
+        }
+        if (coin2) {
+            dispatch(updateCoinData(coin2));
+        }
+        if (coin3) {
+            dispatch(updateCoinData(coin3));
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [graphTimeDuration, currentCurrency]);
+    useEffect(() => {
+            const labels = handleCoinLabelCount(window.innerWidth);
+            setLabelCount(labels);
+            const handleLabelCount = () => {
+                const labels = handleCoinLabelCount(document.documentElement.clientWidth);
+                setLabelCount(labels);
+            };
+            window.addEventListener("resize", handleLabelCount);
+            return () => {
+                window.removeEventListener("resize", handleLabelCount);
+            };
+    }, []);
     const currentDate = new Date().toDateString();
     return (
-        <div className="flex gap-8 relative">
+        <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row xl:flex-row gap-8 mb-14 relative">
                 <div className="flex flex-col p-6 items-start w-full bg-[#191932] rounded-xl">
-                    <div className="">
-                        <h3 className="text-xl text-[#D1D1D1]">Bitcoin (BTC)</h3>
-                        <p className="text-2xl font-bold">$13.431 mln</p>
+                    <div className="mb-6">
+                        {coin1 && !coin2 && !coin3 
+                        ?
+                        <>
+                        <h3 className="text-xl text-[#D1D1D1]">{coin1?.name} ({coin1?.symbol.toUpperCase()})</h3>
+                        <p className="text-2xl font-bold">{handleCurrencySymbol(currentCurrency)}{coin1?.current_price}</p>
                         <p className="text-[#D1D1D1]">{currentDate}</p>
+                        </>
+                         :
+                         <p className={"text-2xl font-bold"}>{currentDate}</p>
+                         }
                     </div>
-                    <Line options={lineChartOptions} data={lineConfig} />
+                    <Line style={{width: "100%"}} options={lineChartOptions} data={lineConfig} />
                     <div>
-                        <div className="flex items-center">
-                            {coin1 && <><div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div> {coin1.id}</> }
-                            {coin2 && <><div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div> {coin2.id}</> }
-                            {coin3 && <><div className="w-6 h-6 rounded-sm bg-[#6263D9] text-xl"></div> {coin3.id}</> }
+                        <div className="flex items-center space-x-2">
+                            {coin1 && coin2 && !coin3 &&
+                            <div className="flex justify-center w-full">
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div>
+                            <p>{coin1?.name} {handleCurrencySymbol(currentCurrency)}{coin1?.current_price}</p>
+                            </div>
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div>
+                            <p>{coin2?.name} {handleCurrencySymbol(currentCurrency)}{coin2?.current_price}</p>
+                            </div>
+                            </div>
+                            }
+                            {
+                            coin1 && coin2 && coin3 &&
+                            <div className="flex justify-center w-full">
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div>
+                            <p>{coin1?.name} {handleCurrencySymbol(currentCurrency)}{coin1?.current_price}</p>
+                            </div>
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div>
+                            <p>{coin2?.name} {handleCurrencySymbol(currentCurrency)}{coin2?.current_price}</p>
+                            </div>
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#6263D9] text-xl"></div>
+                            <p>{coin3?.name} {handleCurrencySymbol(currentCurrency)}{coin3?.current_price}</p>
+                            </div>
+                            </div>
+                            }
                         </div>
                         <div></div>
                     </div>
                 </div>
-                <div className="w-full flex flex-col items-start relative items-start p-6 bg-[#191932] rounded-xl">
-                    <div>
+                <div className="w-full flex flex-col relative p-6 bg-[#191932] rounded-xl">
+                    <div className="mb-6">
+                        {
+                            coin1 && !coin2 && !coin3 
+                            ?
+                        <div>
                         <h3 className="text-xl text-[#D1D1D1]">Volume 24h</h3>
                         <p className="text-2xl font-bold">$807.243 bln</p>
                         <p className="text-[#D1D1D1]">{currentDate}</p>
+                        </div>
+                            :
+                        <div>
+                        <h3 className="text-2xl font-bold">Volume 24h</h3>
+                        <p className="text-[#D1D1D1]">{currentDate}</p>
+                        </div>
+                        }
                     </div>
                     <Bar data={barConfig} options={barChartOptions} />
                     <div>
-                        <div className="flex items-center">
-                            {coin1 && <><div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div> {coin1.id}</> }
-                            {coin2 && <><div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div> {coin2.id}</> }
-                            {coin3 && <><div className="w-6 h-6 rounded-sm bg-[#6263D9] text-xl"></div> {coin3.id}</> }
+                        <div className="flex items-center space-x-2">
+                        {coin1 && coin2 && !coin3 &&
+                            <>
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div>
+                            <p>{coin1?.name} {handleCurrencySymbol(currentCurrency)}{handleCurrency(coin1?.total_volume)}</p>
+                            </div>
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div>
+                            <p>{coin2?.name} {handleCurrencySymbol(currentCurrency)}{handleCurrency(coin2?.total_volume)}</p>
+                            </div>
+                            </>
+                            }
+                            {
+                            coin1 && coin2 && coin3 &&
+                            <>
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div>
+                            <p>{coin1?.name} {handleCurrencySymbol(currentCurrency)}{handleCurrency(coin1?.total_volume)}</p>
+                            </div>
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div>
+                            <p>{coin2?.name} {handleCurrencySymbol(currentCurrency)}{handleCurrency(coin2?.total_volume)}</p>
+                            </div>
+                            <div className={"flex items-center space-x-2"}>
+                            <div className="w-6 h-6 rounded-sm bg-[#6263D9] text-xl"></div>
+                            <p>{coin3?.name} {handleCurrencySymbol(currentCurrency)}{handleCurrency(coin3?.total_volume)}</p>
+                            </div>
+                            </>
+                            }
                         </div>
                         <div></div>
                     </div>
