@@ -5,6 +5,7 @@ import {currencyReducer} from "../lib/features/currency/currencySlice";
 import { themeReducer } from "./features/theme/themeSlice";
 import graphTimeDurationReducer from "./features/graphTimeDuration/graphTimeDurationSlice";
 import selectedCoinsSlice from "./features/selectedCoins/selectedCoinsSlice";
+import conversionCoinsSlice from "./features/conversionCoins/conversionCoinsSlice";
 export const makeStore = () => {
     return configureStore({
         reducer: {
@@ -13,7 +14,8 @@ export const makeStore = () => {
             coinList: coinListSlice.reducer,
             globalData: globalDataSlice.reducer,
             selectedCoins: selectedCoinsSlice.reducer,
-            graphTimeDuration: graphTimeDurationReducer
+            graphTimeDuration: graphTimeDurationReducer,
+            conversionCoins: conversionCoinsSlice.reducer
         },
     } );
 };
