@@ -1,23 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import handleCoinDates from "@/app/utils/handleCoinDates";
-const initialState = {
+interface State {
+    conversionCoins: any;
+    isLoading : boolean;
+    error: "" | "Couldn't fetch selling coin data" | "Couldn't fetch buying coin data";
+}
+const initialState : State = {
     conversionCoins: {
         sellingCoin: null,
         buyingCoin: null
     },
-    isLoading: "idle",
-    error: false,
+    isLoading: false,
+    error: "",
 };
-const callConversionData = async (arg, thunkApi) => {
-    const {currentCurrency} = thunkApi.getState();
-    const {graphTimeDuration} = thunkApi.getState();
-    const [currentTime, pastTime] = handleCoinDates(graphTimeDuration.graphTimeDuration);
-    const coinDataReq = await fetch(`https://api.coingecko.com/api/v3/coins/${arg.id}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`);
-    const coinData = await coinDataReq.json();
-    return {
-        name: arg.name,
-        prices: coinData.prices
-    };
+const callConversionData = async (arg: any, thunkApi : any) => {
+        const {currentCurrency} = thunkApi.getState();
+        const {graphTimeDuration} = thunkApi.getState();
+        const [currentTime, pastTime] = handleCoinDates(graphTimeDuration.graphTimeDuration);
+        const coinDataReq = await fetch(`https://api.coingecko.com/api/v3/coins/${arg?.id}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`);
+        const coinData = await coinDataReq.json();
+        const conversionCoin = {
+            name: arg.name,
+            prices: coinData.prices,
+        };
+        return conversionCoin;
 };
 export const fetchSellingCoinData = createAsyncThunk("conversionCoins/getSellingCoinPrices", callConversionData);
 export const fetchBuyingCoinData = createAsyncThunk("conversionCoins/getBuyingCoinPrices", callConversionData);
@@ -27,28 +33,28 @@ const conversionCoinsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchSellingCoinData.pending, (state) => {
-            state.isLoading = "pending";
+            state.isLoading = true;
         });
         builder.addCase(fetchSellingCoinData.fulfilled, (state,action) => {
-            state.isLoading = "success";
+            state.isLoading = true;
             state.conversionCoins.sellingCoin = action.payload;
-            state.isLoading = "idle";
+            state.isLoading = false;
         });
         builder.addCase(fetchSellingCoinData.rejected, (state) => {
-            state.isLoading = "idle";
-            state.error = true;
+            state.isLoading = false;
+            state.error = "Couldn't fetch selling coin data";
         });
         builder.addCase(fetchBuyingCoinData.pending, (state) => {
-            state.isLoading = "pending";
+            state.isLoading = true;
         });
         builder.addCase(fetchBuyingCoinData.fulfilled, (state,action) => {
-            state.isLoading = "success";
+            state.isLoading = true;
             state.conversionCoins.buyingCoin = action.payload;
-            state.isLoading = "idle";
+            state.isLoading = false;
         });
         builder.addCase(fetchBuyingCoinData.rejected, (state) => {
-            state.isLoading = "idle";
-            state.error = true;
+            state.isLoading = false;
+            state.error = "Couldn't fetch buying coin data";
         });
     }
 });

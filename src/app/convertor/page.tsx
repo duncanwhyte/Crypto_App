@@ -8,6 +8,7 @@ import CoinName from "../components/CoinName";
 import TimeDurationSelector from "../components/TimeDurationSelector";
 import { CoinConvertor } from "../components/Convertors";
 import Image from "next/image";
+import ConversionChart from "../components/ConversionChart";
 const selectCoinList = (state) => state.coinList.data;
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function Convertor() {
@@ -56,7 +57,7 @@ export default function Convertor() {
                 <p className="text-base text-[]">{newDate.toLocaleDateString()} {Intl.DateTimeFormat("en-GB", {hour: "2-digit", minute: "2-digit"}).format(newDate)}</p>
             </div>
             <div className="mb-16 xl:max-w-[1296px] mx-auto">
-                <div className="flex flex-col justify-around sm:flex-col md:flex-row lg:flex-row sm:mx-auto md:mx-auto relative">
+                <div className="flex flex-col justify-between sm:flex-col md:flex-row lg:flex-row sm:mx-auto md:mx-auto relative">
                 <CoinConvertor selling={true} sellingCoin={sellingCoin || coinList[0]} buyingCoin={buyingCoin || coinList[1]} sellingAmount={sellingAmount} buyingAmount={buyingAmount} handleSellingCoin={handleSellingCoin} handleBuyingCoin={false} handleSellingAmount={handleSellingAmount} handleBuyingAmount={handleBuyingAmount} />
                 <div className="absolute top-1/2 left-1/2 -ml-[26px] -mt-[26px]">
                 <Image onClick={handleCoinSwitch} className="cursor-pointer" src={SwitchIcon} alt="switch-coin-button" />
@@ -71,7 +72,7 @@ export default function Convertor() {
                     <span className="text-[#A7A7CC]">to</span>
                     <CoinName id={buyingCoin?.id || coinList[1]?.id} name={buyingCoin?.name || coinList[1]?.name} symbol={buyingCoin?.symbol || coinList[1]?.symbol} />
                     </div>
-                    <div></div>
+                    <ConversionChart sellingCoin={sellingCoin || coinList[0]} buyingCoin={buyingCoin || coinList[1]} />
                 </div>
             </div>
             <div>
