@@ -14,7 +14,7 @@ export function CoinConvertor({ selling, sellingCoin, buyingCoin, sellingAmount,
         setShowCoinList(!showCoinList);
     };
     return (
-        <div className={`flex flex-col p-6 ${selling ? "bg-[#191932]" : "bg-[#1E1932]"} rounded-xl`}>
+        <div className={`flex flex-col grow p-6 ${selling ? "bg-[#191932] mb-6" : "bg-[#1E1932]"} md:m-0 2xl:basis-[636px] rounded-xl`}>
         <>
         <p className="mb-6 text-[#A7A7CC]">You {selling ? "selling" : "buy"}</p>
         </>

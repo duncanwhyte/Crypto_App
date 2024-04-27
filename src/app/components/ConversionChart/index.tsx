@@ -1,3 +1,4 @@
+"use client";
 import { useEffect } from "react";
 import { Chart as ChartJs, CategoryScale, LinearScale, LineElement, PointElement ,Title, Tooltip, Legend, Filler} from "chart.js";
 import { Line } from "react-chartjs-2";
@@ -21,8 +22,8 @@ const graphTimeDuration = useAppSelector(selectGraphTimeDuration);
 const conversionCoins = useAppSelector(conversionCoinsSelector);
 const dispatch = useAppDispatch();
 useEffect(() => {
-    sellingCoin && dispatch(fetchSellingCoinData(sellingCoin));
     buyingCoin && dispatch(fetchBuyingCoinData(buyingCoin));
+    sellingCoin && dispatch(fetchSellingCoinData(sellingCoin));
 }, [graphTimeDuration, dispatch,sellingCoin, buyingCoin]);
 const config = {
         labels: conversionCoins?.sellingCoin?.prices?.map((price) => {

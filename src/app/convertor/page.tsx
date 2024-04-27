@@ -56,12 +56,11 @@ export default function Convertor() {
                 <h3 className="text-xl">Online currency convertor</h3>
                 <p className="text-base text-[]">{newDate.toLocaleDateString()} {Intl.DateTimeFormat("en-GB", {hour: "2-digit", minute: "2-digit"}).format(newDate)}</p>
             </div>
-            <div className="mb-16 xl:max-w-[1296px] mx-auto">
-                <div className="flex flex-col justify-between sm:flex-col md:flex-row lg:flex-row sm:mx-auto md:mx-auto relative">
+            <div className="mb-16 mx-auto relative">
+                <div className="flex flex-col md:flex-row md:justify-between md:mx-auto">
                 <CoinConvertor selling={true} sellingCoin={sellingCoin || coinList[0]} buyingCoin={buyingCoin || coinList[1]} sellingAmount={sellingAmount} buyingAmount={buyingAmount} handleSellingCoin={handleSellingCoin} handleBuyingCoin={false} handleSellingAmount={handleSellingAmount} handleBuyingAmount={handleBuyingAmount} />
-                <div className="absolute top-1/2 left-1/2 -ml-[26px] -mt-[26px]">
-                <Image onClick={handleCoinSwitch} className="cursor-pointer" src={SwitchIcon} alt="switch-coin-button" />
-                </div>
+                <div className="md:px-3"></div>
+                <Image onClick={handleCoinSwitch} className="cursor-pointer p-3 bg-[#13121A] rounded-full w-[72px] h-[72px] left-1/2 top-1/2 -mt-[30px] -ml-[36px] md:p-3 md:bg-transparent md:-mt-[36px] md:-ml-[46px] 2xl:-ml-[36px] absolute" src={SwitchIcon} alt="switch-coin-button" />
                 <CoinConvertor selling={false}  sellingCoin={sellingCoin || coinList[0]} buyingCoin={buyingCoin || coinList[1]} sellingAmount={sellingAmount} buyingAmount={buyingAmount} handleBuyingCoin={handleBuyingCoin} handleSellingCoin={false} handleBuyingAmount={handleBuyingAmount} handleSellingAmount={handleSellingAmount} />
                 </div>
             </div>
