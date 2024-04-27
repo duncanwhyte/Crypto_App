@@ -52,7 +52,7 @@ export default function Convertor() {
     return (
         <main>
             <HomePageNavigator />
-            <div>
+            <div className="mt-10 mb-6">
                 <h3 className="text-xl">Online currency convertor</h3>
                 <p className="text-base text-[]">{newDate.toLocaleDateString()} {Intl.DateTimeFormat("en-GB", {hour: "2-digit", minute: "2-digit"}).format(newDate)}</p>
             </div>
@@ -65,7 +65,7 @@ export default function Convertor() {
                 </div>
             </div>
             <div>
-                <div className="bg-[#191932] p-6 rounded-xl">
+                <div className="bg-[#191932] p-6 rounded-xl mb-10">
                     <div className="space-x-3">
                     <CoinName id={sellingCoin?.id || coinList[0]?.id} name={sellingCoin?.name || coinList[0]?.name} symbol={sellingCoin?.symbol || coinList[0]?.symbol} />
                     <span className="text-[#A7A7CC]">to</span>
