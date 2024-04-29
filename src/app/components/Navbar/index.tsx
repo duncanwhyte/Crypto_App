@@ -48,8 +48,8 @@ export default function Navbar() {
                 <h1 className="text-xl font-bold">CoinMon</h1>
             </div>
             <div className="flex space-x-4">
-                    <HomeIcon pathName={pathName} />
-                <div>
+                <div className="flex gap-1 items-center">
+                <HomeIcon pathName={pathName} />
                 <Link className={`flex items-center gap-1 ${pathName === "/" || pathName === "/convertor" ? "#FFFFF" : "text-[#808080]"}`} href={"/"}>
                     Home
                     </Link>
