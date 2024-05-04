@@ -6,12 +6,14 @@ import { themeReducer } from "./features/theme/themeSlice";
 import graphTimeDurationReducer from "./features/graphTimeDuration/graphTimeDurationSlice";
 import selectedCoinsSlice from "./features/selectedCoins/selectedCoinsSlice";
 import conversionCoinsSlice from "./features/conversionCoins/conversionCoinsSlice";
+import coinTableListSlice from "./features/coinTableList/coinTableListSlice";
 export const makeStore = () => {
     return configureStore({
         reducer: {
             currentCurrency: currencyReducer,
             darkTheme: themeReducer,
             coinList: coinListSlice.reducer,
+            coinTableList: coinTableListSlice.reducer,
             globalData: globalDataSlice.reducer,
             selectedCoins: selectedCoinsSlice.reducer,
             graphTimeDuration: graphTimeDurationReducer,

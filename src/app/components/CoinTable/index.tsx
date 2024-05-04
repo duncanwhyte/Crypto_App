@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import priceChangeIcon from "@/app/assets/price-change-icon.svg";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
@@ -9,15 +10,7 @@ import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import handleMarketTrendColor from "@/app/utils/handleMarketTrendColor";
 import handleCurrency from "@/app/utils/handleCurrency";
 import CoinChart from "../CoinChart";
-import {
-  coinNameSort,
-  coinPriceSort,
-  coinOneHourSort,
-  coinTwentyFourHourSort,
-  coinSevenDaySort,
-  coinMarketCapSort,
-  coinTotalSupplySort,
-} from "@/app/utils/coinTableSortFunctions/coinSortFunctions";
+import { fetchCoinTableList } from "@/app/lib/features/coinTableList/coinTableListSlice";
 interface Coin {
   name: string;
   id: string;
@@ -34,40 +27,17 @@ interface Coin {
 }
 interface State {
   currentCurrency: string;
+  coinTableList: any;
 }
 const currencySelect = (state: State) => state.currentCurrency;
-export default function CoinTable({ coinList }: { coinList: Coin[] }) {
+const coinTableListSelect = (state: State) => state.coinTableList.data;
+const coinsToDisplaySelect = (state: State) =>
+  state.coinTableList.coinsToDisplay;
+export default function CoinTable() {
   const currentCurrency = useAppSelector(currencySelect);
+  const coinTableList = useAppSelector(coinTableListSelect);
+  const coinsToDisplay = useAppSelector(coinsToDisplaySelect);
   const dispatch = useAppDispatch();
-  const [sortNames, setSortNames] = useState<boolean | null>(null);
-  const [sortPrices, setSortPrices] = useState(null);
-  const [sortOneHour, setSortOneHour] = useState<boolean | null>(null);
-  const [sortTwentyFourHour, setSortTwentyFourHour] = useState<boolean | null>(
-    null
-  );
-  const [sortSevenDay, setSortSevenDay] = useState<boolean | null>(null);
-  const [sortMarketCap, setSortMarketCap] = useState<boolean | null>(null);
-  const [sortTotalSupply, setSortTotalSupplyVolume] = useState<boolean | null>(
-    null
-  );
-  const sortFunctions = [
-    coinNameSort(sortNames),
-    coinPriceSort(sortPrices),
-    coinOneHourSort(sortOneHour),
-    coinTwentyFourHourSort(sortTwentyFourHour),
-    coinSevenDaySort(sortSevenDay),
-    coinMarketCapSort(sortMarketCap),
-    coinTotalSupplySort(sortTotalSupply),
-  ];
-  const handleSortType = (sortType: boolean | null, setSortType) => {
-    if (sortType === null) {
-      setSortType(true);
-    } else if (sortType === true) {
-      setSortType(false);
-    } else {
-      setSortType(null);
-    }
-  };
   const handleThrottle = (func, delay: number) => {
     let timer;
     return () => {
@@ -80,10 +50,13 @@ export default function CoinTable({ coinList }: { coinList: Coin[] }) {
     };
   };
   useEffect(() => {
+    dispatch(fetchCoinTableList());
+  }, [coinsToDisplay]);
+  useEffect(() => {
     const handleScroll = () => {
       const { scrollTop, offsetHeight } = document.documentElement;
       if (window.innerHeight + scrollTop >= offsetHeight - 50) {
-        dispatch({ type: "coinList/callCoins" });
+        dispatch({ type: "coinTableList/callCoins" });
       }
       return;
     };
@@ -95,74 +68,22 @@ export default function CoinTable({ coinList }: { coinList: Coin[] }) {
         true
       );
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const coinsToRender = sortFunctions.reduce(
-    (init, sortFunction) => init.sort(sortFunction),
-    [...coinList]
-  );
   return (
     <table className="w-full">
       <tbody>
         <tr>
           <th className="">#</th>
-          <th
-            className="cursor-pointer"
-            onClick={() => handleSortType(sortNames, setSortNames)}
-          >
-            Name
-            {sortNames === true ||
-              (sortNames === false && (
-                <Image
-                  className={`${sortNames === false && "rotate-180"}`}
-                  alt="coin-sort-indicator"
-                  src={priceChangeIcon}
-                />
-              ))}
-          </th>
-          <th
-            className="cursor-pointer"
-            onClick={() => handleSortType(sortPrices, setSortPrices)}
-          >
-            Price
-          </th>
-          <th
-            className="cursor-pointer"
-            onClick={() => handleSortType(sortOneHour, setSortOneHour)}
-          >
-            1hr%
-          </th>
-          <th
-            className="cursor-pointer"
-            onClick={() =>
-              handleSortType(sortTwentyFourHour, setSortTwentyFourHour)
-            }
-          >
-            24hr%
-          </th>
-          <th
-            className="cursor-pointer"
-            onClick={() => handleSortType(sortSevenDay, setSortSevenDay)}
-          >
-            7d%
-          </th>
-          <th
-            className="cursor-pointer"
-            onClick={() => handleSortType(sortMarketCap, setSortMarketCap)}
-          >
-            24hr volume / Market Cap
-          </th>
-          <th
-            className="cursor-pointer"
-            onClick={() =>
-              handleSortType(sortTotalSupply, setSortTotalSupplyVolume)
-            }
-          >
-            Circulating / Total Supply
-          </th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>1hr%</th>
+          <th>24hr%</th>
+          <th>7d%</th>
+          <th>24hr volume / Market Cap</th>
+          <th>Circulating / Total Supply</th>
           <th>Last 7d</th>
         </tr>
-        {coinsToRender.map(
+        {coinTableList.map(
           (
             {
               id,

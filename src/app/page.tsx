@@ -1,5 +1,5 @@
 "use client";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import HomePageNavigator from "./components/HomePageNavigator";
 import CoinSlider from "./components/CoinSlider";
 import { useAppSelector, useAppDispatch } from "./lib/hooks";
@@ -8,10 +8,10 @@ import CoinTable from "./components/CoinTable";
 import SelectedCoinsCharts from "./components/SelectedCoinCharts";
 import TimeDurationSelector from "./components/TimeDurationSelector";
 interface State {
-  currentCurrency: string,
-  coinList: any,
-  selectedCoins: any,
-  graphTimeDuration: any
+  currentCurrency: string;
+  coinList: any;
+  selectedCoins: any;
+  graphTimeDuration: any;
 }
 const selectCurrency = (state: State) => state.currentCurrency;
 const selectCoinList = (state: State) => state.coinList.data;
@@ -23,7 +23,7 @@ export default function Home() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchCoinList());
-  }, [currentCurrency,dispatch, coinsToDisplay]);
+  }, [currentCurrency, dispatch, coinsToDisplay]);
   return (
     <main className="">
       <HomePageNavigator />
@@ -31,7 +31,7 @@ export default function Home() {
       <div className="">
         <SelectedCoinsCharts />
         <TimeDurationSelector />
-        {coinList && <CoinTable coinList={coinList} />}
+        {coinList && <CoinTable />}
       </div>
     </main>
   );
