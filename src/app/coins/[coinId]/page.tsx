@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useAppSelector } from "@/app/lib/hooks";
+import CoinLink from "@/app/components/CoinLink";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function Coin({ params }: { params: { coinId: string } }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
@@ -23,8 +24,8 @@ export default function Coin({ params }: { params: { coinId: string } }) {
     coinData && new Date(coinData?.market_data?.atl_date[currentCurrency]);
   return (
     <main>
-      <div className="flex">
-        <div className="bg-[#1E1932] px-8 py-10 rounded-xl w-[40%] gap-8">
+      <div className="flex space-x-6 mb-8">
+        <div className="bg-[#1E1932] flex flex-col px-8 py-10 rounded-xl w-[40%]">
           <div className="flex mb-8">
             <Image
               width={48}
@@ -33,7 +34,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               alt="crypto-symbol-image"
             />
             <div className="flex flex-col">
-              <h3>
+              <h3 className="text-bold text-lg">
                 {coinData?.name} ({coinData?.symbol.toUpperCase()})
               </h3>
               <a href={coinData?.links?.homepage[0]}>
@@ -48,8 +49,8 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             </h2>
           </>
           <hr className="mb-8"></hr>
-          <div className="flex justify-between mb-6">
-            <div className="flex items-center space-x-1">
+          <div className="flex justify-between mb-6 w-[40%]">
+            <div className="flex items-center space-x-2">
               <svg
                 className="self-start"
                 width="16"
@@ -83,14 +84,14 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               </div>
             </div>
             <>
-              <h3>
+              <h3 className="text-lg">
                 {handleCurrencySymbol(currentCurrency)}
                 {coinData?.market_data?.ath[currentCurrency]}
               </h3>
             </>
           </div>
           <div className="flex justify-between">
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-2">
               <svg
                 className="self-start"
                 width="16"
@@ -124,7 +125,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               </div>
             </div>
             <>
-              <h3>
+              <h3 className="text-lg">
                 {handleCurrencySymbol(currentCurrency)}
                 {coinData?.market_data?.atl[currentCurrency]}
               </h3>
@@ -132,9 +133,20 @@ export default function Coin({ params }: { params: { coinId: string } }) {
           </div>
         </div>
         <div className="w-[60%]">
-          <p className="text-sm">{coinData?.description?.en}</p>
+          <p className="text-sm mb-5">{coinData?.description?.en}</p>
+          <div className="flex flex-wrap gap-2">
+            {coinData?.links?.blockchain_site.map((link: string) => {
+              if (link === "") {
+                return;
+              } else {
+                return <CoinLink key={link} link={link} />;
+              }
+            })}
+          </div>
         </div>
       </div>
+      <hr className="mb-8"></hr>
+      <div></div>
     </main>
   );
 }
