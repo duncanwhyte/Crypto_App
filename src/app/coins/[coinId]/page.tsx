@@ -4,6 +4,7 @@ import Image from "next/image";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useAppSelector } from "@/app/lib/hooks";
 import CoinLink from "@/app/components/CoinLink";
+import CoinStatistic from "@/app/components/CoinStatistic";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function Coin({ params }: { params: { coinId: string } }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
@@ -49,7 +50,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             </h2>
           </>
           <hr className="mb-8"></hr>
-          <div className="flex justify-between mb-6 w-[40%]">
+          <div className="flex justify-between mb-6">
             <div className="flex items-center space-x-2">
               <svg
                 className="self-start"
@@ -91,7 +92,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             </>
           </div>
           <div className="flex justify-between">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center">
               <svg
                 className="self-start"
                 width="16"
@@ -146,7 +147,16 @@ export default function Coin({ params }: { params: { coinId: string } }) {
         </div>
       </div>
       <hr className="mb-8"></hr>
-      <div></div>
+      <div className="flex">
+        <div className="bg-[#1E1932] rounded-xl px-8 py-10 w-1/2">
+          <CoinStatistic
+            statisticText="Total Volume"
+            statisticData={coinData?.market_data?.total_volume[currentCurrency]}
+            currentCurrency={currentCurrency}
+          />
+        </div>
+        <div></div>
+      </div>
     </main>
   );
 }
