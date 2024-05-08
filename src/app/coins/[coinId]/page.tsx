@@ -5,6 +5,7 @@ import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useAppSelector } from "@/app/lib/hooks";
 import CoinLink from "@/app/components/CoinLink";
 import CoinStatistic from "@/app/components/CoinStatistic";
+import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function Coin({ params }: { params: { coinId: string } }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
@@ -148,14 +149,64 @@ export default function Coin({ params }: { params: { coinId: string } }) {
       </div>
       <hr className="mb-8"></hr>
       <div className="flex">
-        <div className="bg-[#1E1932] rounded-xl px-8 py-10 w-1/2">
+        <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
           <CoinStatistic
             statisticText="Total Volume"
             statisticData={coinData?.market_data?.total_volume[currentCurrency]}
+            coinSymbol={null}
             currentCurrency={currentCurrency}
           />
+          <CoinStatistic
+            statisticText="Volume/Market"
+            statisticData={
+              coinData?.market_data?.total_volume[currentCurrency] /
+              coinData?.market_data?.market_cap[currentCurrency]
+            }
+            coinSymbol={null}
+            currentCurrency={null}
+          />
         </div>
-        <div></div>
+        <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
+          <CoinStatistic
+            statisticText="Max Supply"
+            statisticData={coinData?.market_data?.max_supply || "N/A"}
+            coinSymbol={coinData?.symbol.toUpperCase()}
+            currentCurrency={null}
+          />
+          <CoinStatistic
+            statisticText="Circulating Supply"
+            statisticData={coinData?.market_data?.circulating_supply}
+            coinSymbol={coinData?.symbol.toUpperCase()}
+            currentCurrency={null}
+          />
+          <div className="relative bg-white w-full h-2 rounded-xl">
+            <div
+              style={{
+                width: `${handleTableProgressBar(
+                  coinData?.market_data?.max_supply,
+                  coinData?.market_data?.circulating_supply
+                )}%`,
+              }}
+              className="absolute bg-white h-full top-0 left-0 rounded-xl"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
+        <CoinStatistic
+          statisticText="Market Cap"
+          statisticData={coinData?.market_data?.market_cap[currentCurrency]}
+          coinSymbol={null}
+          currentCurrency={currentCurrency}
+        />
+        <CoinStatistic
+          statisticText="Fully Diluted Valuation"
+          statisticData={
+            coinData?.market_data?.fully_diluted_valuation[currentCurrency]
+          }
+          coinSymbol={null}
+          currentCurrency={currentCurrency}
+        />
       </div>
     </main>
   );

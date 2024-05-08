@@ -3,10 +3,12 @@ export default function CoinStatistic({
   statisticText,
   statisticData,
   currentCurrency,
+  coinSymbol,
 }: {
   statisticText: string;
   statisticData: number;
-  currentCurrency: string;
+  currentCurrency: string | null;
+  coinSymbol: string | null;
 }) {
   return (
     <div className="flex justify-between items-center">
@@ -112,8 +114,9 @@ export default function CoinStatistic({
         </svg>
         {statisticText}
       </div>
-      {handleCurrencySymbol(currentCurrency)}
+      {currentCurrency && handleCurrencySymbol(currentCurrency)}
       {statisticData}
+      {coinSymbol}
     </div>
   );
 }
