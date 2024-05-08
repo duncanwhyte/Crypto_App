@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import priceChangeIcon from "@/app/assets/price-change-icon.svg";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
@@ -11,6 +11,7 @@ import handleMarketTrendColor from "@/app/utils/handleMarketTrendColor";
 import handleCurrency from "@/app/utils/handleCurrency";
 import CoinChart from "../CoinChart";
 import { fetchCoinTableList } from "@/app/lib/features/coinTableList/coinTableListSlice";
+import useScroll from "@/app/hooks/useScroll";
 interface Coin {
   name: string;
   id: string;
@@ -37,40 +38,16 @@ export default function CoinTable() {
   const currentCurrency = useAppSelector(currencySelect);
   const coinTableList = useAppSelector(coinTableListSelect);
   const coinsToDisplay = useAppSelector(coinsToDisplaySelect);
+  const tableRef = useRef(null);
   const dispatch = useAppDispatch();
-  const handleThrottle = (func, delay: number) => {
-    let timer;
-    return () => {
-      if (!timer) {
-        func();
-        timer = setTimeout(() => {
-          timer = null;
-        }, delay);
-      }
-    };
-  };
   useEffect(() => {
     dispatch(fetchCoinTableList());
   }, [coinsToDisplay]);
-  useEffect(() => {
-    const handleScroll = () => {
-      const { scrollTop, offsetHeight } = document.documentElement;
-      if (window.innerHeight + scrollTop >= offsetHeight - 50) {
-        dispatch({ type: "coinTableList/callCoins" });
-      }
-      return;
-    };
-    window.addEventListener("scroll", handleThrottle(handleScroll, 2000));
-    return () => {
-      window.removeEventListener(
-        "scroll",
-        handleThrottle(handleScroll, 2000),
-        true
-      );
-    };
-  }, []);
+  useScroll(tableRef?.current, () => {
+    dispatch({ type: "coinTableList/callCoins" });
+  });
   return (
-    <table className="w-full">
+    <table ref={tableRef} className="w-full">
       <tbody>
         <tr>
           <th className="">#</th>
