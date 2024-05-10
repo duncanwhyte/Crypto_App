@@ -26,9 +26,16 @@ interface Coin {
   price_change_percentage_24h_in_currency: number;
   price_change_percentage_7d_in_currency: number;
 }
+interface CoinTableList {
+  data: Coin[];
+  isLoading: "idle" | "pending" | "success" | "failed";
+  error: boolean | string;
+  coinsToDisplay: number;
+  order: string;
+}
 interface State {
   currentCurrency: string;
-  coinTableList: any;
+  coinTableList: CoinTableList;
 }
 const currencySelect = (state: State) => state.currentCurrency;
 const coinTableListSelect = (state: State) => state.coinTableList.data;
