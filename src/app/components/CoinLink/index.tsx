@@ -1,7 +1,15 @@
 export default function CoinLink({ link }: { link: string }) {
+  const handleOpenTab = (link: string) => {
+    window.open(link);
+  };
+  const handleCopyClipBoard = (link: string) => {
+    navigator.clipboard.writeText(link);
+  };
   return (
-    <div className="bg-[#1E1932] flex justify-between py-5 px-6 gap-4 rounded-xl min-w-[320px]">
+    <div className="bg-[#1E1932] flex justify-between py-5 px-6 gap-4 rounded-xl max-w-[700px] lg:flex-none lg:max-w-[350px]">
       <svg
+        className="cursor-pointer rounded-xl "
+        onClick={() => handleOpenTab(link)}
         width="20"
         height="21"
         viewBox="0 0 20 21"
@@ -27,6 +35,8 @@ export default function CoinLink({ link }: { link: string }) {
         {link}
       </a>
       <svg
+        className="cursor-pointer"
+        onClick={() => handleCopyClipBoard(link)}
         width="20"
         height="21"
         viewBox="0 0 20 21"

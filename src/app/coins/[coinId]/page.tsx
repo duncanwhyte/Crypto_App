@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -6,10 +7,12 @@ import { useAppSelector } from "@/app/lib/hooks";
 import CoinLink from "@/app/components/CoinLink";
 import CoinStatistic from "@/app/components/CoinStatistic";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
+import handleCoinDates from "@/app/utils/handleCoinDates";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function Coin({ params }: { params: { coinId: string } }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const [coinData, setCoinData] = useState(null);
+  const [totalVolume24h, setTotalVolume24h] = useState(null);
   useEffect(() => {
     const callCoinData = async () => {
       const coinDataReq = await fetch(
@@ -18,7 +21,20 @@ export default function Coin({ params }: { params: { coinId: string } }) {
       const coinData = await coinDataReq.json();
       setCoinData(coinData);
     };
+    const call24hrTotalVolume = async () => {
+      const [currentTime, pastTime] = handleCoinDates(1);
+      const totalVolumeReq = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${params.coinId}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
+      );
+      const totalVolumeData = await totalVolumeReq.json();
+      const totalVolume = totalVolumeData.total_volumes.reduce(
+        (init: number, currVal: number[]) => (init += currVal[1]),
+        0
+      );
+      setTotalVolume24h(totalVolume);
+    };
     callCoinData();
+    call24hrTotalVolume();
   }, [params.coinId]);
   const athDate =
     coinData && new Date(coinData?.market_data?.ath_date[currentCurrency]);
@@ -26,8 +42,8 @@ export default function Coin({ params }: { params: { coinId: string } }) {
     coinData && new Date(coinData?.market_data?.atl_date[currentCurrency]);
   return (
     <main>
-      <div className="flex space-x-6 mb-8">
-        <div className="bg-[#1E1932] flex flex-col px-8 py-10 rounded-xl w-[40%]">
+      <div className="mb-8 lg:flex lg:gap-4">
+        <div className="bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[650px] lg:mx-0 lg:max-w-full lg:w-[40%] lg:flex lg:flex-col lg:justify-around">
           <div className="flex mb-8">
             <Image
               width={48}
@@ -51,7 +67,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             </h2>
           </>
           <hr className="mb-8"></hr>
-          <div className="flex justify-between mb-6">
+          <div className="flex justify-between xl:mb-6">
             <div className="flex items-center space-x-2">
               <svg
                 className="self-start"
@@ -134,21 +150,25 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             </>
           </div>
         </div>
-        <div className="w-[60%]">
-          <p className="text-sm mb-5">{coinData?.description?.en}</p>
-          <div className="flex flex-wrap gap-2">
-            {coinData?.links?.blockchain_site.map((link: string) => {
-              if (link === "") {
-                return;
-              } else {
-                return <CoinLink key={link} link={link} />;
+        <div className="lg:w-[60%]">
+          <p className="text-sm text-center max-w-[700px] mx-auto mb-5 lg:text-left lg:mx-0 lg:mb-4 lg:mx-0 lg:max-w-[900px]">
+            {coinData?.description?.en}
+          </p>
+          <div className="flex flex-col gap-2 max-w-[700px] mx-auto lg:flex-row lg:flex-wrap lg:max-w-full lg:mx-0">
+            {coinData?.links?.blockchain_site.map(
+              (link: string, index: number) => {
+                if (link === "" || index > 2) {
+                  return;
+                } else {
+                  return <CoinLink key={link} link={link} />;
+                }
               }
-            })}
+            )}
           </div>
         </div>
       </div>
       <hr className="mb-8"></hr>
-      <div className="flex">
+      <div className="flex flex-wrap justify-center gap-6">
         <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
           <CoinStatistic
             statisticText="Total Volume"
@@ -156,6 +176,14 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             coinSymbol={null}
             currentCurrency={currentCurrency}
           />
+          {totalVolume24h && (
+            <CoinStatistic
+              statisticText="Volume 24h"
+              statisticData={totalVolume24h}
+              coinSymbol={null}
+              currentCurrency={currentCurrency}
+            />
+          )}
           <CoinStatistic
             statisticText="Volume/Market"
             statisticData={
@@ -179,34 +207,53 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             coinSymbol={coinData?.symbol.toUpperCase()}
             currentCurrency={null}
           />
+          <div className="flex justify-between">
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-red-400"></div>
+              <span className="text-sm">
+                {handleTableProgressBar(
+                  coinData?.market_data?.circulating_supply,
+                  coinData?.market_data?.total_supply
+                )}
+                %
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-red-400"></div>
+              <span className="text-sm">100%</span>
+            </div>
+          </div>
           <div className="relative bg-white w-full h-2 rounded-xl">
             <div
               style={{
-                width: `${handleTableProgressBar(
-                  coinData?.market_data?.max_supply,
-                  coinData?.market_data?.circulating_supply
+                width: `${Math.min(
+                  handleTableProgressBar(
+                    coinData?.market_data?.circulating_supply,
+                    coinData?.market_data?.total_supply
+                  ),
+                  100
                 )}%`,
               }}
-              className="absolute bg-white h-full top-0 left-0 rounded-xl"
+              className="absolute bg-red-400 h-full top-0 left-0 rounded-xl"
             ></div>
           </div>
         </div>
-      </div>
-      <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
-        <CoinStatistic
-          statisticText="Market Cap"
-          statisticData={coinData?.market_data?.market_cap[currentCurrency]}
-          coinSymbol={null}
-          currentCurrency={currentCurrency}
-        />
-        <CoinStatistic
-          statisticText="Fully Diluted Valuation"
-          statisticData={
-            coinData?.market_data?.fully_diluted_valuation[currentCurrency]
-          }
-          coinSymbol={null}
-          currentCurrency={currentCurrency}
-        />
+        <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
+          <CoinStatistic
+            statisticText="Market Cap"
+            statisticData={coinData?.market_data?.market_cap[currentCurrency]}
+            coinSymbol={null}
+            currentCurrency={currentCurrency}
+          />
+          <CoinStatistic
+            statisticText="Fully Diluted Valuation"
+            statisticData={
+              coinData?.market_data?.fully_diluted_valuation[currentCurrency]
+            }
+            coinSymbol={null}
+            currentCurrency={currentCurrency}
+          />
+        </div>
       </div>
     </main>
   );
