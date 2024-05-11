@@ -13,6 +13,9 @@ export default function Coin({ params }: { params: { coinId: string } }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const [coinData, setCoinData] = useState(null);
   const [totalVolume24h, setTotalVolume24h] = useState(null);
+  const handleHTML = () => {
+    return { __html: coinData?.description?.en };
+  };
   useEffect(() => {
     const callCoinData = async () => {
       const coinDataReq = await fetch(
@@ -41,9 +44,9 @@ export default function Coin({ params }: { params: { coinId: string } }) {
   const atlDate =
     coinData && new Date(coinData?.market_data?.atl_date[currentCurrency]);
   return (
-    <main>
-      <div className="mb-8 lg:flex lg:gap-4">
-        <div className="bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[650px] lg:mx-0 lg:max-w-full lg:w-[40%] lg:flex lg:flex-col lg:justify-around">
+    <main className="xl:max-w-[1296px] xl:mx-auto">
+      <div className="mb-8 xl:flex xl:gap-4">
+        <div className="bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
           <div className="flex mb-8">
             <Image
               width={48}
@@ -68,9 +71,9 @@ export default function Coin({ params }: { params: { coinId: string } }) {
           </>
           <hr className="mb-8"></hr>
           <div className="flex justify-between xl:mb-6">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <svg
-                className="self-start"
+                className="self-start mt-[4px]"
                 width="16"
                 height="16"
                 viewBox="0 0 16 16"
@@ -109,9 +112,9 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             </>
           </div>
           <div className="flex justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <svg
-                className="self-start"
+                className="self-start mt-[4px]"
                 width="16"
                 height="16"
                 viewBox="0 0 16 16"
@@ -150,11 +153,12 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             </>
           </div>
         </div>
-        <div className="lg:w-[60%]">
-          <p className="text-sm text-center max-w-[700px] mx-auto mb-5 lg:text-left lg:mx-0 lg:mb-4 lg:mx-0 lg:max-w-[900px]">
-            {coinData?.description?.en}
-          </p>
-          <div className="flex flex-col gap-2 max-w-[700px] mx-auto lg:flex-row lg:flex-wrap lg:max-w-full lg:mx-0">
+        <div className="xl:w-[60%]">
+          <p
+            dangerouslySetInnerHTML={handleHTML()}
+            className="data-html text-sm text-center max-w-[600px] mx-auto mb-5 xl:text-left xl:mx-0 xl:mb-4 xl:mx-0 xl:max-w-full"
+          ></p>
+          <div className="flex flex-col gap-2 max-w-[560px] mx-auto xl:flex-row xl:flex-wrap xl:max-w-full xl:mx-0">
             {coinData?.links?.blockchain_site.map(
               (link: string, index: number) => {
                 if (link === "" || index > 2) {
@@ -168,8 +172,8 @@ export default function Coin({ params }: { params: { coinId: string } }) {
         </div>
       </div>
       <hr className="mb-8"></hr>
-      <div className="flex flex-wrap justify-center gap-6">
-        <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
+      <div className="xl:flex xl:flex-wrap xl:gap-6">
+        <div className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto px-8 py-10 xl:flex-1 xl:basis-1/2 xl:mx-0">
           <CoinStatistic
             statisticText="Total Volume"
             statisticData={coinData?.market_data?.total_volume[currentCurrency]}
@@ -194,7 +198,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             currentCurrency={null}
           />
         </div>
-        <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
+        <div className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto px-8 py-10 xl:flex-1 xl:basis-1/2 xl:mx-0">
           <CoinStatistic
             statisticText="Max Supply"
             statisticData={coinData?.market_data?.max_supply || "N/A"}
@@ -238,7 +242,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             ></div>
           </div>
         </div>
-        <div className="bg-[#1E1932] rounded-xl px-8 py-10 min-w-[630px]">
+        <div className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto px-8 py-10 xl:flex-initial xl:basis-1/2 xl:mx-0">
           <CoinStatistic
             statisticText="Market Cap"
             statisticData={coinData?.market_data?.market_cap[currentCurrency]}

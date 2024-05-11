@@ -6,7 +6,7 @@ export default function CoinLink({ link }: { link: string }) {
     navigator.clipboard.writeText(link);
   };
   return (
-    <div className="bg-[#1E1932] flex justify-between py-5 px-6 gap-4 rounded-xl max-w-[700px] lg:flex-none lg:max-w-[350px]">
+    <div className="bg-[#1E1932] flex justify-between py-5 px-6 gap-4 rounded-xl max-w-[700px] xl:flex-none xl:max-w-[370px]">
       <svg
         className="cursor-pointer rounded-xl "
         onClick={() => handleOpenTab(link)}
