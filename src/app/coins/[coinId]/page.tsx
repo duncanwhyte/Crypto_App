@@ -5,6 +5,7 @@ import Image from "next/image";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useAppSelector } from "@/app/lib/hooks";
 import CoinLink from "@/app/components/CoinLink";
+import CoinStatisticCard from "@/app/components/CoinStatisticCard";
 import CoinStatistic from "@/app/components/CoinStatistic";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import handleCoinDates from "@/app/utils/handleCoinDates";
@@ -44,7 +45,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
   const atlDate =
     coinData && new Date(coinData?.market_data?.atl_date[currentCurrency]);
   return (
-    <main className="xl:max-w-[1296px] xl:mx-auto">
+    <main className="">
       <div className="mb-8 xl:flex xl:gap-4">
         <div className="bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
           <div className="flex mb-8">
@@ -173,7 +174,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
       </div>
       <hr className="mb-8"></hr>
       <div className="xl:flex xl:flex-wrap xl:gap-6">
-        <div className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto px-8 py-10 xl:flex-1 xl:basis-1/2 xl:mx-0">
+        <CoinStatisticCard className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto mb-4 px-8 py-10 xl:mx-0 xl:max-w-none xl:basis-[calc(50%-12px)] xl:mb-0">
           <CoinStatistic
             statisticText="Total Volume"
             statisticData={coinData?.market_data?.total_volume[currentCurrency]}
@@ -197,8 +198,8 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             coinSymbol={null}
             currentCurrency={null}
           />
-        </div>
-        <div className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto px-8 py-10 xl:flex-1 xl:basis-1/2 xl:mx-0">
+        </CoinStatisticCard>
+        <CoinStatisticCard>
           <CoinStatistic
             statisticText="Max Supply"
             statisticData={coinData?.market_data?.max_supply || "N/A"}
@@ -241,8 +242,8 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               className="absolute bg-red-400 h-full top-0 left-0 rounded-xl"
             ></div>
           </div>
-        </div>
-        <div className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto px-8 py-10 xl:flex-initial xl:basis-1/2 xl:mx-0">
+        </CoinStatisticCard>
+        <CoinStatisticCard>
           <CoinStatistic
             statisticText="Market Cap"
             statisticData={coinData?.market_data?.market_cap[currentCurrency]}
@@ -257,7 +258,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             coinSymbol={null}
             currentCurrency={currentCurrency}
           />
-        </div>
+        </CoinStatisticCard>
       </div>
     </main>
   );
