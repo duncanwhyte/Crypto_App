@@ -31,7 +31,7 @@ export default function Home() {
       <div className="">
         <SelectedCoinsCharts />
         <TimeDurationSelector />
-        {coinList && <CoinTable coinList={coinList} />}
+        {coinList && <CoinTable />}
       </div>
     </main>
   );
