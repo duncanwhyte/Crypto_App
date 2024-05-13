@@ -50,6 +50,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
         <div className="bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
           <div className="flex mb-8">
             <Image
+              className="mr-[24px]"
               width={48}
               height={48}
               src={coinData?.image?.small}
@@ -191,10 +192,10 @@ export default function Coin({ params }: { params: { coinId: string } }) {
           )}
           <CoinStatistic
             statisticText="Volume/Market"
-            statisticData={
+            statisticData={(
               coinData?.market_data?.total_volume[currentCurrency] /
               coinData?.market_data?.market_cap[currentCurrency]
-            }
+            ).toFixed(5)}
             coinSymbol={null}
             currentCurrency={null}
           />

@@ -6,7 +6,7 @@ export default function CoinStatistic({
   coinSymbol,
 }: {
   statisticText: string;
-  statisticData: number;
+  statisticData: number | string;
   currentCurrency: string | null;
   coinSymbol: string | null;
 }) {
@@ -114,9 +114,11 @@ export default function CoinStatistic({
         </svg>
         {statisticText}
       </div>
-      {currentCurrency && handleCurrencySymbol(currentCurrency)}
-      {statisticData}
-      {coinSymbol}
+      <p>
+        {currentCurrency && handleCurrencySymbol(currentCurrency)}
+        {statisticData}
+        {coinSymbol}
+      </p>
     </div>
   );
 }
