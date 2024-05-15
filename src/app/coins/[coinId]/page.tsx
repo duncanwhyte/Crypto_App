@@ -9,6 +9,7 @@ import CoinStatisticCard from "@/app/components/CoinStatisticCard";
 import CoinStatistic from "@/app/components/CoinStatistic";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import handleCoinDates from "@/app/utils/handleCoinDates";
+import handleAllTimeDateDisplay from "@/app/utils/handleAllTimeDateDisplay";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function Coin({ params }: { params: { coinId: string } }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
@@ -92,17 +93,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               <div className="flex flex-col justify-start self-start items-start">
                 <h3 className="text-lg">All Time High:</h3>
                 <p className="text-[#B9B9BA]">
-                  {coinData &&
-                    Intl.DateTimeFormat("en-GB", {
-                      weekday: "short",
-                      day: "2-digit",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      timeZoneName: "short",
-                      month: "short",
-                    }).format(athDate)}
+                  {athDate && handleAllTimeDateDisplay(athDate)}
                 </p>
               </div>
             </div>
@@ -133,17 +124,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               <div className="flex flex-col items-start self-start">
                 <h3 className="text-lg">All Time Low:</h3>
                 <p className="text-[#B9B9BA]">
-                  {coinData &&
-                    Intl.DateTimeFormat("en-GB", {
-                      weekday: "short",
-                      day: "2-digit",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      timeZoneName: "short",
-                      month: "short",
-                    }).format(atlDate)}
+                  {atlDate && handleAllTimeDateDisplay(atlDate)}
                 </p>
               </div>
             </div>
