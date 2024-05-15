@@ -59,7 +59,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
             />
             <div className="flex flex-col">
               <h3 className="text-bold text-lg">
-                {coinData?.name} ({coinData?.symbol.toUpperCase()})
+                {coinData?.name} ({coinData?.symbol?.toUpperCase()})
               </h3>
               <a href={coinData?.links?.homepage[0]}>
                 {coinData?.links?.homepage[0]}
