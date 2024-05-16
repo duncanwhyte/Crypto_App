@@ -25,6 +25,10 @@ body {
   background: #13121A;
   color: #FFF;
 }
+.data-html a {
+  text-decoration: underline;
+  color: #6060ff;
+}
 .slick-next::before, .slick-prev::before {
   display: none;
 }
