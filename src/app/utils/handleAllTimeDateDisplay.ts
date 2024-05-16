@@ -1,5 +1,5 @@
 export default function handleAllTimeDateDisplay(date: Date): string {
-  return Intl.DateTimeFormat("en-GB", {
+  return Intl.DateTimeFormat(navigator.language, {
     weekday: "short",
     day: "2-digit",
     year: "numeric",
