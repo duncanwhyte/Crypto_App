@@ -13,6 +13,9 @@ export default function useSearchCoin(searchValue, timerRef): [] | null {
     setSearchedCoins(filteredCoins);
   };
   useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
     timerRef.current = setTimeout(() => {
       searchCoins();
     }, 500);
@@ -20,5 +23,5 @@ export default function useSearchCoin(searchValue, timerRef): [] | null {
       clearTimeout(timerRef.current);
     };
   }, [searchValue]);
-  return searchedCoins;
+  return [searchedCoins, setSearchedCoins];
 }
