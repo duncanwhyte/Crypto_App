@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState, useRef } from "react";
 import useSearchCoin from "@/app/hooks/useSearchCoin";
+import useFormError from "@/app/hooks/useFormError";
 export default function PortfolioModal({
   showModal,
   handleShowModal,
@@ -11,11 +12,16 @@ export default function PortfolioModal({
 }) {
   const [modalInputData, setModalInputData] = useState({
     searchCoinValue: "",
-    coinAmount: 0,
-    purchasedDate: null,
+    coinAmount: "",
+    purchasedDate: "",
   });
   const [selectedCoin, setSelectedCoin] = useState(null);
   const timerRef = useRef();
+  const [selectedCoinError, coinAmountError, purchasedDateError] = useFormError(
+    selectedCoin,
+    modalInputData.coinAmount,
+    modalInputData.purchasedDate
+  );
   const [searchedCoins, setSearchedCoins] = useSearchCoin(
     modalInputData.searchCoinValue,
     timerRef
@@ -26,7 +32,6 @@ export default function PortfolioModal({
     setModalInputData((prev) => {
       return {
         ...prev,
-        searchCoinValue: coin.name,
       };
     });
   };
@@ -42,14 +47,6 @@ export default function PortfolioModal({
         [name]: number ? number : value,
       };
     });
-  };
-  const handleSavedAsset = (e): void => {
-    e.preventDefault();
-    if (
-      (selectedCoin && modalInputData.coinAmount) ||
-      modalInputData.purchasedDate
-    ) {
-    }
   };
   const checkFormValidation = (): boolean => {
     if (
@@ -94,24 +91,29 @@ export default function PortfolioModal({
             )}
           </div>
           <div className="basis-[60%]">
-            <form className="">
+            <form onSubmit={(e) => e.preventDefault()} className="">
               <div className="flex flex-col mb-6">
                 <div className="relative">
                   <input
                     onChange={handleChange}
                     name="searchCoinValue"
-                    className={
-                      "bg-[#191925] w-full p-2 mb-4 rounded active:border-none focus:outline-none"
-                    }
+                    className={`bg-[#191925] w-full p-2 mb-4 rounded ${
+                      selectedCoinError
+                        ? "border-2 border-red-400 border-solid"
+                        : "border-2 border-green-400 border-solid"
+                    } active:border-none focus:outline-none`}
                     placeholder="Select Coins"
-                    value={modalInputData.searchCoinValue}
+                    value={
+                      selectedCoin
+                        ? selectedCoin?.name
+                        : modalInputData.searchCoinValue
+                    }
+                    disabled={selectedCoin ? true : false}
                     autoComplete="off"
                   />
                   <ul
                     className={`${
-                      modalInputData.searchCoinValue && searchedCoins
-                        ? "opacity-100"
-                        : "opacity-0"
+                      searchedCoins ? "opacity-100" : "opacity-0"
                     } bg-[#191925] transition-all absolute z-10 max-h-[250px] w-full overflow-scroll top-10 left-0`}
                   >
                     {searchedCoins &&
@@ -138,15 +140,25 @@ export default function PortfolioModal({
                 <input
                   onChange={handleChange}
                   name="coinAmount"
-                  className="bg-[#191925] p-2 mb-4 rounded active:border-none focus:outline-none"
+                  className={`bg-[#191925] p-2 mb-4 rounded ${
+                    coinAmountError
+                      ? "border-2 border-red-400 border-solid"
+                      : "border-2 border-green-400 border-solid"
+                  } active:border-none focus:outline-none`}
                   placeholder="Purchased Amount"
                   autoComplete="off"
+                  value={modalInputData.coinAmount}
                 />
                 <input
                   onChange={handleChange}
                   name="purchasedDate"
-                  className="bg-[#191925] p-2 rounded active:border-none focus:outline-none"
+                  className={`bg-[#191925] p-2 rounded ${
+                    purchasedDateError
+                      ? "border-2 border-red-400 border-solid"
+                      : "border-2 border-green-400 border-solid"
+                  } active:border-none focus:outline-none`}
                   placeholder="Purchased Date"
+                  value={modalInputData.purchasedDate}
                   type="date"
                 />
               </div>
@@ -158,10 +170,9 @@ export default function PortfolioModal({
                   Cancel
                 </button>
                 <button
-                  onClick={handleSavedAsset}
                   className={`${
                     checkFormValidation() ? "bg-[#232336]" : "bg-[#6161D6]"
-                  } py-3 p-2 rounded-md basis-[232px]`}
+                  } transition-all py-3 p-2 rounded-md basis-[232px]`}
                   disabled={checkFormValidation()}
                 >
                   Save and Continue
