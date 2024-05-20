@@ -6,16 +6,14 @@ export default function useFormError(selectedCoin, coinAmount, purchasedDate) {
     () => {
       if (!selectedCoin) {
         return true;
-      } else {
-        return false;
       }
+      return false;
     },
     () => {
       if (coinAmount < 0 || typeof coinAmount === "string") {
         return true;
-      } else {
-        return false;
       }
+      return false;
     },
     () => {
       const now = new Date();
@@ -23,9 +21,8 @@ export default function useFormError(selectedCoin, coinAmount, purchasedDate) {
       const daysMiliseconds = 86400000;
       if (now - dateToCheck > daysMiliseconds) {
         return false;
-      } else {
-        return true;
       }
+      return true;
     },
   ];
   useEffect(() => {

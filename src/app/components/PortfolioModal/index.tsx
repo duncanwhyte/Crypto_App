@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useState, useRef } from "react";
 import useSearchCoin from "@/app/hooks/useSearchCoin";
 import useFormError from "@/app/hooks/useFormError";
+import { useAppDispatch } from "@/app/lib/hooks";
+import { callPortfolioCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
 export default function PortfolioModal({
   showModal,
   handleShowModal,
@@ -15,6 +17,7 @@ export default function PortfolioModal({
     coinAmount: "",
     purchasedDate: "",
   });
+  const dispatch = useAppDispatch();
   const [selectedCoin, setSelectedCoin] = useState(null);
   const timerRef = useRef();
   const [selectedCoinError, coinAmountError, purchasedDateError] = useFormError(
@@ -58,6 +61,15 @@ export default function PortfolioModal({
     } else {
       return true;
     }
+  };
+  const handleSaveAsset = (coin, coinAmount, purchasedDate) => {
+    dispatch(
+      callPortfolioCoinData({
+        coin,
+        coinAmount: coinAmount,
+        purchasedDate,
+      })
+    );
   };
   return (
     <div className="w-[100vw] h-[100vh] flex justify-center items-center backdrop-blur-sm fixed top-0 left-0 z-10">
@@ -170,6 +182,13 @@ export default function PortfolioModal({
                   Cancel
                 </button>
                 <button
+                  onClick={() =>
+                    handleSaveAsset(
+                      selectedCoin,
+                      modalInputData.coinAmount,
+                      modalInputData.purchasedDate
+                    )
+                  }
                   className={`${
                     checkFormValidation() ? "bg-[#232336]" : "bg-[#6161D6]"
                   } transition-all py-3 p-2 rounded-md basis-[232px]`}
