@@ -2,7 +2,11 @@
 import { useState } from "react";
 import PortfolioModal from "../components/PortfolioModal";
 import { createPortal } from "react-dom";
+import { useAppSelector } from "../lib/hooks";
+import PortfolioCoinCard from "../components/PortfolioCoinCard";
+const selectPortfolioCoins = (state) => state.portfolioCoins.coins;
 export default function Portfolio() {
+  const portfolioCoins = useAppSelector(selectPortfolioCoins);
   const [showAssetModal, setShowAssetModal] = useState(false);
   const handleOpenModal = (): void => {
     setShowAssetModal(!showAssetModal);
@@ -18,6 +22,27 @@ export default function Portfolio() {
           >
             Add Asset
           </button>
+        </div>
+        <div>
+          <ul>
+            {portfolioCoins.map(
+              ({
+                id,
+                coinAmount,
+                purchasedDate,
+                currentDateData,
+                purchasedDateData,
+              }) => (
+                <PortfolioCoinCard
+                  key={id}
+                  coinAmount={coinAmount}
+                  purchaseDate={purchasedDate}
+                  currentDateData={currentDateData}
+                  purchasedDateData={purchasedDateData}
+                />
+              )
+            )}
+          </ul>
         </div>
         {showAssetModal &&
           createPortal(

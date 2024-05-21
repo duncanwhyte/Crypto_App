@@ -70,6 +70,7 @@ export default function PortfolioModal({
         purchasedDate,
       })
     );
+    handleShowModal(!showModal);
   };
   return (
     <div className="w-[100vw] h-[100vh] flex justify-center items-center backdrop-blur-sm fixed top-0 left-0 z-10">

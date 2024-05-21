@@ -12,7 +12,9 @@ export const callPortfolioCoinData = createAsyncThunk(
     const historicalData = await historicalDataReq.json();
     const currentData = await currentDataReq.json();
     const newCoin = {
-      name: arg.coin.name,
+      id: Math.random() - Math.random(),
+      purchasedDate: arg.purchasedDate,
+      coinAmount: arg.coinAmount,
       currentDateData: currentData,
       purchasedDateData: historicalData,
     };
@@ -25,7 +27,7 @@ const initialState = {
   error: false,
 };
 const portfolioCoinsSlice = createSlice({
-  name: "porfolioCoins",
+  name: "portfolioCoins",
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
