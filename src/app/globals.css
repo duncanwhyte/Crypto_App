@@ -29,6 +29,12 @@ body {
   text-decoration: underline;
   color: #6060ff;
 }
+.slick-list {
+  margin: 0 -8px;
+}
+.slick-slide > div{
+  margin: 0 8px;
+}
 .slick-next::before, .slick-prev::before {
   display: none;
 }
