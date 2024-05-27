@@ -1,16 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PortfolioModal from "../components/PortfolioModal";
 import { createPortal } from "react-dom";
-import { useAppSelector } from "../lib/hooks";
+import { useAppSelector, useAppDispatch } from "../lib/hooks";
+import { callCurrentDateData } from "../lib/features/portfolioCoins/portfolioCoinsSlice";
 import PortfolioCoinCard from "../components/PortfolioCoinCard";
 const selectPortfolioCoins = (state) => state.portfolioCoins.coins;
 export default function Portfolio() {
   const portfolioCoins = useAppSelector(selectPortfolioCoins);
+  const dispatch = useAppDispatch();
   const [showAssetModal, setShowAssetModal] = useState(false);
   const handleOpenModal = (): void => {
     setShowAssetModal(!showAssetModal);
   };
+  useEffect(() => {
+    if (portfolioCoins.length === 0) {
+      return;
+    }
+    dispatch(callCurrentDateData());
+  }, [portfolioCoins]);
   return (
     <main className="relative">
       <div>

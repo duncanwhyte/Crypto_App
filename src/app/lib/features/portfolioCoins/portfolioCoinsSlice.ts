@@ -15,6 +15,14 @@ export const callPortfolioCoinData = createAsyncThunk(
     return newCoin;
   }
 );
+export const callCurrentDateData = createAsyncThunk(
+  "portfolio/getCurrentPriceData",
+  async (arg, thunkApi) => {
+    const { portfolioCoins } = thunkApi.getState();
+    const ids = portfolioCoins.coins.map((coin) => coin.purchasedDateData.id);
+    const uniqueIds = Array.from(new Set(ids));
+  }
+);
 const initialState = {
   isLoading: false,
   coins: [],
@@ -33,6 +41,16 @@ const portfolioCoinsSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(callPortfolioCoinData.rejected, (state) => {
+      state.error = true;
+      state.isLoading = false;
+    });
+    builder.addCase(callCurrentDateData.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(callCurrentDateData.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(callCurrentDateData.rejected, (state) => {
       state.error = true;
       state.isLoading = false;
     });
