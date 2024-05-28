@@ -8,14 +8,20 @@ import { callPortfolioCoinData } from "@/app/lib/features/portfolioCoins/portfol
 export default function PortfolioModal({
   showModal,
   handleShowModal,
+  currentCoinName,
+  currentCoinAmount,
+  currentPurchaseDate,
 }: {
   showModal: boolean;
   handleShowModal: any;
+  currentCoinName: string;
+  currentCoinAmount: number;
+  currentPurchaseDate: string;
 }) {
   const [modalInputData, setModalInputData] = useState({
-    searchCoinValue: "",
-    coinAmount: "",
-    purchasedDate: "",
+    searchCoinValue: currentCoinName || "",
+    coinAmount: currentCoinAmount || "",
+    purchasedDate: currentPurchaseDate || "",
   });
   const dispatch = useAppDispatch();
   const [selectedCoin, setSelectedCoin] = useState(null);

@@ -6,19 +6,34 @@ import { useAppSelector, useAppDispatch } from "../lib/hooks";
 import { callCurrentDateData } from "../lib/features/portfolioCoins/portfolioCoinsSlice";
 import PortfolioCoinCard from "../components/PortfolioCoinCard";
 const selectPortfolioCoins = (state) => state.portfolioCoins.coins;
+const selectCurrentPriceData = (state) => state.portfolioCoins.currentDateData;
 export default function Portfolio() {
   const portfolioCoins = useAppSelector(selectPortfolioCoins);
+  const currentPriceData = useAppSelector(selectCurrentPriceData);
   const dispatch = useAppDispatch();
   const [showAssetModal, setShowAssetModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const handleOpenModal = (): void => {
     setShowAssetModal(!showAssetModal);
   };
+  const handleOpenEditModal = () => {
+    setShowEditModal(!showEditModal);
+  };
   useEffect(() => {
-    if (portfolioCoins.length === 0) {
-      return;
-    }
     dispatch(callCurrentDateData());
-  }, [portfolioCoins]);
+  }, [dispatch, portfolioCoins]);
+  const coinsToRender =
+    portfolioCoins &&
+    currentPriceData &&
+    portfolioCoins.map((coin) => {
+      const newCoin = { ...coin };
+      currentPriceData.forEach((currentPrice) => {
+        if (coin.purchasedDateData.id === currentPrice.id) {
+          newCoin["currentDateData"] = currentPrice;
+        }
+      });
+      return newCoin;
+    });
   return (
     <main className="relative">
       <div>
@@ -33,7 +48,7 @@ export default function Portfolio() {
         </div>
         <div>
           <ul>
-            {portfolioCoins.map(
+            {coinsToRender.map(
               ({
                 id,
                 coinAmount,
@@ -43,10 +58,13 @@ export default function Portfolio() {
               }) => (
                 <PortfolioCoinCard
                   key={id}
+                  id={id}
                   coinAmount={coinAmount}
                   purchaseDate={purchasedDate}
                   currentDateData={currentDateData}
                   purchasedDateData={purchasedDateData}
+                  showEditModal={showEditModal}
+                  handleOpenEditModal={handleOpenEditModal}
                 />
               )
             )}
@@ -55,8 +73,8 @@ export default function Portfolio() {
         {showAssetModal &&
           createPortal(
             <PortfolioModal
-              handleShowModal={handleOpenModal}
               showModal={showAssetModal}
+              handleShowModal={handleOpenModal}
             />,
             document.body
           )}

@@ -4,6 +4,8 @@ import PortfolioCoinStatistic from "../PortfolioCoinStatistic";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import handlePortfolioCoinPriceChange from "@/app/utils/handlePortfolioCoinPriceChange";
+import { createPortal } from "react-dom";
+import PortfolioModal from "../PortfolioModal";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function PortfolioCoinCard({
   id,
@@ -11,6 +13,16 @@ export default function PortfolioCoinCard({
   coinAmount,
   currentDateData,
   purchasedDateData,
+  showEditModal,
+  handleOpenEditModal,
+}: {
+  id: number;
+  purchaseDate: string;
+  coinAmount: number;
+  currentDateData: any;
+  purchasedDateData: any;
+  showEditModal: any;
+  handleOpenEditModal: any;
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();
@@ -126,7 +138,10 @@ export default function PortfolioCoinCard({
               <h3 className="text-lg">Your Coin</h3>
               <div className="flex items-center justify-between">
                 <h3 className="text-lg">Market price</h3>
-                <button className="bg-[#6161D6] p-2 rounded-md">
+                <button
+                  onClick={handleOpenEditModal}
+                  className="bg-[#6161D6] p-2 rounded-md"
+                >
                   <svg
                     width="24"
                     height="24"
@@ -213,6 +228,17 @@ export default function PortfolioCoinCard({
               </PortfolioCoinStatistic>
             </div>
           </div>
+          {showEditModal &&
+            createPortal(
+              <PortfolioModal
+                showModal={showEditModal}
+                handleShowModal={handleOpenEditModal}
+                currentCoinName={currentDateData.name}
+                currentCoinAmount={coinAmount}
+                currentPurchaseDate={purchaseDate}
+              />,
+              document.body
+            )}
         </div>
       </div>
     </div>

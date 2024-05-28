@@ -10,6 +10,7 @@ export const callPortfolioCoinData = createAsyncThunk(
     const newCoin = {
       id: Math.random() - Math.random(),
       coinAmount: arg.coinAmount,
+      purchasedDate: arg.purchasedDate,
       purchasedDateData: historicalData,
     };
     return newCoin;
@@ -19,13 +20,26 @@ export const callCurrentDateData = createAsyncThunk(
   "portfolio/getCurrentPriceData",
   async (arg, thunkApi) => {
     const { portfolioCoins } = thunkApi.getState();
+    if (portfolioCoins.length === 0) {
+      return;
+    }
     const ids = portfolioCoins.coins.map((coin) => coin.purchasedDateData.id);
     const uniqueIds = Array.from(new Set(ids));
+    const currentDataReq = uniqueIds.map(async (id) => {
+      const request = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${id}?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+      );
+      const response = await request.json();
+      return response;
+    });
+    const currentDateData = await Promise.all(currentDataReq);
+    return currentDateData;
   }
 );
 const initialState = {
   isLoading: false,
   coins: [],
+  currentDateData: [],
   error: false,
 };
 const portfolioCoinsSlice = createSlice({
@@ -44,10 +58,11 @@ const portfolioCoinsSlice = createSlice({
       state.error = true;
       state.isLoading = false;
     });
-    builder.addCase(callCurrentDateData.pending, (state, action) => {
+    builder.addCase(callCurrentDateData.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(callCurrentDateData.fulfilled, (state, action) => {
+      state.currentDateData = action.payload;
       state.isLoading = false;
     });
     builder.addCase(callCurrentDateData.rejected, (state) => {
