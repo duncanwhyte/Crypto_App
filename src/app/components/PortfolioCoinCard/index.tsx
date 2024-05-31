@@ -2,6 +2,7 @@ import Image from "next/image";
 import CoinName from "../CoinName";
 import PortfolioCoinStatistic from "../PortfolioCoinStatistic";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
+import { updateCurrentCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import handlePortfolioCoinPriceChange from "@/app/utils/handlePortfolioCoinPriceChange";
 import { createPortal } from "react-dom";
@@ -29,6 +30,10 @@ export default function PortfolioCoinCard({
   const handleRemoveCoin = (coinId: number) => {
     dispatch({ type: "portfolioCoins/removeCoin", payload: coinId });
   };
+  const handleEditCoin = (coinId, coinName, amount, date) => {
+    dispatch(updateCurrentCoinData({ coinId, coinName, amount, date }));
+    handleOpenEditModal(!showEditModal);
+  };
   return (
     <div>
       <div className="flex mb-6">
@@ -53,7 +58,7 @@ export default function PortfolioCoinCard({
         </div>
         <div className="bg-[#191932] p-6 rounded-r-lg flex flex-col basis-[80%]">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg">Market price</h3>
+            <h3 className="text-xl text-bold">Market price</h3>
             <button
               onClick={() => handleRemoveCoin(id)}
               className="bg-red-400 p-2 rounded-md"
@@ -95,7 +100,7 @@ export default function PortfolioCoinCard({
             <PortfolioCoinStatistic statistic={"Price change 24h"}>
               <p>
                 {handleCurrencySymbol(currentCurrency)}
-                {currentDateData?.market_data?.price_change_24h}
+                {currentDateData?.market_data?.price_change_24h.toFixed(3)}
               </p>
             </PortfolioCoinStatistic>
             <PortfolioCoinStatistic statistic={"Market Cap vs Volume"}>
@@ -135,9 +140,8 @@ export default function PortfolioCoinCard({
           </div>
           <div>
             <div>
-              <h3 className="text-lg">Your Coin</h3>
               <div className="flex items-center justify-between">
-                <h3 className="text-lg">Market price</h3>
+                <h3 className="text-xl text-bold">Your Coin</h3>
                 <button
                   onClick={handleOpenEditModal}
                   className="bg-[#6161D6] p-2 rounded-md"
@@ -219,7 +223,7 @@ export default function PortfolioCoinCard({
                           currentCurrency
                         ]) *
                         100
-                  )}
+                  ).toFixed(3)}
                   %
                 </p>
               </PortfolioCoinStatistic>
@@ -231,9 +235,12 @@ export default function PortfolioCoinCard({
           {showEditModal &&
             createPortal(
               <PortfolioModal
+                edit={true}
                 showModal={showEditModal}
+                id={id}
                 handleShowModal={handleOpenEditModal}
-                currentCoinName={currentDateData.name}
+                handleEditCoin={handleEditCoin}
+                currentCoinName={currentDateData?.name}
                 currentCoinAmount={coinAmount}
                 currentPurchaseDate={purchaseDate}
               />,

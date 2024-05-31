@@ -73,8 +73,12 @@ export default function Portfolio() {
         {showAssetModal &&
           createPortal(
             <PortfolioModal
+              edit={false}
               showModal={showAssetModal}
               handleShowModal={handleOpenModal}
+              currentCoinName={""}
+              currentCoinAmount={""}
+              currentPurchaseDate={""}
             />,
             document.body
           )}

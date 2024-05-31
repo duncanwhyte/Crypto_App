@@ -6,16 +6,22 @@ import useFormError from "@/app/hooks/useFormError";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { callPortfolioCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
 export default function PortfolioModal({
+  edit,
   showModal,
+  id,
   handleShowModal,
+  handleEditCoin,
   currentCoinName,
   currentCoinAmount,
   currentPurchaseDate,
 }: {
+  edit: boolean;
   showModal: boolean;
   handleShowModal: any;
+  handleEditCoin: any;
+  id: number;
   currentCoinName: string;
-  currentCoinAmount: number;
+  currentCoinAmount: number | string;
   currentPurchaseDate: string;
 }) {
   const [modalInputData, setModalInputData] = useState({
@@ -37,12 +43,13 @@ export default function PortfolioModal({
   );
   const handleSelectedCoin = (coin) => {
     setSelectedCoin(coin);
-    setSearchedCoins(null);
     setModalInputData((prev) => {
       return {
         ...prev,
+        ["searchCoinValue"]: coin.name,
       };
     });
+    setSearchedCoins(null);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -118,52 +125,49 @@ export default function PortfolioModal({
                     name="searchCoinValue"
                     className={`bg-[#191925] w-full p-2 mb-4 rounded ${
                       selectedCoinError
-                        ? "border-2 border-red-400 border-solid"
-                        : "border-2 border-green-400 border-solid"
-                    } active:border-none focus:outline-none`}
+                        ? "outline-2 outline-red-400 outline"
+                        : "outline-2 outline-green-400 outline"
+                    } focus:outline-none`}
                     placeholder="Select Coins"
-                    value={
-                      selectedCoin
-                        ? selectedCoin?.name
-                        : modalInputData.searchCoinValue
-                    }
-                    disabled={selectedCoin ? true : false}
+                    value={modalInputData.searchCoinValue}
                     autoComplete="off"
                   />
-                  <ul
-                    className={`${
-                      searchedCoins ? "opacity-100" : "opacity-0"
-                    } bg-[#191925] transition-all absolute z-10 max-h-[250px] w-full overflow-scroll top-10 left-0`}
-                  >
-                    {searchedCoins &&
-                      searchedCoins.map((coin: any) => (
-                        <li
-                          onClick={() => handleSelectedCoin(coin)}
-                          id={coin.id}
-                          className="flex cursor-pointer"
-                          key={coin.id}
-                        >
-                          <Image
-                            src={coin.thumb}
-                            width={24}
-                            height={24}
-                            alt="crypto-coin-image"
-                          />
-                          <p>
-                            {coin.name} {coin.symbol.toUpperCase()}
-                          </p>
-                        </li>
-                      ))}
-                  </ul>
+                  {searchedCoins && (
+                    <ul
+                      className={`${
+                        searchedCoins ? "opacity-100" : "opacity-0"
+                      } bg-[#191925] transition-all absolute z-10 max-h-[250px] w-full overflow-scroll top-10 left-0`}
+                    >
+                      {searchedCoins &&
+                        searchedCoins.map((coin: any) => (
+                          <li
+                            onClick={() => handleSelectedCoin(coin)}
+                            id={coin.id}
+                            className="flex cursor-pointer"
+                            key={coin.id}
+                          >
+                            <Image
+                              src={coin.thumb}
+                              width={24}
+                              height={24}
+                              alt="crypto-coin-image"
+                            />
+                            <p>
+                              {coin.name} {coin.symbol.toUpperCase()}
+                            </p>
+                          </li>
+                        ))}
+                    </ul>
+                  )}
                 </div>
                 <input
                   onChange={handleChange}
                   name="coinAmount"
                   className={`bg-[#191925] p-2 mb-4 rounded ${
                     coinAmountError
-                      ? "border-2 border-red-400 border-solid"
-                      : "border-2 border-green-400 border-solid"
-                  } active:border-none focus:outline-none`}
+                      ? "outline-2 outline-red-400 outline"
+                      : "outline-2 outline-green-400 outline"
+                  } focus:outline-none`}
                   placeholder="Purchased Amount"
                   autoComplete="off"
                   value={modalInputData.coinAmount}
@@ -173,9 +177,9 @@ export default function PortfolioModal({
                   name="purchasedDate"
                   className={`bg-[#191925] p-2 rounded ${
                     purchasedDateError
-                      ? "border-2 border-red-400 border-solid"
-                      : "border-2 border-green-400 border-solid"
-                  } active:border-none focus:outline-none`}
+                      ? "outline-2 outline-red-400 outline"
+                      : "outline-2 outline-green-400 outline"
+                  } focus:outline-none`}
                   placeholder="Purchased Date"
                   value={modalInputData.purchasedDate}
                   type="date"
@@ -189,17 +193,30 @@ export default function PortfolioModal({
                   Cancel
                 </button>
                 <button
-                  onClick={() =>
-                    handleSaveAsset(
-                      selectedCoin,
-                      modalInputData.coinAmount,
-                      modalInputData.purchasedDate
-                    )
-                  }
+                  onClick={() => {
+                    edit
+                      ? handleEditCoin(
+                          id,
+                          selectedCoin,
+                          modalInputData.coinAmount,
+                          modalInputData.purchasedDate
+                        )
+                      : handleSaveAsset(
+                          selectedCoin,
+                          modalInputData.coinAmount,
+                          modalInputData.purchasedDate
+                        );
+                  }}
                   className={`${
                     checkFormValidation() ? "bg-[#232336]" : "bg-[#6161D6]"
                   } transition-all py-3 p-2 rounded-md basis-[232px]`}
-                  disabled={checkFormValidation()}
+                  disabled={
+                    !selectedCoinError &&
+                    !coinAmountError &&
+                    !purchasedDateError
+                      ? false
+                      : true
+                  }
                 >
                   Save and Continue
                 </button>
