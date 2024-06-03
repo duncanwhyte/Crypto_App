@@ -6,20 +6,20 @@ import useFormError from "@/app/hooks/useFormError";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { callPortfolioCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
 export default function PortfolioModal({
+  coinToEdit,
   edit,
   showModal,
-  id,
   handleShowModal,
   handleEditCoin,
   currentCoinName,
   currentCoinAmount,
   currentPurchaseDate,
 }: {
+  coinToEdit: any;
   edit: boolean;
   showModal: boolean;
   handleShowModal: any;
   handleEditCoin: any;
-  id: number;
   currentCoinName: string;
   currentCoinAmount: number | string;
   currentPurchaseDate: string;
@@ -30,8 +30,10 @@ export default function PortfolioModal({
     purchasedDate: currentPurchaseDate || "",
   });
   const dispatch = useAppDispatch();
-  const [selectedCoin, setSelectedCoin] = useState(null);
+  const [selectedCoin, setSelectedCoin] = useState(coinToEdit || null);
+  const [coinInputFocused, setCoinInputFocused] = useState(false);
   const timerRef = useRef();
+  const previousCoinRef = useRef();
   const [selectedCoinError, coinAmountError, purchasedDateError] = useFormError(
     selectedCoin,
     modalInputData.coinAmount,
@@ -39,10 +41,12 @@ export default function PortfolioModal({
   );
   const [searchedCoins, setSearchedCoins] = useSearchCoin(
     modalInputData.searchCoinValue,
+    coinInputFocused,
     timerRef
   );
   const handleSelectedCoin = (coin) => {
     setSelectedCoin(coin);
+    previousCoinRef.current = coin;
     setModalInputData((prev) => {
       return {
         ...prev,
@@ -50,6 +54,23 @@ export default function PortfolioModal({
       };
     });
     setSearchedCoins(null);
+  };
+  const handleCoinsFocused = () => {
+    setCoinInputFocused(true);
+  };
+  const handleCoinBlur = (e) => {
+    setCoinInputFocused(false);
+    if (!previousCoinRef.current) {
+      return;
+    }
+    if (previousCoinRef.current.name !== e.target.value) {
+      setModalInputData((prev) => {
+        return {
+          ...prev,
+          searchCoinValue: previousCoinRef?.current.name,
+        };
+      });
+    }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -103,7 +124,10 @@ export default function PortfolioModal({
                 <div className="bg-[#2C2C4A] p-4 max-w-[64px] rounded-lg">
                   <div>
                     <Image
-                      src={selectedCoin?.thumb}
+                      src={
+                        selectedCoin?.purchasedDateData?.image?.thumb ||
+                        selectedCoin.thumb
+                      }
                       width={32}
                       height={32}
                       alt="selected-crypto-coin-image"
@@ -111,7 +135,9 @@ export default function PortfolioModal({
                   </div>
                 </div>
                 <p>
-                  {selectedCoin?.name} {selectedCoin?.symbol}
+                  {coinToEdit?.purchasedDateData.name || selectedCoin?.name}{" "}
+                  {coinToEdit?.purchasedDateData.symbol.toUpperCase() ||
+                    selectedCoin?.symbol.toUpperCase()}
                 </p>
               </div>
             )}
@@ -122,22 +148,22 @@ export default function PortfolioModal({
                 <div className="relative">
                   <input
                     onChange={handleChange}
+                    onBlur={handleCoinBlur}
+                    onFocus={handleCoinsFocused}
                     name="searchCoinValue"
-                    className={`bg-[#191925] w-full p-2 mb-4 rounded ${
+                    className={`bg-[#191925] w-full p-2 mb-4 ${
                       selectedCoinError
                         ? "outline-2 outline-red-400 outline"
                         : "outline-2 outline-green-400 outline"
+                    } ${
+                      searchedCoins ? "rounded-t" : "rounded"
                     } focus:outline-none`}
                     placeholder="Select Coins"
                     value={modalInputData.searchCoinValue}
                     autoComplete="off"
                   />
                   {searchedCoins && (
-                    <ul
-                      className={`${
-                        searchedCoins ? "opacity-100" : "opacity-0"
-                      } bg-[#191925] transition-all absolute z-10 max-h-[250px] w-full overflow-scroll top-10 left-0`}
-                    >
+                    <ul className="bg-[#191925] transition-all absolute z-10 max-h-[250px] w-[calc(100%-1px)] overflow-scroll top-10 left-0">
                       {searchedCoins &&
                         searchedCoins.map((coin: any) => (
                           <li
@@ -196,7 +222,7 @@ export default function PortfolioModal({
                   onClick={() => {
                     edit
                       ? handleEditCoin(
-                          id,
+                          coinToEdit.id,
                           selectedCoin,
                           modalInputData.coinAmount,
                           modalInputData.purchasedDate

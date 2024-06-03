@@ -2,21 +2,19 @@ import Image from "next/image";
 import CoinName from "../CoinName";
 import PortfolioCoinStatistic from "../PortfolioCoinStatistic";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
-import { updateCurrentCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import handlePortfolioCoinPriceChange from "@/app/utils/handlePortfolioCoinPriceChange";
-import { createPortal } from "react-dom";
-import PortfolioModal from "../PortfolioModal";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function PortfolioCoinCard({
+  coin,
   id,
   purchaseDate,
   coinAmount,
   currentDateData,
   purchasedDateData,
-  showEditModal,
-  handleOpenEditModal,
+  handleCoinToEdit,
 }: {
+  coin: any;
   id: number;
   purchaseDate: string;
   coinAmount: number;
@@ -24,15 +22,12 @@ export default function PortfolioCoinCard({
   purchasedDateData: any;
   showEditModal: any;
   handleOpenEditModal: any;
+  handleCoinToEdit: any;
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();
   const handleRemoveCoin = (coinId: number) => {
     dispatch({ type: "portfolioCoins/removeCoin", payload: coinId });
-  };
-  const handleEditCoin = (coinId, coinName, amount, date) => {
-    dispatch(updateCurrentCoinData({ coinId, coinName, amount, date }));
-    handleOpenEditModal(!showEditModal);
   };
   return (
     <div>
@@ -143,7 +138,7 @@ export default function PortfolioCoinCard({
               <div className="flex items-center justify-between">
                 <h3 className="text-xl text-bold">Your Coin</h3>
                 <button
-                  onClick={handleOpenEditModal}
+                  onClick={() => handleCoinToEdit(coin)}
                   className="bg-[#6161D6] p-2 rounded-md"
                 >
                   <svg
@@ -232,20 +227,6 @@ export default function PortfolioCoinCard({
               </PortfolioCoinStatistic>
             </div>
           </div>
-          {showEditModal &&
-            createPortal(
-              <PortfolioModal
-                edit={true}
-                showModal={showEditModal}
-                id={id}
-                handleShowModal={handleOpenEditModal}
-                handleEditCoin={handleEditCoin}
-                currentCoinName={currentDateData?.name}
-                currentCoinAmount={coinAmount}
-                currentPurchaseDate={purchaseDate}
-              />,
-              document.body
-            )}
         </div>
       </div>
     </div>

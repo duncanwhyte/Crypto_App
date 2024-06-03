@@ -1,9 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-export default function useSearchCoin(searchValue, timerRef): [] | null {
+export default function useSearchCoin(
+  searchValue,
+  focused,
+  timerRef
+): [] | null {
   const [searchedCoins, setSearchedCoins] = useState(null);
   const searchCoins = async () => {
-    if (!searchValue) {
+    if (!searchValue || !focused) {
+      setSearchedCoins(null);
       return;
     }
     const coinsReq = await fetch(
