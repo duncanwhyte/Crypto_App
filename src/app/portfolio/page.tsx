@@ -8,25 +8,42 @@ import { callCurrentDateData } from "../lib/features/portfolioCoins/portfolioCoi
 import PortfolioCoinCard from "../components/PortfolioCoinCard";
 const selectPortfolioCoins = (state) => state.portfolioCoins.coins;
 const selectCurrentPriceData = (state) => state.portfolioCoins.currentDateData;
+interface CoinToEdit {
+  id: number;
+  coinAmount: number;
+  purchasedDate: string;
+  name: string;
+  symbol: string;
+  thumb: string;
+}
 export default function Portfolio() {
   const portfolioCoins = useAppSelector(selectPortfolioCoins);
   const currentPriceData = useAppSelector(selectCurrentPriceData);
   const dispatch = useAppDispatch();
   const [showAssetModal, setShowAssetModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [coinToEdit, setCoinToEdit] = useState(null);
+  const [coinToEdit, setCoinToEdit] = useState<CoinToEdit | null>(null);
   const handleOpenModal = (): void => {
     setShowAssetModal(!showAssetModal);
   };
   const handleCoinToEdit = (coin) => {
-    setCoinToEdit(coin);
+    const coinToSet = {
+      uniqueId: coin.uniqueId,
+      id: coin.purchasedDateData.id,
+      coinAmount: coin.coinAmount,
+      purchasedDate: coin.purchasedDate,
+      name: coin.purchasedDateData.name,
+      symbol: coin.purchasedDateData.symbol,
+      thumb: coin.purchasedDateData.image.thumb,
+    };
+    setCoinToEdit(coinToSet);
     handleOpenEditModal();
   };
   const handleOpenEditModal = () => {
     setShowEditModal(!showEditModal);
   };
-  const handleEditCoin = (coinId, coinName, amount, date) => {
-    dispatch(updateCurrentCoinData({ coinId, coinName, amount, date }));
+  const handleEditCoin = (uniqueId, id, amount, date) => {
+    dispatch(updateCurrentCoinData({ uniqueId, id, amount, date }));
     handleOpenEditModal();
     setCoinToEdit(null);
   };
@@ -96,7 +113,7 @@ export default function Portfolio() {
               edit={true}
               coinToEdit={coinToEdit}
               showModal={showEditModal}
-              currentCoinName={coinToEdit.purchasedDateData.name}
+              currentCoinName={coinToEdit.name}
               currentCoinAmount={coinToEdit.coinAmount}
               currentPurchaseDate={coinToEdit.purchasedDate}
               handleEditCoin={handleEditCoin}

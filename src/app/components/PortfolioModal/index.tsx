@@ -33,7 +33,7 @@ export default function PortfolioModal({
   const [selectedCoin, setSelectedCoin] = useState(coinToEdit || null);
   const [coinInputFocused, setCoinInputFocused] = useState(false);
   const timerRef = useRef();
-  const previousCoinRef = useRef();
+  const previousCoinRef = useRef(coinToEdit || null);
   const [selectedCoinError, coinAmountError, purchasedDateError] = useFormError(
     selectedCoin,
     modalInputData.coinAmount,
@@ -53,24 +53,24 @@ export default function PortfolioModal({
         ["searchCoinValue"]: coin.name,
       };
     });
+    setCoinInputFocused(false);
     setSearchedCoins(null);
   };
   const handleCoinsFocused = () => {
     setCoinInputFocused(true);
   };
   const handleCoinBlur = (e) => {
-    setCoinInputFocused(false);
     if (!previousCoinRef.current) {
       return;
-    }
-    if (previousCoinRef.current.name !== e.target.value) {
+    } else if (previousCoinRef.current.name !== e.target.value) {
       setModalInputData((prev) => {
         return {
           ...prev,
-          searchCoinValue: previousCoinRef?.current.name,
+          searchCoinValue: previousCoinRef.current.name,
         };
       });
     }
+    setCoinInputFocused(false);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -124,10 +124,7 @@ export default function PortfolioModal({
                 <div className="bg-[#2C2C4A] p-4 max-w-[64px] rounded-lg">
                   <div>
                     <Image
-                      src={
-                        selectedCoin?.purchasedDateData?.image?.thumb ||
-                        selectedCoin.thumb
-                      }
+                      src={selectedCoin.thumb}
                       width={32}
                       height={32}
                       alt="selected-crypto-coin-image"
@@ -135,9 +132,7 @@ export default function PortfolioModal({
                   </div>
                 </div>
                 <p>
-                  {coinToEdit?.purchasedDateData.name || selectedCoin?.name}{" "}
-                  {coinToEdit?.purchasedDateData.symbol.toUpperCase() ||
-                    selectedCoin?.symbol.toUpperCase()}
+                  {selectedCoin.name} {selectedCoin.symbol.toUpperCase()}
                 </p>
               </div>
             )}
@@ -164,25 +159,24 @@ export default function PortfolioModal({
                   />
                   {searchedCoins && (
                     <ul className="bg-[#191925] transition-all absolute z-10 max-h-[250px] w-[calc(100%-1px)] overflow-scroll top-10 left-0">
-                      {searchedCoins &&
-                        searchedCoins.map((coin: any) => (
-                          <li
-                            onClick={() => handleSelectedCoin(coin)}
-                            id={coin.id}
-                            className="flex cursor-pointer"
-                            key={coin.id}
-                          >
-                            <Image
-                              src={coin.thumb}
-                              width={24}
-                              height={24}
-                              alt="crypto-coin-image"
-                            />
-                            <p>
-                              {coin.name} {coin.symbol.toUpperCase()}
-                            </p>
-                          </li>
-                        ))}
+                      {searchedCoins.map((coin: any) => (
+                        <li
+                          onClick={() => handleSelectedCoin(coin)}
+                          id={coin.id}
+                          className="flex cursor-pointer"
+                          key={coin.id}
+                        >
+                          <Image
+                            src={coin.thumb}
+                            width={24}
+                            height={24}
+                            alt="crypto-coin-image"
+                          />
+                          <p>
+                            {coin.name} {coin.symbol.toUpperCase()}
+                          </p>
+                        </li>
+                      ))}
                     </ul>
                   )}
                 </div>
@@ -222,8 +216,8 @@ export default function PortfolioModal({
                   onClick={() => {
                     edit
                       ? handleEditCoin(
-                          coinToEdit.id,
-                          selectedCoin,
+                          coinToEdit.uniqueId,
+                          selectedCoin.id,
                           modalInputData.coinAmount,
                           modalInputData.purchasedDate
                         )

@@ -8,40 +8,13 @@ export const callPortfolioCoinData = createAsyncThunk(
     );
     const historicalData = await historicalDataReq.json();
     const newCoin = {
-      id: Math.random() - Math.random(),
+      uniqueId: Math.random() - Math.random(),
+      id: arg.coin.id,
       coinAmount: arg.coinAmount,
       purchasedDate: arg.purchasedDate,
       purchasedDateData: historicalData,
     };
     return newCoin;
-  }
-);
-export const updateCurrentCoinData = createAsyncThunk(
-  "portfolio/updatePortfolioCoin",
-  async (arg, thunkApi) => {
-    const { portfolioCoins } = thunkApi.getState();
-    const coinToUpdate = portfolioCoins.coins.filter(
-      (coin) => coin.id === arg.coinId
-    );
-    if (
-      coinToUpdate[0].purchasedDateData.id !== arg.coinName.id ||
-      coinToUpdate[0].purchasedDate !== arg.date
-    ) {
-      const updatedCoin = {};
-      const date = arg.date.split("-").reverse().join("-");
-      const historicalDataReq = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${arg.coinName.id}/history?date=${date}&x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
-      );
-      const historicalData = await historicalDataReq.json();
-      updatedCoin.id = arg.coinId;
-      updatedCoin.coinAmount = arg.amount;
-      updatedCoin.purchasedDate = arg.date;
-      updatedCoin.purchasedDateData = historicalData;
-      return updatedCoin;
-    } else {
-      coinToUpdate.coinAmount = arg.amount;
-      return coinToUpdate;
-    }
   }
 );
 export const callCurrentDateData = createAsyncThunk(
@@ -62,6 +35,39 @@ export const callCurrentDateData = createAsyncThunk(
     });
     const currentDateData = await Promise.all(currentDataReq);
     return currentDateData;
+  }
+);
+export const updateCurrentCoinData = createAsyncThunk(
+  "portfolio/updatePortfolioCoin",
+  async (arg, thunkApi) => {
+    const { portfolioCoins } = thunkApi.getState();
+    const coinToUpdate = portfolioCoins.coins.filter(
+      (coin) => coin.uniqueId === arg.uniqueId
+    );
+    const updatedCoin = {};
+    if (
+      coinToUpdate[0].purchasedDateData.id !== arg.id ||
+      coinToUpdate[0].purchasedDate !== arg.date
+    ) {
+      const date = arg.date.split("-").reverse().join("-");
+      const historicalDataReq = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${arg.id}/history?date=${date}&x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+      );
+      const historicalData = await historicalDataReq.json();
+      updatedCoin.uniqueId = arg.uniqueId;
+      updatedCoin.id = arg.id;
+      updatedCoin.coinAmount = arg.amount;
+      updatedCoin.purchasedDate = arg.date;
+      updatedCoin.purchasedDateData = historicalData;
+      return updatedCoin;
+    } else {
+      updatedCoin.uniqueId = arg.uniqueId;
+      updatedCoin.id = coinToUpdate[0].id;
+      updatedCoin.coinAmount = arg.amount;
+      updatedCoin.purchasedDate = coinToUpdate[0].purchasedDate;
+      updatedCoin.purchasedDateData = coinToUpdate[0].purchasedDateData;
+      return updatedCoin;
+    }
   }
 );
 const initialState = {
@@ -102,7 +108,7 @@ const portfolioCoinsSlice = createSlice({
     });
     builder.addCase(updateCurrentCoinData.fulfilled, (state, action) => {
       const updatedCoins = state.coins.map((coin) => {
-        if (coin.id === action.payload.id) {
+        if (coin.uniqueId === action.payload.uniqueId) {
           coin.coinAmount = action.payload.coinAmount;
           coin.purchasedDate = action.payload.purchasedDate;
           coin.purchasedDateData = action.payload.purchasedDateData;
