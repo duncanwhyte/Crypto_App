@@ -65,7 +65,7 @@ export default function Portfolio() {
   return (
     <main className="relative">
       <div>
-        <div className="flex justify-between">
+        <div className="flex justify-between mb-6">
           <h1 className="text-2xl">Portfolio</h1>
           <button
             onClick={handleOpenModal}

@@ -4,6 +4,8 @@ import PortfolioCoinStatistic from "../PortfolioCoinStatistic";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import handlePortfolioCoinPriceChange from "@/app/utils/handlePortfolioCoinPriceChange";
+import handleStatisticColor from "@/app/utils/handleStatisticColor";
+import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function PortfolioCoinCard({
   coin,
@@ -32,7 +34,7 @@ export default function PortfolioCoinCard({
   return (
     <div>
       <div className="flex mb-6">
-        <div className="bg-[#2C2C4A] px-[60px] py-[65px] rounded-l-lg basis-[20%]">
+        <div className="bg-[#1E1932] px-[40px] py-[45px] flex items-center justify-center rounded-l-lg basis-[20%]">
           <div className="flex flex-col items-center">
             <div className="bg-[#2C2C4A] p-4 max-w-[64px] rounded-lg">
               <div>
@@ -51,8 +53,8 @@ export default function PortfolioCoinCard({
             />
           </div>
         </div>
-        <div className="bg-[#191932] p-6 rounded-r-lg flex flex-col basis-[80%]">
-          <div className="flex items-center justify-between">
+        <div className="bg-[#191932] p-6 rounded-r-lg basis-[80%]">
+          <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl text-bold">Market price</h3>
             <button
               onClick={() => handleRemoveCoin(id)}
@@ -83,60 +85,86 @@ export default function PortfolioCoinCard({
               </svg>
             </button>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between mb-6">
             <PortfolioCoinStatistic statistic={"Current price"}>
               <p>
                 {handleCurrencySymbol(currentCurrency)}
                 {currentDateData?.market_data?.current_price[
                   currentCurrency
-                ].toFixed(3)}
+                ].toFixed(2)}
               </p>
             </PortfolioCoinStatistic>
             <PortfolioCoinStatistic statistic={"Price change 24h"}>
               <p>
                 {handleCurrencySymbol(currentCurrency)}
-                {currentDateData?.market_data?.price_change_24h.toFixed(3)}
+                {currentDateData?.market_data?.price_change_24h.toFixed(2)}
               </p>
             </PortfolioCoinStatistic>
             <PortfolioCoinStatistic statistic={"Market Cap vs Volume"}>
-              <div>
-                {Math.min(
-                  100,
-                  Math.round(
-                    currentDateData?.market_data?.market_cap[currentCurrency] /
-                      currentDateData?.market_data?.total_volume[
+              <div className="flex items-center">
+                <span>
+                  {Math.min(
+                    100,
+                    (currentDateData?.market_data?.total_volume[
+                      currentCurrency
+                    ] /
+                      currentDateData?.market_data?.market_cap[
                         currentCurrency
-                      ]
-                  ) * 100
-                )}
-                %
-                <div className="bg-[#FFF] opacity-50 rounded-xl w-full h-2"></div>
-                <div
-                  className="bg-green-400 relative bottom-2 rounded-xl h-2"
-                  style={{
-                    width: `${Math.min(
-                      100,
-                      Math.round(
+                      ]) *
+                      100
+                  ).toFixed(0)}
+                  %
+                </span>
+                <div className="basis-[53px]">
+                  <div className="bg-[#FFF] opacity-50 relative top-1 rounded-xl w-full h-2"></div>
+                  <div
+                    className="bg-green-400 relative bottom-1 rounded-xl h-2"
+                    style={{
+                      width: `${handleTableProgressBar(
+                        currentDateData?.market_data?.total_volume[
+                          currentCurrency
+                        ],
                         currentDateData?.market_data?.market_cap[
                           currentCurrency
-                        ] /
-                          currentDateData?.market_data?.total_volume[
-                            currentCurrency
-                          ]
-                      ) * 100
-                    )}%`,
-                  }}
-                ></div>
+                        ]
+                      )}%`,
+                    }}
+                  ></div>
+                </div>
               </div>
             </PortfolioCoinStatistic>
-            <PortfolioCoinStatistic statistic={"Circ supply vs max supply"}>
-              <p></p>
+            <PortfolioCoinStatistic statistic={"Profit"}>
+              <p
+                className={`${handleStatisticColor(
+                  (currentDateData?.market_data?.current_price[
+                    currentCurrency
+                  ] -
+                    purchasedDateData?.market_data?.current_price[
+                      currentCurrency
+                    ]) *
+                    coinAmount
+                )}`}
+              >
+                {handleCurrencySymbol(currentCurrency)}
+                {(
+                  (currentDateData?.market_data?.current_price[
+                    currentCurrency
+                  ] -
+                    purchasedDateData?.market_data?.current_price[
+                      currentCurrency
+                    ]) *
+                  coinAmount
+                ).toFixed(2)}
+              </p>
             </PortfolioCoinStatistic>
           </div>
+          <hr className="mb-6"></hr>
           <div>
             <div>
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl text-bold">Your Coin</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl text-bold">
+                  Your coin{coinAmount > 1 && "s"}
+                </h3>
                 <button
                   onClick={() => handleCoinToEdit(coin)}
                   className="bg-[#6161D6] p-2 rounded-md"
@@ -177,10 +205,10 @@ export default function PortfolioCoinCard({
               </div>
             </div>
             <div className="flex justify-between">
-              <PortfolioCoinStatistic statistic={"Coin Amount"}>
+              <PortfolioCoinStatistic statistic={"Coin amount"}>
                 <p>{coinAmount}</p>
               </PortfolioCoinStatistic>
-              <PortfolioCoinStatistic statistic={"Value Amount"}>
+              <PortfolioCoinStatistic statistic={"Value amount"}>
                 <p>
                   {handleCurrencySymbol(currentCurrency)}
                   {(
@@ -190,9 +218,7 @@ export default function PortfolioCoinCard({
                   ).toFixed(3)}
                 </p>
               </PortfolioCoinStatistic>
-              <PortfolioCoinStatistic
-                statistic={"Amount price change since purchase"}
-              >
+              <PortfolioCoinStatistic statistic={"Price change percentage"}>
                 <p
                   className={`${
                     handlePortfolioCoinPriceChange(
@@ -202,27 +228,21 @@ export default function PortfolioCoinCard({
                       currentDateData?.market_data?.current_price[
                         currentCurrency
                       ]
-                    ) > 100
+                    ) > 0
                       ? "text-green-400"
                       : "text-red-400"
                   }`}
                 >
-                  {Math.abs(
+                  {handlePortfolioCoinPriceChange(
                     purchasedDateData?.market_data?.current_price[
                       currentCurrency
-                    ] -
-                      (currentDateData?.market_data?.current_price[
-                        currentCurrency
-                      ] /
-                        purchasedDateData?.market_data?.current_price[
-                          currentCurrency
-                        ]) *
-                        100
-                  ).toFixed(3)}
+                    ],
+                    currentDateData?.market_data?.current_price[currentCurrency]
+                  ).toFixed(2)}
                   %
                 </p>
               </PortfolioCoinStatistic>
-              <PortfolioCoinStatistic statistic={"Purchased Date"}>
+              <PortfolioCoinStatistic statistic={"Purchased date"}>
                 <p>{purchaseDate?.split("-").reverse().join(".")}</p>
               </PortfolioCoinStatistic>
             </div>

@@ -1,6 +1,6 @@
 export default function PortfolioCoinStatistic({ statistic, children }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="basis-1/4 ">
       <p>{statistic}</p>
       {children}
     </div>
