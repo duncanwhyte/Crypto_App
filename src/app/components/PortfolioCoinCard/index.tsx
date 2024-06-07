@@ -215,7 +215,7 @@ export default function PortfolioCoinCard({
                     purchasedDateData?.market_data?.current_price[
                       currentCurrency
                     ] * coinAmount
-                  ).toFixed(3)}
+                  ).toFixed(2)}
                 </p>
               </PortfolioCoinStatistic>
               <PortfolioCoinStatistic statistic={"Price change percentage"}>
