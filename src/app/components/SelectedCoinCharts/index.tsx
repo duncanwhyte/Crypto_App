@@ -5,7 +5,6 @@ import handleCurrency from "@/app/utils/handleCurrency";
 import {
   Chart as ChartJs,
   CategoryScale,
-  LinearScale,
   LogarithmicScale,
   LineElement,
   PointElement,
@@ -21,7 +20,6 @@ import handleCoinDateDisplay from "@/app/utils/handleCoinDateDisplay";
 import handleCoinLabelCount from "@/app/utils/handleCoinLabelCount";
 ChartJs.register(
   CategoryScale,
-  LinearScale,
   LogarithmicScale,
   LineElement,
   BarElement,
@@ -31,10 +29,16 @@ ChartJs.register(
   Legend,
   Filler
 );
-const selectUserCoins = (state) => state.selectedCoins.selectedCoins;
-const selectCurrency = (state) => state.currentCurrency;
-const selectGraphTimeDuration = (state) =>
+interface State {
+  currentCurrency: string;
+  coinList: any;
+  selectedCoins: any;
+  graphTimeDuration: any;
+}
+const selectCurrency = (state: State) => state.currentCurrency;
+const selectGraphTimeDuration = (state: State) =>
   state.graphTimeDuration.graphTimeDuration;
+const selectUserCoins = (state: State) => state.selectedCoins.selectedCoins;
 export default function SelectedCoinsCharts() {
   const currentCurrency = useAppSelector(selectCurrency);
   const [coin1, coin2, coin3] = useAppSelector(selectUserCoins);
@@ -101,6 +105,7 @@ export default function SelectedCoinsCharts() {
           gradient.addColorStop(1, "rgba(0, 0, 0, 0.1)");
           return gradient;
         },
+        borderColor: "#6263D9",
         borderWidth: 3,
         pointRadius: 0,
         fill: true,
@@ -152,7 +157,7 @@ export default function SelectedCoinsCharts() {
           return gradient;
         },
         borderRadius: 3,
-        barThickness: graphTimeDuration === 0.0416666666666667 ? 5 : 1,
+        barThickness: graphTimeDuration === 0.0416666666666667 ? 15 : 1,
       },
       {
         id: 3,
@@ -173,11 +178,12 @@ export default function SelectedCoinsCharts() {
           return gradient;
         },
         borderRadius: 3,
-        barThickness: graphTimeDuration === 0.0416666666666667 ? 5 : 1,
+        barThickness: graphTimeDuration === 0.0416666666666667 ? 15 : 1,
       },
     ],
   };
   const lineChartOptions = {
+    type: "line",
     responsiveness: true,
     plugins: {
       title: {
@@ -189,7 +195,7 @@ export default function SelectedCoinsCharts() {
     },
     scales: {
       x: {
-        beforeFit(axis) {
+        beforeFit(axis: any) {
           const labels = axis.chart.config._config.data.labels;
           const length = labels?.length - 1;
           axis.ticks.push({
@@ -240,7 +246,7 @@ export default function SelectedCoinsCharts() {
         },
       },
       x: {
-        beforeFit: (axis) => {
+        beforeFit: (axis: any) => {
           const labels = axis.chart.config._config.data.labels;
           const length = labels?.length - 1;
           axis.ticks.push({
