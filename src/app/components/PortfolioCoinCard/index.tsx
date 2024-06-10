@@ -54,7 +54,7 @@ export default function PortfolioCoinCard({
           </div>
         </div>
         <div className="bg-[#191932] p-6 rounded-r-lg basis-[80%]">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex justify-between">
             <h3 className="text-xl text-bold">Market price</h3>
             <button
               onClick={() => handleRemoveCoin(id)}
@@ -85,78 +85,85 @@ export default function PortfolioCoinCard({
               </svg>
             </button>
           </div>
-          <div className="flex justify-between mb-6">
-            <PortfolioCoinStatistic statistic={"Current price"}>
-              <p>
-                {handleCurrencySymbol(currentCurrency)}
-                {currentDateData?.market_data?.current_price[
-                  currentCurrency
-                ].toFixed(2)}
-              </p>
-            </PortfolioCoinStatistic>
-            <PortfolioCoinStatistic statistic={"Price change 24h"}>
-              <p>
-                {handleCurrencySymbol(currentCurrency)}
-                {currentDateData?.market_data?.price_change_24h.toFixed(2)}
-              </p>
-            </PortfolioCoinStatistic>
-            <PortfolioCoinStatistic statistic={"Market Cap vs Volume"}>
-              <div className="flex items-center">
-                <span>
-                  {Math.min(
-                    100,
-                    (currentDateData?.market_data?.total_volume[
-                      currentCurrency
-                    ] /
-                      currentDateData?.market_data?.market_cap[
+          <div className="flex mb-6">
+            <div className="flex flex-col items-start flex-1">
+              <PortfolioCoinStatistic statistic={"Current price"}>
+                <p>
+                  {handleCurrencySymbol(currentCurrency)}
+                  {currentDateData?.market_data?.current_price[
+                    currentCurrency
+                  ].toFixed(2)}
+                </p>
+              </PortfolioCoinStatistic>
+            </div>
+            <div className="flex flex-col items-start flex-1">
+              <PortfolioCoinStatistic statistic={"Price change 24h"}>
+                <p>
+                  {handleCurrencySymbol(currentCurrency)}
+                  {currentDateData?.market_data?.price_change_24h.toFixed(2)}
+                </p>
+              </PortfolioCoinStatistic>
+            </div>
+            <div className="flex flex-col items-start flex-1">
+              <PortfolioCoinStatistic statistic={"Market Cap vs Volume"}>
+                <div className="flex items-center">
+                  <span>
+                    {Math.min(
+                      100,
+                      (currentDateData?.market_data?.total_volume[
                         currentCurrency
-                      ]) *
-                      100
-                  ).toFixed(0)}
-                  %
-                </span>
-                <div className="basis-[53px]">
-                  <div className="bg-[#FFF] opacity-50 relative top-1 rounded-xl w-full h-2"></div>
-                  <div
-                    className="bg-green-400 relative bottom-1 rounded-xl h-2"
-                    style={{
-                      width: `${handleTableProgressBar(
-                        currentDateData?.market_data?.total_volume[
-                          currentCurrency
-                        ],
+                      ] /
                         currentDateData?.market_data?.market_cap[
                           currentCurrency
-                        ]
-                      )}%`,
-                    }}
-                  ></div>
+                        ]) *
+                        100
+                    ).toFixed(0)}
+                    %
+                  </span>
+                  <div className="bg-neutral-400 overflow-hidden rounded-xl w-[53px] h-2">
+                    <div
+                      className="bg-green-400 rounded-xl h-full"
+                      style={{
+                        width: `${handleTableProgressBar(
+                          currentDateData?.market_data?.total_volume[
+                            currentCurrency
+                          ],
+                          currentDateData?.market_data?.market_cap[
+                            currentCurrency
+                          ]
+                        )}%`,
+                      }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
-            </PortfolioCoinStatistic>
-            <PortfolioCoinStatistic statistic={"Profit"}>
-              <p
-                className={`${handleStatisticColor(
-                  (currentDateData?.market_data?.current_price[
-                    currentCurrency
-                  ] -
-                    purchasedDateData?.market_data?.current_price[
+              </PortfolioCoinStatistic>
+            </div>
+            <div className="flex flex-col items-center flex-1">
+              <PortfolioCoinStatistic statistic={"Profit"}>
+                <p
+                  className={`${handleStatisticColor(
+                    (currentDateData?.market_data?.current_price[
                       currentCurrency
-                    ]) *
+                    ] -
+                      purchasedDateData?.market_data?.current_price[
+                        currentCurrency
+                      ]) *
+                      coinAmount
+                  )}`}
+                >
+                  {handleCurrencySymbol(currentCurrency)}
+                  {(
+                    (currentDateData?.market_data?.current_price[
+                      currentCurrency
+                    ] -
+                      purchasedDateData?.market_data?.current_price[
+                        currentCurrency
+                      ]) *
                     coinAmount
-                )}`}
-              >
-                {handleCurrencySymbol(currentCurrency)}
-                {(
-                  (currentDateData?.market_data?.current_price[
-                    currentCurrency
-                  ] -
-                    purchasedDateData?.market_data?.current_price[
-                      currentCurrency
-                    ]) *
-                  coinAmount
-                ).toFixed(2)}
-              </p>
-            </PortfolioCoinStatistic>
+                  ).toFixed(2)}
+                </p>
+              </PortfolioCoinStatistic>
+            </div>
           </div>
           <hr className="mb-6"></hr>
           <div>
@@ -205,46 +212,58 @@ export default function PortfolioCoinCard({
               </div>
             </div>
             <div className="flex justify-between">
-              <PortfolioCoinStatistic statistic={"Coin amount"}>
-                <p>{coinAmount}</p>
-              </PortfolioCoinStatistic>
-              <PortfolioCoinStatistic statistic={"Value amount"}>
-                <p>
-                  {handleCurrencySymbol(currentCurrency)}
-                  {(
-                    purchasedDateData?.market_data?.current_price[
-                      currentCurrency
-                    ] * coinAmount
-                  ).toFixed(2)}
-                </p>
-              </PortfolioCoinStatistic>
-              <PortfolioCoinStatistic statistic={"Price change percentage"}>
-                <p
-                  className={`${
-                    handlePortfolioCoinPriceChange(
+              <div className="flex flex-col items-start flex-1">
+                <PortfolioCoinStatistic statistic={"Coin amount"}>
+                  <p>{coinAmount}</p>
+                </PortfolioCoinStatistic>
+              </div>
+              <div className="flex flex-col items-start flex-1">
+                <PortfolioCoinStatistic statistic={"Value amount"}>
+                  <p>
+                    {handleCurrencySymbol(currentCurrency)}
+                    {(
+                      purchasedDateData?.market_data?.current_price[
+                        currentCurrency
+                      ] * coinAmount
+                    ).toFixed(2)}
+                  </p>
+                </PortfolioCoinStatistic>
+              </div>
+              <div className="flex flex-col items-center flex-1">
+                <PortfolioCoinStatistic
+                  statistic={"Price change since purchase"}
+                >
+                  <p
+                    className={`${
+                      handlePortfolioCoinPriceChange(
+                        purchasedDateData?.market_data?.current_price[
+                          currentCurrency
+                        ],
+                        currentDateData?.market_data?.current_price[
+                          currentCurrency
+                        ]
+                      ) > 0
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }`}
+                  >
+                    {handlePortfolioCoinPriceChange(
                       purchasedDateData?.market_data?.current_price[
                         currentCurrency
                       ],
                       currentDateData?.market_data?.current_price[
                         currentCurrency
                       ]
-                    ) > 0
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  {handlePortfolioCoinPriceChange(
-                    purchasedDateData?.market_data?.current_price[
-                      currentCurrency
-                    ],
-                    currentDateData?.market_data?.current_price[currentCurrency]
-                  ).toFixed(2)}
-                  %
-                </p>
-              </PortfolioCoinStatistic>
-              <PortfolioCoinStatistic statistic={"Purchased date"}>
-                <p>{purchaseDate?.split("-").reverse().join(".")}</p>
-              </PortfolioCoinStatistic>
+                    ).toFixed(2)}
+                    %
+                  </p>
+                </PortfolioCoinStatistic>
+              </div>
+              <div className="flex flex-col items-center flex-1">
+                <PortfolioCoinStatistic statistic={"Purchased date"}>
+                  <p>{purchaseDate?.split("-").reverse().join(".")}</p>
+                </PortfolioCoinStatistic>
+              </div>
             </div>
           </div>
         </div>
