@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
+      <body className={`${inter.className} bg-[#F3F5F9] dark:bg-[#13121A]`}>
         <Providers>
           <GlobalCoinMarketDisplay />
           <Navbar />

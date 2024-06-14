@@ -35,8 +35,8 @@ export function CoinConvertor({
   };
   return (
     <div
-      className={`flex flex-col grow p-6 ${
-        selling ? "bg-[#191932] mb-6" : "bg-[#1E1932]"
+      className={`flex flex-col grow p-6 bg-[#FFFFFF] text-black dark:bg-[#191932] dark:text-[#FFFFFF]  ${
+        selling ? "mb-6" : "bg-[#1E1932]"
       } md:m-0 2xl:basis-[636px] rounded-xl`}
     >
       <>
@@ -73,7 +73,7 @@ export function CoinConvertor({
                     ? (e) => handleSellingAmount(e, sellingCoin, buyingCoin)
                     : (e) => handleBuyingAmount(e, buyingCoin, sellingCoin)
                 }
-                className="bg-[#191932] text-end max-w-[40%] focus:outline-0"
+                className="bg-[#FFFFFF] dark:bg-[#191932] text-end max-w-[40%] focus:outline-0"
                 value={selling ? sellingAmount : buyingAmount}
               />
             </>

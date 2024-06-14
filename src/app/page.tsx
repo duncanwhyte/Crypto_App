@@ -26,7 +26,7 @@ export default function Home() {
     dispatch(fetchCoinList());
   }, [currentCurrency, dispatch, coinsToDisplay]);
   return (
-    <main className="px-20 pt-14 dark:bg-[#13121A] bg-[#F3F5F9] dark:text-white text-black">
+    <main className="px-20 pt-14 dark:text-white text-black">
       <HomePageNavigator />
       <CoinSlider />
       <div className="">
