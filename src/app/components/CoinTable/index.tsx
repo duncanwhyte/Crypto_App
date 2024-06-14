@@ -102,7 +102,7 @@ export default function CoinTable() {
                       height={30}
                       alt="Crypto-Coin-Image"
                     />
-                    <Link href={`/coins/${id}}`}>{name}</Link>(
+                    <Link href={`/coins/${id}`}>{name}</Link>(
                     {`${symbol.toUpperCase()}`})
                   </div>
                 </td>
