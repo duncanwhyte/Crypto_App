@@ -6,6 +6,8 @@ import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import handlePortfolioCoinPriceChange from "@/app/utils/handlePortfolioCoinPriceChange";
 import handleStatisticColor from "@/app/utils/handleStatisticColor";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
+import EditPortfolioIcon from "../Svgs/EditPortfolioCoinIcon";
+import DeletePortfolioCoinIcon from "../Svgs/DeletePortfolioCoinIcon";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function PortfolioCoinCard({
   coin,
@@ -60,29 +62,7 @@ export default function PortfolioCoinCard({
               onClick={() => handleRemoveCoin(id)}
               className="bg-red-400 p-2 rounded-md"
             >
-              <svg
-                className="rotate-45"
-                width="20"
-                height="21"
-                viewBox="0 0 20 21"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5 10.5H15"
-                  stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M10 15.5V5.5"
-                  stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <DeletePortfolioCoinIcon />
             </button>
           </div>
           <div className="flex mb-6">
@@ -176,38 +156,7 @@ export default function PortfolioCoinCard({
                   onClick={() => handleCoinToEdit(coin)}
                   className="bg-[#6161D6] p-2 rounded-md"
                 >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z"
-                      stroke="white"
-                      stroke-width="1.5"
-                      stroke-miterlimit="10"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998"
-                      stroke="white"
-                      stroke-width="1.5"
-                      stroke-miterlimit="10"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M3 22H21"
-                      stroke="white"
-                      stroke-width="1.5"
-                      stroke-miterlimit="10"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
+                  <EditPortfolioIcon />
                 </button>
               </div>
             </div>
