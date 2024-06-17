@@ -46,9 +46,9 @@ export default function Coin({ params }: { params: { coinId: string } }) {
   const atlDate =
     coinData && new Date(coinData?.market_data?.atl_date[currentCurrency]);
   return (
-    <main className="">
+    <main className="px-20">
       <div className="mb-8 xl:flex xl:gap-4">
-        <div className="bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
+        <div className="bg-[#FFFFFF] dark:bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
           <div className="flex mb-8">
             <Image
               className="mr-[24px]"
@@ -92,7 +92,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               </svg>
               <div className="flex flex-col justify-start self-start items-start">
                 <h3 className="text-lg">All Time High:</h3>
-                <p className="text-[#B9B9BA]">
+                <p className="text-[#353570] dark:text-[#B9B9BA]">
                   {athDate && handleAllTimeDateDisplay(athDate)}
                 </p>
               </div>
@@ -123,7 +123,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               </svg>
               <div className="flex flex-col items-start self-start">
                 <h3 className="text-lg">All Time Low:</h3>
-                <p className="text-[#B9B9BA]">
+                <p className="text-[#353570] dark:text-[#B9B9BA]">
                   {atlDate && handleAllTimeDateDisplay(atlDate)}
                 </p>
               </div>
@@ -156,7 +156,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
       </div>
       <hr className="mb-8"></hr>
       <div className="xl:flex xl:flex-wrap xl:gap-6">
-        <CoinStatisticCard className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto mb-4 px-8 py-10 xl:mx-0 xl:max-w-none xl:basis-[calc(50%-12px)] xl:mb-0">
+        <CoinStatisticCard>
           <CoinStatistic
             statisticText="Total Volume"
             statisticData={coinData?.market_data?.total_volume[currentCurrency]}
@@ -196,7 +196,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
           />
           <div className="flex justify-between">
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-red-400"></div>
+              <div className="w-2 h-2 rounded-full bg-[#CCCCFA]"></div>
               <span className="text-sm">
                 {handleTableProgressBar(
                   coinData?.market_data?.circulating_supply,
@@ -206,11 +206,11 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-red-400"></div>
+              <div className="w-2 h-2 rounded-full bg-[#F3F5F9] dark:bg-[]"></div>
               <span className="text-sm">100%</span>
             </div>
           </div>
-          <div className="relative bg-white w-full h-2 rounded-xl">
+          <div className="relative bg-[#F3F5F9] dark:bg-[] w-full h-2 rounded-xl">
             <div
               style={{
                 width: `${Math.min(
@@ -221,7 +221,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
                   100
                 )}%`,
               }}
-              className="absolute bg-red-400 h-full top-0 left-0 rounded-xl"
+              className="absolute bg-[#CCCCFA] dark:bg-[] h-full top-0 left-0 rounded-xl"
             ></div>
           </div>
         </CoinStatisticCard>
