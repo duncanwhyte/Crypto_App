@@ -196,7 +196,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
           />
           <div className="flex justify-between">
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-[#CCCCFA]"></div>
+              <div className="w-2 h-2 rounded-full bg-[#6161D6]"></div>
               <span className="text-sm">
                 {handleTableProgressBar(
                   coinData?.market_data?.circulating_supply,
@@ -206,11 +206,11 @@ export default function Coin({ params }: { params: { coinId: string } }) {
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-[#F3F5F9] dark:bg-[]"></div>
+              <div className="w-2 h-2 rounded-full bg-[#F3F5F9] dark:bg-[#13121A]"></div>
               <span className="text-sm">100%</span>
             </div>
           </div>
-          <div className="relative bg-[#F3F5F9] dark:bg-[] w-full h-2 rounded-xl">
+          <div className="relative bg-[#F3F5F9] dark:bg-[#13121A] w-full h-2 rounded-xl">
             <div
               style={{
                 width: `${Math.min(
@@ -221,7 +221,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
                   100
                 )}%`,
               }}
-              className="absolute bg-[#CCCCFA] dark:bg-[] h-full top-0 left-0 rounded-xl"
+              className="absolute bg-[#CCCCFA] dark:bg-[#6161D6] h-full top-0 left-0 rounded-xl"
             ></div>
           </div>
         </CoinStatisticCard>
