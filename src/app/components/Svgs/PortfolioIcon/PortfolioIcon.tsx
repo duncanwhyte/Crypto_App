@@ -1,6 +1,4 @@
-import { useTheme } from "next-themes";
 export default function PortfolioIcon() {
-  const { resolvedTheme } = useTheme();
   return (
     <svg
       width="25"
@@ -10,8 +8,9 @@ export default function PortfolioIcon() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
+        className="stroke-[#353570] dark:stroke-[#FFFFFF]"
         d="M21.5 12L12.5 18L3.5 12M21.5 16L12.5 22L3.5 16M21.5 8L12.5 14L3.5 8L12.5 2L21.5 8Z"
-        stroke={`${resolvedTheme === "dark" ? "#FFFFFF" : "#353570"}`}
+        stroke=""
         stroke-opacity="0.5"
         stroke-width="2"
         stroke-linecap="round"

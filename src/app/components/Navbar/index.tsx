@@ -56,7 +56,7 @@ export default function Navbar() {
           <Link
             className={`flex items-center gap-1 text-[#353570] dark:text-[#FFFFFF] ${
               pathName === "/" || pathName === "/convertor"
-                ? "#FFFFF"
+                ? "text-[#FFFFF]"
                 : "text-[#808080]"
             }`}
             href={"/"}
@@ -67,7 +67,7 @@ export default function Navbar() {
         <div>
           <Link
             className={`flex items-center gap-1 text-[#353570] dark:text-[#FFFFFF] ${
-              pathName === "/portfolio" ? "#FFFFF" : "text-[#808080]"
+              pathName === "/portfolio" ? "text-[#FFFFF]" : "text-[#808080]"
             }`}
             href={"/portfolio"}
           >
