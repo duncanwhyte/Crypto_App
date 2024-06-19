@@ -196,7 +196,7 @@ export default function Coin({ params }: { params: { coinId: string } }) {
           />
           <div className="flex justify-between">
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-[#6161D6]"></div>
+              <div className="w-2 h-2 rounded-full bg-[#CCCCFA] dark:bg-[#6161D6]"></div>
               <span className="text-sm">
                 {handleTableProgressBar(
                   coinData?.market_data?.circulating_supply,
