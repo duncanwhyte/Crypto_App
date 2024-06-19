@@ -36,18 +36,14 @@ export default function PortfolioCoinCard({
   return (
     <div>
       <div className="flex mb-6">
-        <div className="bg-[#1E1932] px-[40px] py-[45px] flex items-center justify-center rounded-l-lg basis-[20%]">
+        <div className="bg-[#CCCCFA] dark:bg-[#1E1932] px-[25px] py-[25px] flex items-center justify-center rounded-l-3xl basis-[20%]">
           <div className="flex flex-col items-center">
-            <div className="bg-[#2C2C4A] p-4 max-w-[64px] rounded-lg">
-              <div>
-                <Image
-                  width={32}
-                  height={32}
-                  src={currentDateData?.image?.thumb}
-                  alt="portfolio-coin-image"
-                />
-              </div>
-            </div>
+            <Image
+              width={80}
+              height={80}
+              src={currentDateData?.image?.large}
+              alt="portfolio-coin-image"
+            />
             <CoinName
               id={currentDateData?.id}
               name={currentDateData?.name}
@@ -55,7 +51,7 @@ export default function PortfolioCoinCard({
             />
           </div>
         </div>
-        <div className="bg-[#191932] p-6 rounded-r-lg basis-[80%]">
+        <div className="bg-[#FFFFFF] dark:bg-[#191932] text-black dark:text-[#FFFFFF] p-6 rounded-r-3xl basis-[80%]">
           <div className="flex justify-between">
             <h3 className="text-xl text-bold">Market price</h3>
             <button
@@ -84,7 +80,7 @@ export default function PortfolioCoinCard({
                 </p>
               </PortfolioCoinStatistic>
             </div>
-            <div className="flex flex-col items-start flex-1">
+            <div className="flex flex-col items-center flex-1">
               <PortfolioCoinStatistic statistic={"Market Cap vs Volume"}>
                 <div className="flex items-center">
                   <span>
@@ -100,7 +96,7 @@ export default function PortfolioCoinCard({
                     ).toFixed(0)}
                     %
                   </span>
-                  <div className="bg-neutral-400 overflow-hidden rounded-xl w-[53px] h-2">
+                  <div className="bg-[#F3F5F9] dark:bg-neutral-400 overflow-hidden rounded-xl w-[53px] h-2">
                     <div
                       className="bg-green-400 rounded-xl h-full"
                       style={{
@@ -179,9 +175,7 @@ export default function PortfolioCoinCard({
                 </PortfolioCoinStatistic>
               </div>
               <div className="flex flex-col items-center flex-1">
-                <PortfolioCoinStatistic
-                  statistic={"Price change since purchase"}
-                >
+                <PortfolioCoinStatistic statistic={"Change since purchase"}>
                   <p
                     className={`${
                       handlePortfolioCoinPriceChange(
