@@ -79,8 +79,7 @@ export default function Portfolio() {
             {coinsToRender.map((coin) => (
               <PortfolioCoinCard
                 coin={coin}
-                key={coin.id}
-                id={coin.id}
+                key={coin.uniqueId}
                 coinAmount={coin.coinAmount}
                 purchaseDate={coin.purchasedDate}
                 currentDateData={coin.currentDateData}

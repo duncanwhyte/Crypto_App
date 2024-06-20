@@ -123,7 +123,9 @@ const portfolioCoinsSlice = createSlice({
       state.error = true;
     });
     builder.addCase("portfolioCoins/removeCoin", (state, action) => {
-      state.coins = state.coins.filter((coin) => coin.id !== action.payload);
+      state.coins = state.coins.filter(
+        (coin) => coin.uniqueId !== action.payload
+      );
     });
   },
 });

@@ -11,7 +11,6 @@ import DeletePortfolioCoinIcon from "../Svgs/DeletePortfolioCoinIcon";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function PortfolioCoinCard({
   coin,
-  id,
   purchaseDate,
   coinAmount,
   currentDateData,
@@ -19,7 +18,6 @@ export default function PortfolioCoinCard({
   handleCoinToEdit,
 }: {
   coin: any;
-  id: number;
   purchaseDate: string;
   coinAmount: number;
   currentDateData: any;
@@ -59,7 +57,7 @@ export default function PortfolioCoinCard({
           <div className="flex justify-between">
             <h3 className="text-xl text-bold">Market price</h3>
             <button
-              onClick={() => handleRemoveCoin(id)}
+              onClick={() => handleRemoveCoin(coin.uniqueId)}
               className="bg-red-400 p-2 rounded-md"
             >
               <DeletePortfolioCoinIcon />
