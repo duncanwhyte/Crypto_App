@@ -296,17 +296,25 @@ export default function SelectedCoinsCharts() {
         <div className="mb-6">
           {coin1 && !coin2 && !coin3 ? (
             <>
-              <h3 className="text-xl text-[#D1D1D1]">
+              <h3 className="text-xl text-[#191932] dark:text-[#D1D1D1]">
                 {coin1?.name} ({coin1?.symbol.toUpperCase()})
               </h3>
               <p className="text-2xl font-bold">
                 {handleCurrencySymbol(currentCurrency)}
                 {coin1?.current_price}
               </p>
-              <p className="text-[#D1D1D1]">{currentDate}</p>
+              <p className="text-[#424286] dark:text-[#D1D1D1]">
+                {currentDate}
+              </p>
             </>
           ) : (
-            <p className={"text-2xl font-bold"}>{currentDate}</p>
+            <p
+              className={
+                "text-2xl text-[#424286] dark:text-[#D1D1D1] font-bold"
+              }
+            >
+              {currentDate}
+            </p>
           )}
         </div>
         <Line
@@ -320,14 +328,14 @@ export default function SelectedCoinsCharts() {
               <div className="flex justify-center w-full">
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin1?.name} {handleCurrencySymbol(currentCurrency)}
                     {coin1?.current_price}
                   </p>
                 </div>
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin2?.name} {handleCurrencySymbol(currentCurrency)}
                     {coin2?.current_price}
                   </p>
@@ -338,21 +346,21 @@ export default function SelectedCoinsCharts() {
               <div className="flex justify-center w-full">
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin1?.name} {handleCurrencySymbol(currentCurrency)}
                     {coin1?.current_price}
                   </p>
                 </div>
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin2?.name} {handleCurrencySymbol(currentCurrency)}
                     {coin2?.current_price}
                   </p>
                 </div>
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#4DEEE5] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin3?.name} {handleCurrencySymbol(currentCurrency)}
                     {coin3?.current_price}
                   </p>
@@ -367,14 +375,20 @@ export default function SelectedCoinsCharts() {
         <div className="mb-6">
           {coin1 && !coin2 && !coin3 ? (
             <div>
-              <h3 className="text-xl text-[#D1D1D1]">Volume 24h</h3>
+              <h3 className="text-xl text-[#191932] dark:text-[#D1D1D1]">
+                Volume 24h
+              </h3>
               <p className="text-2xl font-bold">$807.243 bln</p>
-              <p className="text-[#D1D1D1]">{currentDate}</p>
+              <p className="text-[#424286] dark:text-[#D1D1D1]">
+                {currentDate}
+              </p>
             </div>
           ) : (
             <div>
               <h3 className="text-2xl font-bold">Volume 24h</h3>
-              <p className="text-[#D1D1D1]">{currentDate}</p>
+              <p className="text-[#424286] dark:text-[#D1D1D1]">
+                {currentDate}
+              </p>
             </div>
           )}
         </div>
@@ -385,14 +399,14 @@ export default function SelectedCoinsCharts() {
               <>
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin1?.name} {handleCurrencySymbol(currentCurrency)}
                     {handleCurrency(coin1?.total_volume)}
                   </p>
                 </div>
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin2?.name} {handleCurrencySymbol(currentCurrency)}
                     {handleCurrency(coin2?.total_volume)}
                   </p>
@@ -403,21 +417,21 @@ export default function SelectedCoinsCharts() {
               <>
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#7878FA] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin1?.name} {handleCurrencySymbol(currentCurrency)}
                     {handleCurrency(coin1?.total_volume)}
                   </p>
                 </div>
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#9D62D9] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin2?.name} {handleCurrencySymbol(currentCurrency)}
                     {handleCurrency(coin2?.total_volume)}
                   </p>
                 </div>
                 <div className={"flex items-center space-x-2"}>
                   <div className="w-6 h-6 rounded-sm bg-[#4DEEE5] text-xl"></div>
-                  <p>
+                  <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {coin3?.name} {handleCurrencySymbol(currentCurrency)}
                     {handleCurrency(coin3?.total_volume)}
                   </p>
