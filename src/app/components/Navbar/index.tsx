@@ -84,7 +84,7 @@ export default function Navbar() {
         <div className="relative">
           <input
             onChange={(e) => handleSearchCoin(e)}
-            className={`inline-block px-12 py-3  ${
+            className={`inline-block px-12 py-3 text-black placeholder-black dark:text-[#FFFFFF] dark:placeholder-[#FFFFFF]  ${
               coinSearchVal && coinList ? "rounded-t-xl" : "rounded-xl"
             }  bg-[#CCCCFA] dark:bg-[#232334] outline-none`}
             placeholder="Search..."
@@ -96,7 +96,7 @@ export default function Navbar() {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className="w-5 h-5 absolute top-3.5 left-4"
+            className="w-5 h-5 stroke-black dark:stroke-[#FFFFFF] absolute top-3.5 left-4"
           >
             <path
               stroke-linecap="round"
