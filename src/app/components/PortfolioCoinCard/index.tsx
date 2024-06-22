@@ -52,6 +52,17 @@ export default function PortfolioCoinCard({
               id={currentDateData?.id}
               name={currentDateData?.name}
               symbol={currentDateData?.symbol}
+              profit={
+                (currentDateData?.market_data?.current_price[currentCurrency] -
+                  purchasedDateData?.market_data?.current_price[
+                    currentCurrency
+                  ]) *
+                coinAmount
+              }
+              priceChange={handlePortfolioCoinPriceChange(
+                purchasedDateData?.market_data?.current_price[currentCurrency],
+                currentDateData?.market_data?.current_price[currentCurrency]
+              )}
             />
           </div>
         </div>
