@@ -8,6 +8,7 @@ import CoinTable from "./components/CoinTable";
 import SelectedCoinsCharts from "./components/SelectedCoinCharts";
 import TimeDurationSelector from "./components/TimeDurationSelector";
 interface State {
+  darkTheme: boolean;
   currentCurrency: string;
   coinList: any;
   selectedCoins: any;
@@ -25,7 +26,7 @@ export default function Home() {
     dispatch(fetchCoinList());
   }, [currentCurrency, dispatch, coinsToDisplay]);
   return (
-    <main className="">
+    <main className="px-20 pt-14 dark:text-white text-black">
       <HomePageNavigator />
       <CoinSlider />
       <div className="">

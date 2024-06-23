@@ -1,9 +1,9 @@
 import Image from "next/image";
-import CoinName from "../CoinName";
-import priceChangeIcon from "@/app/assets/price-change-icon.svg";
-import { useAppSelector } from "@/app/lib/hooks";
-import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { useState } from "react";
+import { useAppSelector } from "@/app/lib/hooks";
+import DropDownIcon from "../Svgs/DropDownIcon";
+import CoinName from "../CoinName";
+import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 const selectCurrentCurrency = (state) => state.currentCurrency;
 const selectCoinList = (state) => state.coinList.data;
 export function CoinConvertor({
@@ -35,12 +35,14 @@ export function CoinConvertor({
   };
   return (
     <div
-      className={`flex flex-col grow p-6 ${
-        selling ? "bg-[#191932] mb-6" : "bg-[#1E1932]"
+      className={`flex flex-col grow p-6 bg-[#FFFFFF] text-black dark:bg-[#191932] dark:text-[#FFFFFF]  ${
+        selling ? "mb-6" : "bg-[#1E1932]"
       } md:m-0 2xl:basis-[636px] rounded-xl`}
     >
       <>
-        <p className="mb-6 text-[#A7A7CC]">You {selling ? "selling" : "buy"}</p>
+        <p className="mb-6 text-[#181825] dark:text-[#A7A7CC]">
+          You {selling ? "selling" : "buy"}
+        </p>
       </>
       <div>
         <div>
@@ -58,14 +60,7 @@ export function CoinConvertor({
                   name={selling ? sellingCoin?.name : buyingCoin?.name}
                   symbol={selling ? sellingCoin?.symbol : buyingCoin?.symbol}
                 />
-                <Image
-                  onClick={handleShowCoinList}
-                  className={"cursor-pointer"}
-                  src={priceChangeIcon}
-                  width={24}
-                  height={24}
-                  alt="drop-down-icon"
-                />
+                <DropDownIcon handleShowCoinList={handleShowCoinList} />
               </div>
               <input
                 onChange={
@@ -73,12 +68,12 @@ export function CoinConvertor({
                     ? (e) => handleSellingAmount(e, sellingCoin, buyingCoin)
                     : (e) => handleBuyingAmount(e, buyingCoin, sellingCoin)
                 }
-                className="bg-[#191932] text-end max-w-[40%] focus:outline-0"
+                className="bg-[#FFFFFF] dark:bg-[#191932] text-end max-w-[40%] focus:outline-0"
                 value={selling ? sellingAmount : buyingAmount}
               />
             </>
             <ul
-              className={`bg-[#232336] absolute w-full rounded-xl z-10 px-6 top-7 transition-all ${
+              className={`bg-[#CCCCFA] text-[#FFFFFF] dark:bg-[#232336] absolute w-full rounded-xl z-10 px-6 top-7 transition-all ${
                 showCoinList ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -97,17 +92,16 @@ export function CoinConvertor({
             </ul>
           </div>
           <div>
-            <hr></hr>
+            <hr className=""></hr>
           </div>
           <div>
-            <p>
+            <p className="text-[#353570] dark:text-[#FFFFFF]">
               1 {selling ? sellingCoin?.symbol : buyingCoin?.symbol} ={" "}
               {handleCurrencySymbol(currentCurrency)}
               {selling ? sellingCoin?.current_price : buyingCoin?.current_price}
             </p>
           </div>
         </div>
-        <div></div>
       </div>
     </div>
   );
