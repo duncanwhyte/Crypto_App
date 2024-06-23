@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -10,15 +9,11 @@ import CoinStatistic from "@/app/components/CoinStatistic";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import handleCoinDates from "@/app/utils/handleCoinDates";
 import handleAllTimeDateDisplay from "@/app/utils/handleAllTimeDateDisplay";
-import PriceDescendingIcon from "@/app/components/Svgs/PriceDescendingIcon";
-import PriceAscendingIcon from "@/app/components/Svgs/PriceAscendingIcon";
 const selectCurrentCurrency = (state) => state.currentCurrency;
-export default function Coin({
-  params,
-}: {
-  params: { coinId: string; profit: number[] };
-}) {
+const selectPortfolioCoins = (state) => state.portfolioCoins.coins;
+export default function CoinPage({ coinId }: { coinId: string }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
+  const portfolioCoins = useAppSelector(selectPortfolioCoins);
   const [coinData, setCoinData] = useState(null);
   const [totalVolume24h, setTotalVolume24h] = useState(null);
   const handleHTML = () => {
@@ -27,7 +22,7 @@ export default function Coin({
   useEffect(() => {
     const callCoinData = async () => {
       const coinDataReq = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${params.coinId}?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+        `https://api.coingecko.com/api/v3/coins/${coinId}?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
       );
       const coinData = await coinDataReq.json();
       setCoinData(coinData);
@@ -35,7 +30,7 @@ export default function Coin({
     const call24hrTotalVolume = async () => {
       const [currentTime, pastTime] = handleCoinDates(1);
       const totalVolumeReq = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${params.coinId}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
+        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
       );
       const totalVolumeData = await totalVolumeReq.json();
       const totalVolume = totalVolumeData.total_volumes.reduce(
@@ -46,11 +41,22 @@ export default function Coin({
     };
     callCoinData();
     call24hrTotalVolume();
-  }, [params.coinId]);
+  }, [coinId, currentCurrency]);
   const athDate =
     coinData && new Date(coinData?.market_data?.ath_date[currentCurrency]);
   const atlDate =
     coinData && new Date(coinData?.market_data?.atl_date[currentCurrency]);
+  const storedCoins = portfolioCoins.filter((coin) => coin.id === coinId);
+  const profit =
+    storedCoins.length > 0 &&
+    storedCoins.reduce((init: number, currVal) => {
+      return (init +=
+        (coinData?.market_data?.current_price[currentCurrency] -
+          currVal.purchasedDateData?.market_data?.current_price[
+            currentCurrency
+          ]) *
+        currVal.coinAmount);
+    }, 0);
   return (
     <main className="">
       <div className="mb-8 xl:flex xl:gap-4">
@@ -73,37 +79,25 @@ export default function Coin({
             </div>
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-4">
+            <>
               <h2 className="text-2xl">
                 {handleCurrencySymbol(currentCurrency)}
                 {coinData?.market_data?.current_price[currentCurrency]}
               </h2>
-              <div className="flex items-center gap-0.5">
-                {params.profit[1] > 0 ? (
-                  <PriceAscendingIcon />
-                ) : (
-                  <PriceDescendingIcon />
-                )}
-                <p
-                  className={
-                    params.profit[1] > 0 ? "text-[#01F1E3]" : "text-[#FE2264]"
-                  }
-                >
-                  {parseFloat(params.profit[1]).toFixed(2)}%
+            </>
+            {profit && (
+              <div className="flex items-center gap-4">
+                <p className="text-xl text-black dark:text-[#FFFFFF]">
+                  Profit:
                 </p>
+                <span
+                  className={profit > 0 ? "text-[#01F1E3]" : "text-[#FE2264]"}
+                >
+                  {handleCurrencySymbol(currentCurrency)}
+                  {Math.abs(profit).toFixed(2)}
+                </span>
               </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <p className="text-xl">Profit:</p>
-              <span
-                className={
-                  params.profit[0] > 0 ? "text-[#01F1E3]" : "text-[#FE2264]"
-                }
-              >
-                {handleCurrencySymbol(currentCurrency)}
-                {parseFloat(params.profit[0]).toFixed(2)}
-              </span>
-            </div>
+            )}
           </div>
           <hr className="mb-8"></hr>
           <div className="flex justify-between xl:mb-6">

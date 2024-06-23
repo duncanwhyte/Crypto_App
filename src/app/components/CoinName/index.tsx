@@ -3,18 +3,14 @@ export default function CoinName({
   id,
   name,
   symbol,
-  profit,
-  priceChange,
 }: {
   id: string;
   name: string;
   symbol: string;
-  profit: number;
-  priceChange: number;
 }) {
   return (
     <>
-      <Link href={`/coins/${id}/${profit}/${priceChange}`}>
+      <Link href={`/coins/${id}`}>
         {name} ({symbol?.toUpperCase()})
       </Link>
     </>
