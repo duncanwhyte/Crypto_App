@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import StoreProvider from "./StoreProvider";
 import Navbar from "./components/Navbar";
 import GlobalCoinMarketDisplay from "./components/GlobalCoinMarketDisplay";
+import Providers from "../../Providers";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Crypto App",
@@ -13,19 +13,16 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) 
-{
+}>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <StoreProvider>
-        <GlobalCoinMarketDisplay />
-        <div className="px-20">
-        <Navbar />
-        {children}
-        </div>
-        </StoreProvider>
-        </body>
+      <body className={`${inter.className} bg-[#F3F5F9] dark:bg-[#13121A]`}>
+        <Providers>
+          <GlobalCoinMarketDisplay />
+          <Navbar />
+          <div>{children}</div>
+        </Providers>
+      </body>
     </html>
   );
 }

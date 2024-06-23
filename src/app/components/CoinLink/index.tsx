@@ -6,7 +6,7 @@ export default function CoinLink({ link }: { link: string }) {
     navigator.clipboard.writeText(link);
   };
   return (
-    <div className="bg-[#1E1932] flex justify-between py-5 px-6 gap-4 rounded-xl max-w-[700px] xl:flex-none xl:max-w-[370px]">
+    <div className="bg-[#CCCCFA] bg-opacity-60 text-[#424286] dark:bg-[#1E1932] flex justify-between py-5 px-6 gap-4 rounded-xl max-w-[700px] xl:flex-none xl:max-w-[370px]">
       <svg
         className="cursor-pointer rounded-xl "
         onClick={() => handleOpenTab(link)}
@@ -31,7 +31,10 @@ export default function CoinLink({ link }: { link: string }) {
           stroke-linejoin="round"
         />
       </svg>
-      <a className="text-white focus:text-white active:text-white" href={link}>
+      <a
+        className="text-[#424286] focus:text-[#424286] active:text-[#424286] dark:text-[#FFFFFF] dark:focus:text-[#FFFFFF] dark:active:text-[#FFFFFF]"
+        href={link}
+      >
         {link}
       </a>
       <svg

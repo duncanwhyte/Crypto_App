@@ -1,14 +1,13 @@
 "use client";
 import HomePageNavigator from "../components/HomePageNavigator";
-import SwitchIcon from "@/app/assets/switchIcon.svg";
 import { useAppSelector, useAppDispatch } from "../lib/hooks";
 import { useEffect, useState } from "react";
 import { fetchCoinList } from "../lib/features/coinList/coinListSlice";
 import CoinName from "../components/CoinName";
 import TimeDurationSelector from "../components/TimeDurationSelector";
 import { CoinConvertor } from "../components/Convertors";
-import Image from "next/image";
 import ConversionChart from "../components/ConversionChart";
+import CoinConvertorSwitch from "../components/Svgs/CoinConvertorSwitch";
 const selectCoinList = (state) => state.coinList.data;
 const selectCurrentCurrency = (state) => state.currentCurrency;
 export default function Convertor() {
@@ -56,11 +55,13 @@ export default function Convertor() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentCurrency]);
   return (
-    <main>
+    <main className="px-20">
       <HomePageNavigator />
       <div className="mt-10 mb-6">
-        <h3 className="text-xl">Online currency convertor</h3>
-        <p className="text-base text-[]">
+        <h3 className="text-xl text-[#424286] dark:text-[#FFFFFF]">
+          Online currency convertor
+        </h3>
+        <p className="text-base text-[#424286] dark:text-[#9E9E9E]">
           {newDate.toLocaleDateString()}{" "}
           {Intl.DateTimeFormat("en-GB", {
             hour: "2-digit",
@@ -82,12 +83,7 @@ export default function Convertor() {
             handleBuyingAmount={handleBuyingAmount}
           />
           <div className="md:px-3"></div>
-          <Image
-            onClick={handleCoinSwitch}
-            className="cursor-pointer p-3 bg-[#13121A] rounded-full w-[72px] h-[72px] left-1/2 top-1/2 -mt-[30px] -ml-[36px] md:p-3 md:bg-transparent md:-mt-[36px] md:-ml-[46px] 2xl:-ml-[36px] absolute"
-            src={SwitchIcon}
-            alt="switch-coin-button"
-          />
+          <CoinConvertorSwitch handleCoinSwitch={handleCoinSwitch} />
           <CoinConvertor
             selling={false}
             sellingCoin={sellingCoin || coinList[0]}
@@ -102,7 +98,7 @@ export default function Convertor() {
         </div>
       </div>
       <div>
-        <div className="bg-[#191932] p-6 rounded-xl mb-10">
+        <div className="bg-[#FFFFFF] text-[#353570] dark:bg-[#191932] dark:text-[#FFFFFF] p-6 rounded-xl mb-10">
           <div className="space-x-3">
             <CoinName
               id={sellingCoin?.id || coinList[0]?.id}

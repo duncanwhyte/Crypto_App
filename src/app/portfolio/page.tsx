@@ -63,13 +63,15 @@ export default function Portfolio() {
       return newCoin;
     });
   return (
-    <main className="relative">
+    <main className="relative px-20">
       <div>
         <div className="flex justify-between mb-6">
-          <h1 className="text-2xl">Portfolio</h1>
+          <h1 className="text-[#353570] dark:text-[#FFFFFF] text-2xl">
+            Portfolio
+          </h1>
           <button
             onClick={handleOpenModal}
-            className="bg-[#6161D6] px-20 py-3 rounded-xl"
+            className="bg-[#CCCCFA] dark:bg-[#6161D6] text-[#FFFFFF] px-20 py-3 rounded-xl"
           >
             Add Asset
           </button>

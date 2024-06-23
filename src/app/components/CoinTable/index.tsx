@@ -90,7 +90,7 @@ export default function CoinTable() {
           ) => {
             return (
               <tr
-                className="bg-[#191925] m-b-2 align-left border-solid border-t-8 border-b-8 border-[#13121A] w-full overflow-hidden"
+                className="bg-[#FFFFFF] dark:bg-[#191925] m-b-2 align-left  border-solid border-t-8 border-b-8 border-[#F3F5F9] dark:border-[#13121A] w-full overflow-hidden"
                 key={id}
               >
                 <td className="px-5 rounded-l-3xl">{index + 1}</td>
