@@ -60,7 +60,7 @@ export default function CoinPage({ coinId }: { coinId: string }) {
   return (
     <main className="">
       <div className="mb-8 xl:flex xl:gap-4">
-        <div className="bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
+        <div className="bg-[#FFFFFF] dark:bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
           <div className="flex mb-8">
             <Image
               className="mr-[24px]"
