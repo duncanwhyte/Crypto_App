@@ -43,18 +43,21 @@ export interface PortfolioCoin {
   name: string;
   symbol: string;
   large: string;
+  purchasedDateData: CoinData;
+  currentDateData: CoinData;
 }
 export interface PortfolioSliceState {
   isLoading: boolean;
-  coins: [];
-  currentDateData: CurrentDateData[];
+  coins: PortfolioCoin[];
+  currentDateData: CoinData[];
   error: boolean;
 }
-export interface CurrentDateData {
+export interface CoinData {
   links: { [key: string]: string[] };
   description: { [key: string]: string };
   market_data: MarketData;
   id: string;
+  name: string;
   image: { [key: string]: string };
   symbol: string;
 }
@@ -63,10 +66,14 @@ export interface MarketData {
   atl: { [key: string]: number };
   ath_date: { [key: string]: string };
   atl_date: { [key: string]: string };
+  circulating_supply: number;
   current_price: { [key: string]: number };
+  fully_diluted_valuation: { [key: string]: number };
   total_volume: { [key: string]: number };
+  total_supply: number;
   market_cap: { [key: string]: number };
   price_change_24h: number;
+  max_supply: number;
 }
 //// Graph Time Duration Type
 interface GraphTimeDuration {
