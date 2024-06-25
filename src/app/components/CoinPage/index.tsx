@@ -169,15 +169,12 @@ export default function CoinPage({ coinId }: { coinId: string }) {
             className="data-html text-sm text-center max-w-[600px] mx-auto mb-5 xl:text-left xl:mx-0 xl:mb-4 xl:mx-0 xl:max-w-full"
           ></p>
           <div className="flex flex-col gap-2 max-w-[560px] mx-auto xl:flex-row xl:flex-wrap xl:max-w-full xl:mx-0">
-            {coinData?.links?.blockchain_site.map(
-              (link: string, index: number) => {
-                if (link === "" || index > 2) {
-                  return;
-                } else {
-                  return <CoinLink key={link} link={link} />;
-                }
-              }
-            )}
+            {coinData?.links?.blockchain_site
+              .filter((link: string) => link.length)
+              .slice(0, 3)
+              .map((link: string) => (
+                <CoinLink key={link} link={link} />
+              ))}
           </div>
         </div>
       </div>
