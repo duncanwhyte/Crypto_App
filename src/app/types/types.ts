@@ -35,6 +35,11 @@ export interface SelectedCoin {
   coinData: SelectedCoinData;
 }
 ///// Portfolio Types
+export interface ModalFormData {
+  searchCoinValue: string;
+  coinAmount: string;
+  purchasedDate: string;
+}
 export interface PortfolioCoin {
   uniqueId: number;
   id: string;
@@ -45,12 +50,6 @@ export interface PortfolioCoin {
   large: string;
   purchasedDateData: CoinData;
   currentDateData: CoinData;
-}
-export interface PortfolioSliceState {
-  isLoading: boolean;
-  coins: PortfolioCoin[];
-  currentDateData: CoinData[];
-  error: boolean;
 }
 export interface CoinData {
   links: { [key: string]: string[] };
@@ -80,8 +79,48 @@ interface GraphTimeDuration {
   graphTimeDuration: number;
 }
 //// Main Redux Global State Types
+interface PortfolioSliceState {
+  isLoading: boolean;
+  coins: PortfolioCoin[];
+  currentDateData: CoinData[];
+  error: boolean;
+}
+interface CoinList {
+  data: [];
+  isLoading: string;
+  coinsToDisplay: number;
+  error: boolean;
+}
+interface CoinTableList {
+  data: [];
+  isLoading: string;
+  coinsToDisplay: number;
+  error: boolean;
+  order: string;
+}
+interface ConversionCoins {
+  conversionCoins: { [key: string]: null | any };
+  error: string;
+  isLoading: boolean;
+}
+interface GlobalData {
+  data: [];
+  error: boolean;
+  isLoading: string;
+}
+interface SelectedCoinsSlice {
+  data: [];
+  error: boolean;
+  isLoading: boolean;
+}
 export interface ReduxGlobalState {
   currentCurrency: string;
-  selectedCoins: SelectedCoin[];
+  darkTheme: boolean;
+  coinList: CoinList;
+  coinTableList: CoinTableList;
+  conversionCoins: ConversionCoins;
+  globalData: GlobalData;
+  selectedCoins: SelectedCoinsSlice;
   graphTimeDuration: GraphTimeDuration;
+  portfolioCoins: PortfolioSliceState;
 }
