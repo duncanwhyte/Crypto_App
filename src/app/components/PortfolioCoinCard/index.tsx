@@ -27,7 +27,7 @@ export default function PortfolioCoinCard({
   currentDateData: CoinData;
   purchasedDateData: CoinData;
   showEditModal: boolean;
-  handleCoinToEdit: (coin: PortfolioCoin) => void;
+  handleCoinToEdit: (_coin: PortfolioCoin) => void;
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();

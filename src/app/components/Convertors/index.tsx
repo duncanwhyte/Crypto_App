@@ -24,17 +24,17 @@ export function CoinConvertor({
   buyingCoin: ConvertorCoin;
   sellingAmount: number;
   buyingAmount: number;
-  handleSellingCoin: (coin: ConvertorCoin) => void;
-  handleBuyingCoin: (coin: ConvertorCoin) => void;
+  handleSellingCoin: (_coin: ConvertorCoin) => void;
+  handleBuyingCoin: (_coin: ConvertorCoin) => void;
   handleSellingAmount: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    sellingCoin: ConvertorCoin,
-    buyingCoin: ConvertorCoin
+    _e: React.ChangeEvent<HTMLInputElement>,
+    _sellingCoin: ConvertorCoin,
+    _buyingCoin: ConvertorCoin
   ) => void;
   handleBuyingAmount: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    buyingCoin: ConvertorCoin,
-    sellingCoin: ConvertorCoin
+    _e: React.ChangeEvent<HTMLInputElement>,
+    _buyingCoin: ConvertorCoin,
+    _sellingCoin: ConvertorCoin
   ) => void;
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
