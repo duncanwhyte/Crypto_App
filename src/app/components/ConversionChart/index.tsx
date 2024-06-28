@@ -20,6 +20,8 @@ import {
 import handleCoinDateDisplay from "@/app/utils/handleCoinDateDisplay";
 import handleCoinChartColor from "@/app/utils/handleCoinChartColor";
 import handleRenderConversionData from "@/app/utils/handleRenderConversionData";
+import { RootState } from "@/app/lib/store";
+import { ConvertorCoin } from "@/app/types/types";
 ChartJs.register(
   CategoryScale,
   LinearScale,
@@ -30,11 +32,17 @@ ChartJs.register(
   Legend,
   Filler
 );
-const conversionCoinsSelector = (state) =>
+const conversionCoinsSelector = (state: RootState) =>
   state.conversionCoins.conversionCoins;
-const selectGraphTimeDuration = (state) =>
+const selectGraphTimeDuration = (state: RootState) =>
   state.graphTimeDuration.graphTimeDuration;
-export default function ConversionChart({ sellingCoin, buyingCoin }) {
+export default function ConversionChart({
+  sellingCoin,
+  buyingCoin,
+}: {
+  sellingCoin: ConvertorCoin;
+  buyingCoin: ConvertorCoin;
+}) {
   const graphTimeDuration = useAppSelector(selectGraphTimeDuration);
   const conversionCoins = useAppSelector(conversionCoinsSelector);
   const dispatch = useAppDispatch();
@@ -43,7 +51,7 @@ export default function ConversionChart({ sellingCoin, buyingCoin }) {
     sellingCoin && dispatch(fetchSellingCoinData(sellingCoin));
   }, [graphTimeDuration, dispatch, sellingCoin, buyingCoin]);
   const config = {
-    labels: conversionCoins?.sellingCoin?.prices?.map((price) => {
+    labels: conversionCoins?.sellingCoin?.prices?.map((price: number[]) => {
       return handleCoinDateDisplay(new Date(price[0]), graphTimeDuration);
     }),
     datasets: [
@@ -113,7 +121,7 @@ export default function ConversionChart({ sellingCoin, buyingCoin }) {
   };
   return (
     <div>
-      <Line height={197} data={config} options={options} />
+      <Line height={197} data={config} options={options as any} />
     </div>
   );
 }

@@ -34,6 +34,14 @@ export interface SelectedCoin {
   current_price: number;
   coinData: SelectedCoinData;
 }
+///// Convertor Types
+export interface ConvertorCoin {
+  current_price: number;
+  symbol: string;
+  id: string;
+  name: string;
+  image: string;
+}
 ///// Portfolio Types
 export interface ModalFormData {
   searchCoinValue: string;
