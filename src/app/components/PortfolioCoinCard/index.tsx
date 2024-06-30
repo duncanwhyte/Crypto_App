@@ -31,7 +31,7 @@ export default function PortfolioCoinCard({
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();
-  const handleRemoveCoin = (coinId: number) => {
+  const handleRemoveCoin = (coinId: string) => {
     dispatch({ type: "portfolioCoins/removeCoin", payload: coinId });
   };
   return (

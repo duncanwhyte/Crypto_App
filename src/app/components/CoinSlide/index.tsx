@@ -21,7 +21,7 @@ export default function CoinSlide({
   selected,
   currency,
 }: {
-  handleAddCoin: any;
+  handleAddCoin: (_coin: Coin) => void;
   coinData: Coin;
   selected: boolean | undefined;
   currency: string;

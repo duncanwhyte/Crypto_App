@@ -10,6 +10,8 @@ import {
   Tooltip,
   Legend,
   Filler,
+  CoreScaleOptions,
+  Scale,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
@@ -90,16 +92,18 @@ export default function ConversionChart({
     },
     scales: {
       x: {
-        beforeFit(axis) {
-          const labels = axis.chart.config._config.data.labels;
-          const length = labels.length - 1;
-          axis.ticks.push({
-            value: length,
-            label: handleCoinDateDisplay(
-              conversionCoins?.sellingCoin?.prices[length][0],
-              graphTimeDuration
-            ),
-          });
+        beforeFit(axis: Scale<CoreScaleOptions>) {
+          const labels = axis.chart.config?.data.labels;
+          const length = labels && labels.length - 1;
+          if (labels && length) {
+            axis.ticks.push({
+              value: length,
+              label: handleCoinDateDisplay(
+                conversionCoins?.sellingCoin?.prices[length][0],
+                graphTimeDuration
+              ),
+            });
+          }
         },
         grid: {
           display: false,
