@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from "../lib/hooks";
 import { updateCurrentCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
 import { callCurrentDateData } from "../lib/features/portfolioCoins/portfolioCoinsSlice";
 import PortfolioCoinCard from "../components/PortfolioCoinCard";
-import { CoinData, PortfolioCoin } from "../types/types";
+import { CoinData, CoinToRender, PortfolioCoin } from "../types/types";
 const selectPortfolioCoins = (state: RootState) => state.portfolioCoins.coins;
 const selectCurrentPriceData = (state: RootState): CoinData[] =>
   state.portfolioCoins.currentDateData;
@@ -30,7 +30,7 @@ export default function Portfolio() {
   const handleOpenModal = (): void => {
     setShowAssetModal(!showAssetModal);
   };
-  const handleCoinToEdit = (coin: PortfolioCoin): void => {
+  const handleCoinToEdit = (coin: CoinToRender): void => {
     const coinToSet: CoinToEdit = {
       uniqueId: coin.uniqueId,
       id: coin.purchasedDateData.id,
@@ -49,17 +49,24 @@ export default function Portfolio() {
   const handleEditCoin = (
     uniqueId: number,
     id: string,
-    amount: number,
-    date: string
+    coinAmount: number,
+    purchasedDate: string
   ): void => {
-    dispatch(updateCurrentCoinData({ uniqueId, id, amount, date }));
+    dispatch(
+      updateCurrentCoinData({
+        uniqueId,
+        id,
+        coinAmount,
+        purchasedDate,
+      })
+    );
     handleOpenEditModal();
     setCoinToEdit(null);
   };
   useEffect(() => {
     dispatch(callCurrentDateData());
   }, [dispatch, portfolioCoins]);
-  const coinsToRender =
+  const coinsToRender: PortfolioCoin[] =
     portfolioCoins &&
     currentPriceData &&
     portfolioCoins.map((coin: PortfolioCoin) => {
@@ -87,19 +94,20 @@ export default function Portfolio() {
         </div>
         <div>
           <ul>
-            {coinsToRender.map((coin: PortfolioCoin) => (
-              <PortfolioCoinCard
-                coin={coin}
-                key={coin.id}
-                id={coin.id}
-                coinAmount={coin.coinAmount}
-                purchaseDate={coin.purchasedDate}
-                currentDateData={coin.currentDateData}
-                purchasedDateData={coin.purchasedDateData}
-                showEditModal={showEditModal}
-                handleCoinToEdit={handleCoinToEdit}
-              />
-            ))}
+            {coinsToRender &&
+              coinsToRender.map((coin: CoinToRender) => (
+                <PortfolioCoinCard
+                  coin={coin}
+                  key={coin.id}
+                  id={coin.id}
+                  coinAmount={coin.coinAmount}
+                  purchaseDate={coin.purchasedDate}
+                  currentDateData={coin.currentDateData}
+                  purchasedDateData={coin.purchasedDateData}
+                  showEditModal={showEditModal}
+                  handleCoinToEdit={handleCoinToEdit}
+                />
+              ))}
           </ul>
         </div>
         {showAssetModal &&

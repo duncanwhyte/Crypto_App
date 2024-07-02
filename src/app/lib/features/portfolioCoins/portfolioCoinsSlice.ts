@@ -1,12 +1,20 @@
+import {
+  CoinData,
+  CoinToAdd,
+  PortfolioCoin,
+  PortfolioSliceState,
+  UpdatedCoinArgument,
+} from "@/app/types/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-export const callPortfolioCoinData = createAsyncThunk(
+import { RootState } from "../../store";
+export const callPortfolioCoinData = createAsyncThunk<PortfolioCoin, CoinToAdd>(
   "portfolioCoins/getPurchaseDate",
   async (arg) => {
     const date = arg.purchasedDate.split("-").reverse().join("-");
     const historicalDataReq = await fetch(
       `https://api.coingecko.com/api/v3/coins/${arg.coin.id}/history?date=${date}&x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
     );
-    const historicalData = await historicalDataReq.json();
+    const historicalData: CoinData = await historicalDataReq.json();
     const newCoin = {
       uniqueId: Math.random() - Math.random(),
       id: arg.coin.id,
@@ -17,15 +25,20 @@ export const callPortfolioCoinData = createAsyncThunk(
     return newCoin;
   }
 );
-export const callCurrentDateData = createAsyncThunk(
-  "portfolio/getCurrentPriceData",
-  async (arg, thunkApi) => {
+export const callCurrentDateData = createAsyncThunk<
+  CoinData[],
+  void,
+  { state: RootState }
+>("portfolio/getCurrentPriceData", async (_, thunkApi) => {
+  try {
     const { portfolioCoins } = thunkApi.getState();
-    if (portfolioCoins.length === 0) {
+    if (portfolioCoins.coins.length === 0) {
       return;
     }
-    const ids = portfolioCoins.coins.map((coin) => coin.purchasedDateData.id);
-    const uniqueIds = Array.from(new Set(ids));
+    const ids: string[] = portfolioCoins.coins.map(
+      (coin: PortfolioCoin) => coin.purchasedDateData.id
+    );
+    const uniqueIds: string[] = Array.from(new Set(ids));
     const currentDataReq = uniqueIds.map(async (id) => {
       const request = await fetch(
         `https://api.coingecko.com/api/v3/coins/${id}?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
@@ -33,44 +46,54 @@ export const callCurrentDateData = createAsyncThunk(
       const response = await request.json();
       return response;
     });
-    const currentDateData = await Promise.all(currentDataReq);
+    const currentDateData: CoinData[] = await Promise.all(currentDataReq);
     return currentDateData;
+  } catch (error) {
+    return error;
   }
-);
-export const updateCurrentCoinData = createAsyncThunk(
-  "portfolio/updatePortfolioCoin",
-  async (arg, thunkApi) => {
+});
+export const updateCurrentCoinData = createAsyncThunk<
+  PortfolioCoin,
+  UpdatedCoinArgument,
+  { state: RootState }
+>("portfolio/updatePortfolioCoin", async (arg, thunkApi) => {
+  try {
     const { portfolioCoins } = thunkApi.getState();
     const coinToUpdate = portfolioCoins.coins.filter(
-      (coin) => coin.uniqueId === arg.uniqueId
+      (coin: PortfolioCoin) => coin.uniqueId === arg.uniqueId
     );
-    const updatedCoin = {};
     if (
       coinToUpdate[0].purchasedDateData.id !== arg.id ||
-      coinToUpdate[0].purchasedDate !== arg.date
+      coinToUpdate[0].purchasedDate !== arg.purchasedDate
     ) {
-      const date = arg.date.split("-").reverse().join("-");
+      const date = arg.purchasedDate.split("-").reverse().join("-");
       const historicalDataReq = await fetch(
         `https://api.coingecko.com/api/v3/coins/${arg.id}/history?date=${date}&x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
       );
       const historicalData = await historicalDataReq.json();
-      updatedCoin.uniqueId = arg.uniqueId;
-      updatedCoin.id = arg.id;
-      updatedCoin.coinAmount = arg.amount;
-      updatedCoin.purchasedDate = arg.date;
-      updatedCoin.purchasedDateData = historicalData;
+      const updatedCoin = {
+        uniqueId: arg.uniqueId,
+        id: arg.id,
+        coinAmount: arg.coinAmount,
+        purchasedDate: arg.purchasedDate,
+        purchasedDateData: historicalData,
+      };
       return updatedCoin;
     } else {
-      updatedCoin.uniqueId = arg.uniqueId;
-      updatedCoin.id = coinToUpdate[0].id;
-      updatedCoin.coinAmount = arg.amount;
-      updatedCoin.purchasedDate = coinToUpdate[0].purchasedDate;
-      updatedCoin.purchasedDateData = coinToUpdate[0].purchasedDateData;
+      const updatedCoin = {
+        uniqueId: arg.uniqueId,
+        id: coinToUpdate[0].id,
+        coinAmount: arg.coinAmount,
+        purchasedDate: coinToUpdate[0].purchasedDate,
+        purchasedDateData: coinToUpdate[0].purchasedDateData,
+      };
       return updatedCoin;
     }
+  } catch (error) {
+    return error;
   }
-);
-const initialState = {
+});
+const initialState: PortfolioSliceState = {
   isLoading: false,
   coins: [],
   currentDateData: [],

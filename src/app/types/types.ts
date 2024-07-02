@@ -48,7 +48,28 @@ export interface ModalFormData {
   coinAmount: string;
   purchasedDate: string;
 }
-export interface PortfolioCoin {
+export interface CoinToAdd {
+  coin: SearchedCoin;
+  coinAmount: number;
+  purchasedDate: string;
+}
+export interface CoinToEdit {
+  uniqueId: number;
+  id: string;
+  coinAmount: number;
+  purchasedDate: string;
+  name: string;
+  symbol: string;
+  large: string;
+}
+export interface UpdatedCoin {
+  uniqueId: number;
+  id: string;
+  coinAmount: number;
+  purchasedDate: string;
+  purchasedDateData: CoinData;
+}
+export interface CoinToRender {
   uniqueId: number;
   id: string;
   coinAmount: number;
@@ -58,6 +79,19 @@ export interface PortfolioCoin {
   large: string;
   purchasedDateData: CoinData;
   currentDateData: CoinData;
+}
+export interface UpdatedCoinArgument {
+  uniqueId: number;
+  id: string;
+  coinAmount: number;
+  purchasedDate: string;
+}
+export interface PortfolioCoin extends CoinToRender {
+  uniqueId: number;
+  id: string;
+  coinAmount: number;
+  purchasedDate: string;
+  purchasedDateData: CoinData;
 }
 export interface CoinData {
   links: { [key: string]: string[] };
@@ -87,7 +121,7 @@ interface GraphTimeDuration {
   graphTimeDuration: number;
 }
 //// Main Redux Global State Types
-interface PortfolioSliceState {
+export interface PortfolioSliceState {
   isLoading: boolean;
   coins: PortfolioCoin[];
   currentDateData: CoinData[];
@@ -106,8 +140,12 @@ interface CoinTableList {
   error: boolean;
   order: string;
 }
+export interface ConversionCoin {
+  name: string;
+  prices: number[][];
+}
 interface ConversionCoins {
-  conversionCoins: { [key: string]: null | any };
+  conversionCoins: { [key: string]: null | ConversionCoin };
   error: string;
   isLoading: boolean;
 }
@@ -115,6 +153,21 @@ interface GlobalData {
   data: [];
   error: boolean;
   isLoading: string;
+}
+interface StatisticObject {
+  [key: string]: number;
+}
+export interface GlobalDataResponse {
+  date: {
+    active_cryptocurrencies: number;
+    upcoming_icos: number;
+    ongoing_icos: number;
+    ended_icos: number;
+    markets: number;
+    total_market_cap: StatisticObject;
+    total_volume: StatisticObject;
+    market_cap_percentage: StatisticObject;
+  };
 }
 interface SelectedCoinsSlice {
   data: [];

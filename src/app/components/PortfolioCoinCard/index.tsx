@@ -8,7 +8,7 @@ import handleStatisticColor from "@/app/utils/handleStatisticColor";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import EditPortfolioIcon from "../Svgs/EditPortfolioCoinIcon";
 import DeletePortfolioCoinIcon from "../Svgs/DeletePortfolioCoinIcon";
-import { PortfolioCoin, CoinData } from "@/app/types/types";
+import { CoinData, CoinToRender } from "@/app/types/types";
 import { RootState } from "@/app/lib/store";
 const selectCurrentCurrency = (state: RootState) => state.currentCurrency;
 export default function PortfolioCoinCard({
@@ -20,14 +20,14 @@ export default function PortfolioCoinCard({
   purchasedDateData,
   handleCoinToEdit,
 }: {
-  coin: PortfolioCoin;
+  coin: CoinToRender;
   id: string;
   purchaseDate: string;
   coinAmount: number;
   currentDateData: CoinData;
   purchasedDateData: CoinData;
   showEditModal: boolean;
-  handleCoinToEdit: (_coin: PortfolioCoin) => void;
+  handleCoinToEdit: (_coin: CoinToRender) => void;
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();
