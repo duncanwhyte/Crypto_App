@@ -31,17 +31,19 @@ export default function Portfolio() {
     setShowAssetModal(!showAssetModal);
   };
   const handleCoinToEdit = (coin: CoinToRender): void => {
-    const coinToSet: CoinToEdit = {
-      uniqueId: coin.uniqueId,
-      id: coin.purchasedDateData.id,
-      coinAmount: coin.coinAmount,
-      purchasedDate: coin.purchasedDate,
-      name: coin.purchasedDateData.name,
-      symbol: coin.purchasedDateData.symbol,
-      large: coin.currentDateData.image.large,
-    };
-    setCoinToEdit(coinToSet);
-    handleOpenEditModal();
+    if (coin.currentDateData) {
+      const coinToSet: CoinToEdit = {
+        uniqueId: coin.uniqueId,
+        id: coin.purchasedDateData.id,
+        coinAmount: coin.coinAmount,
+        purchasedDate: coin.purchasedDate,
+        name: coin.purchasedDateData.name,
+        symbol: coin.purchasedDateData.symbol,
+        large: coin.currentDateData.image.large,
+      };
+      setCoinToEdit(coinToSet);
+      handleOpenEditModal();
+    }
   };
   const handleOpenEditModal = (): void => {
     setShowEditModal(!showEditModal);
