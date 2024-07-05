@@ -9,22 +9,22 @@ import { CoinConvertor } from "../components/Convertors";
 import ConversionChart from "../components/ConversionChart";
 import CoinConvertorSwitch from "../components/Svgs/CoinConvertorSwitch";
 import { RootState } from "../lib/store";
-import { ConvertorCoin } from "../types/types";
+import { CoinTableCoin } from "../types/types";
 const selectCoinList = (state: RootState) => state.coinList.data;
 const selectCurrentCurrency = (state: RootState) => state.currentCurrency;
 export default function Convertor() {
-  const coinList: ConvertorCoin[] = useAppSelector(selectCoinList);
+  const coinList: CoinTableCoin[] = useAppSelector(selectCoinList);
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();
-  const [sellingCoin, setSellingCoin] = useState<ConvertorCoin | null>(null);
-  const [buyingCoin, setBuyingCoin] = useState<ConvertorCoin | null>(null);
+  const [sellingCoin, setSellingCoin] = useState<CoinTableCoin | null>(null);
+  const [buyingCoin, setBuyingCoin] = useState<CoinTableCoin | null>(null);
   const [sellingAmount, setSellingAmount] = useState<number>(0);
   const [buyingAmount, setBuyingAmount] = useState<number>(0);
   const newDate = new Date();
-  const handleSellingCoin = (coin: ConvertorCoin): void => {
+  const handleSellingCoin = (coin: CoinTableCoin): void => {
     setSellingCoin(coin);
   };
-  const handleBuyingCoin = (coin: ConvertorCoin): void => {
+  const handleBuyingCoin = (coin: CoinTableCoin): void => {
     setBuyingCoin(coin);
   };
   const handleCoinSwitch = (): void => {
@@ -38,8 +38,8 @@ export default function Convertor() {
   };
   const handleSellingAmount = (
     e: React.ChangeEvent<HTMLInputElement>,
-    sellingCoin: ConvertorCoin,
-    buyingCoin: ConvertorCoin
+    sellingCoin: CoinTableCoin,
+    buyingCoin: CoinTableCoin
   ): void => {
     setSellingAmount(parseFloat(e.target.value));
     const sellingPrice =
@@ -50,8 +50,8 @@ export default function Convertor() {
   };
   const handleBuyingAmount = (
     e: React.ChangeEvent<HTMLInputElement>,
-    buyingCoin: ConvertorCoin,
-    sellingCoin: ConvertorCoin
+    buyingCoin: CoinTableCoin,
+    sellingCoin: CoinTableCoin
   ): void => {
     setBuyingAmount(parseFloat(e.target.value));
     const buyingPrice =

@@ -74,11 +74,8 @@ export interface CoinToRender {
   id: string;
   coinAmount: number;
   purchasedDate: string;
-  name: string;
-  symbol: string;
-  large: string;
   purchasedDateData: CoinData;
-  currentDateData: CoinData;
+  currentDateData?: CoinData;
 }
 export interface UpdatedCoinArgument {
   uniqueId: number;
@@ -144,10 +141,14 @@ export interface ConversionCoin {
   name: string;
   prices: number[][];
 }
-interface ConversionCoins {
+interface ConversionCoinsState {
   conversionCoins: { [key: string]: null | ConversionCoin };
   error: string;
   isLoading: boolean;
+}
+export interface ConversionCoins {
+  buyingCoin: ConversionCoin;
+  sellingCoin: ConversionCoin;
 }
 interface GlobalData {
   data: [];
@@ -179,7 +180,7 @@ export interface ReduxGlobalState {
   darkTheme: boolean;
   coinList: CoinList;
   coinTableList: CoinTableList;
-  conversionCoins: ConversionCoins;
+  conversionCoins: ConversionCoinsState;
   globalData: GlobalData;
   selectedCoins: SelectedCoinsSlice;
   graphTimeDuration: GraphTimeDuration;

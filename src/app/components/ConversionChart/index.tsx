@@ -23,7 +23,7 @@ import handleCoinDateDisplay from "@/app/utils/handleCoinDateDisplay";
 import handleCoinChartColor from "@/app/utils/handleCoinChartColor";
 import handleRenderConversionData from "@/app/utils/handleRenderConversionData";
 import { RootState } from "@/app/lib/store";
-import { ConvertorCoin } from "@/app/types/types";
+import { CoinTableCoin, ConversionCoins } from "@/app/types/types";
 ChartJs.register(
   CategoryScale,
   LinearScale,
@@ -42,11 +42,13 @@ export default function ConversionChart({
   sellingCoin,
   buyingCoin,
 }: {
-  sellingCoin: ConvertorCoin;
-  buyingCoin: ConvertorCoin;
+  sellingCoin: CoinTableCoin;
+  buyingCoin: CoinTableCoin;
 }) {
   const graphTimeDuration = useAppSelector(selectGraphTimeDuration);
-  const conversionCoins = useAppSelector(conversionCoinsSelector);
+  const conversionCoins: ConversionCoins = useAppSelector(
+    conversionCoinsSelector
+  );
   const dispatch = useAppDispatch();
   useEffect(() => {
     buyingCoin && dispatch(fetchBuyingCoinData(buyingCoin));

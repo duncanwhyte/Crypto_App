@@ -66,11 +66,13 @@ export default function Portfolio() {
   useEffect(() => {
     dispatch(callCurrentDateData());
   }, [dispatch, portfolioCoins]);
-  const coinsToRender: PortfolioCoin[] =
+  const coinsToRender: CoinToRender[] =
     portfolioCoins &&
     currentPriceData &&
-    portfolioCoins.map((coin: PortfolioCoin) => {
-      const newCoin: PortfolioCoin = { ...coin };
+    portfolioCoins.map((coin: PortfolioCoin): CoinToRender => {
+      const newCoin: PortfolioCoin = {
+        ...coin,
+      };
       currentPriceData.forEach((currentPrice: CoinData) => {
         if (coin.purchasedDateData.id === currentPrice.id) {
           newCoin["currentDateData"] = currentPrice;
@@ -95,19 +97,22 @@ export default function Portfolio() {
         <div>
           <ul>
             {coinsToRender &&
-              coinsToRender.map((coin: CoinToRender) => (
-                <PortfolioCoinCard
-                  coin={coin}
-                  key={coin.id}
-                  id={coin.id}
-                  coinAmount={coin.coinAmount}
-                  purchaseDate={coin.purchasedDate}
-                  currentDateData={coin.currentDateData}
-                  purchasedDateData={coin.purchasedDateData}
-                  showEditModal={showEditModal}
-                  handleCoinToEdit={handleCoinToEdit}
-                />
-              ))}
+              coinsToRender.map((coin: CoinToRender) => {
+                if (coin.currentDateData)
+                  return (
+                    <PortfolioCoinCard
+                      coin={coin}
+                      key={coin.id}
+                      id={coin.id}
+                      coinAmount={coin.coinAmount}
+                      purchaseDate={coin.purchasedDate}
+                      currentDateData={coin.currentDateData}
+                      purchasedDateData={coin.purchasedDateData}
+                      showEditModal={showEditModal}
+                      handleCoinToEdit={handleCoinToEdit}
+                    />
+                  );
+              })}
           </ul>
         </div>
         {showAssetModal &&

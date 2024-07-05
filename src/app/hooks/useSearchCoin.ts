@@ -1,15 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+"use client";
 import { MutableRefObject, useEffect, useState } from "react";
 import { SearchedCoin } from "../types/types";
 export default function useSearchCoin(
   searchValue: string,
   focused: boolean,
   timerRef: MutableRefObject<number | undefined>
-): (
-  | SearchedCoin[]
-  | null
-  | React.Dispatch<React.SetStateAction<SearchedCoin[] | null>>
-)[] {
+) {
   const [searchedCoins, setSearchedCoins] = useState<SearchedCoin[] | null>(
     null
   );
@@ -38,5 +35,5 @@ export default function useSearchCoin(
       clearTimeout(timerRef?.current);
     };
   }, [searchValue]);
-  return [searchedCoins, setSearchedCoins];
+  return [searchedCoins, setSearchedCoins] as const;
 }

@@ -4,7 +4,7 @@ import { useAppSelector } from "@/app/lib/hooks";
 import DropDownIcon from "../Svgs/DropDownIcon";
 import CoinName from "../CoinName";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
-import { ConvertorCoin } from "@/app/types/types";
+import { CoinTableCoin } from "@/app/types/types";
 import { RootState } from "@/app/lib/store";
 const selectCurrentCurrency = (state: RootState) => state.currentCurrency;
 const selectCoinList = (state: RootState) => state.coinList.data;
@@ -20,25 +20,25 @@ export function CoinConvertor({
   handleBuyingAmount,
 }: {
   selling: boolean;
-  sellingCoin: ConvertorCoin;
-  buyingCoin: ConvertorCoin;
+  sellingCoin: CoinTableCoin;
+  buyingCoin: CoinTableCoin;
   sellingAmount: number;
   buyingAmount: number;
-  handleSellingCoin: (_coin: ConvertorCoin) => void;
-  handleBuyingCoin: (_coin: ConvertorCoin) => void;
+  handleSellingCoin: (_coin: CoinTableCoin) => void;
+  handleBuyingCoin: (_coin: CoinTableCoin) => void;
   handleSellingAmount: (
     _e: React.ChangeEvent<HTMLInputElement>,
-    _sellingCoin: ConvertorCoin,
-    _buyingCoin: ConvertorCoin
+    _sellingCoin: CoinTableCoin,
+    _buyingCoin: CoinTableCoin
   ) => void;
   handleBuyingAmount: (
     _e: React.ChangeEvent<HTMLInputElement>,
-    _buyingCoin: ConvertorCoin,
-    _sellingCoin: ConvertorCoin
+    _buyingCoin: CoinTableCoin,
+    _sellingCoin: CoinTableCoin
   ) => void;
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
-  const coinList: ConvertorCoin[] = useAppSelector(selectCoinList);
+  const coinList: CoinTableCoin[] = useAppSelector(selectCoinList);
   const [showCoinList, setShowCoinList] = useState<boolean>(false);
   const handleShowCoinList = (): void => {
     setShowCoinList(!showCoinList);
@@ -88,7 +88,7 @@ export function CoinConvertor({
               }`}
             >
               {showCoinList &&
-                coinList.map((coin: ConvertorCoin) => (
+                coinList.map((coin: CoinTableCoin) => (
                   <li
                     className="cursor-pointer"
                     onClick={() =>

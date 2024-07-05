@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import handleCoinDates from "@/app/utils/handleCoinDates";
-import { ConversionCoin } from "@/app/types/types";
+import { CoinTableCoin, ConversionCoin } from "@/app/types/types";
 import { RootState } from "../../store";
 interface State {
   conversionCoins: any;
@@ -19,7 +19,7 @@ const initialState: State = {
   error: "",
 };
 const callConversionData = async (
-  arg: { [key: string]: string },
+  arg: CoinTableCoin,
   thunkApi: { getState: () => RootState }
 ) => {
   const { currentCurrency } = thunkApi.getState();
@@ -39,14 +39,14 @@ const callConversionData = async (
 };
 export const fetchSellingCoinData = createAsyncThunk<
   ConversionCoin,
-  { [key: string]: string },
+  CoinTableCoin,
   {
     state: RootState;
   }
 >("conversionCoins/getSellingCoinPrices", callConversionData);
 export const fetchBuyingCoinData = createAsyncThunk<
   ConversionCoin,
-  { [key: string]: string },
+  CoinTableCoin,
   { state: RootState }
 >("conversionCoins/getBuyingCoinPrices", callConversionData);
 const conversionCoinsSlice = createSlice({

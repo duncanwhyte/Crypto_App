@@ -5,7 +5,7 @@ import useSearchCoin from "@/app/hooks/useSearchCoin";
 import useFormError from "@/app/hooks/useFormError";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { callPortfolioCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
-import { ModalFormData, PortfolioCoin, SearchedCoin } from "@/app/types/types";
+import { ModalFormData, SearchedCoin } from "@/app/types/types";
 export default function PortfolioModal({
   coinToEdit,
   edit,
@@ -55,9 +55,7 @@ export default function PortfolioModal({
       };
     });
     setCoinInputFocused(false);
-    if (typeof setSearchedCoins === "function") {
-      setSearchedCoins(null);
-    }
+    setSearchedCoins(null);
   };
   const handleCoinsFocused = (): void => {
     setCoinInputFocused(true);
@@ -96,7 +94,7 @@ export default function PortfolioModal({
     }
   };
   const handleSaveAsset = (
-    coin: PortfolioCoin,
+    coin: SearchedCoin,
     coinAmount: string,
     purchasedDate: string
   ): void => {
