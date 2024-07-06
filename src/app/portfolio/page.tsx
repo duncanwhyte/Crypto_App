@@ -99,7 +99,7 @@ export default function Portfolio() {
         <div>
           <ul>
             {coinsToRender &&
-              coinsToRender.map((coin: CoinToRender) => {
+              coinsToRender.filter((coin: CoinToRender) => coin.currentDateData).map((coin: CoinToRender) => {
                 if (coin.currentDateData)
                   return (
                     <PortfolioCoinCard
