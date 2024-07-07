@@ -12,34 +12,11 @@ import handleCurrency from "@/app/utils/handleCurrency";
 import CoinChart from "../CoinChart";
 import { fetchCoinTableList } from "@/app/lib/features/coinTableList/coinTableListSlice";
 import useScroll from "@/app/hooks/useScroll";
-interface Coin {
-  name: string;
-  id: string;
-  image: string;
-  symbol: string;
-  current_price: number;
-  total_volume: number;
-  market_cap: number;
-  circulating_supply: number;
-  total_supply: number;
-  price_change_percentage_1h_in_currency: number;
-  price_change_percentage_24h_in_currency: number;
-  price_change_percentage_7d_in_currency: number;
-}
-interface CoinTableList {
-  data: Coin[];
-  isLoading: "idle" | "pending" | "success" | "failed";
-  error: boolean | string;
-  coinsToDisplay: number;
-  order: string;
-}
-interface State {
-  currentCurrency: string;
-  coinTableList: CoinTableList;
-}
-const currencySelect = (state: State) => state.currentCurrency;
-const coinTableListSelect = (state: State) => state.coinTableList.data;
-const coinsToDisplaySelect = (state: State) =>
+import { RootState } from "@/app/lib/store";
+import { CoinTableCoin } from "@/app/types/types";
+const currencySelect = (state: RootState) => state.currentCurrency;
+const coinTableListSelect = (state: RootState) => state.coinTableList.data;
+const coinsToDisplaySelect = (state: RootState) =>
   state.coinTableList.coinsToDisplay;
 export default function CoinTable() {
   const currentCurrency = useAppSelector(currencySelect);
@@ -85,7 +62,7 @@ export default function CoinTable() {
               total_volume: totalVolume,
               circulating_supply: circulatingSupply,
               total_supply: totalSupply,
-            }: Coin,
+            }: CoinTableCoin,
             index: number
           ) => {
             return (

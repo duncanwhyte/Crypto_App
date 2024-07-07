@@ -32,7 +32,7 @@ export default function CoinTableFilter() {
       </div>
       <div className="relative">
         <ul
-          onClick={handleCoinListFilter}
+          onClick={handleShowCoinSorts}
           className={`transition duration-300 p-2 bg-[#232336] w-56 absolute z-10 left-0 top-0 ${
             showCoinSorts ? "flex flex-col" : "hidden"
           }`}

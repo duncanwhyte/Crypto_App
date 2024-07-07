@@ -8,6 +8,7 @@ import { useRef } from "react";
 import { SliderNextArrow, SliderPrevArrow } from "../SliderArrows/SliderArrows";
 import { fetchCoinData } from "@/app/lib/features/selectedCoins/selectedCoinsSlice";
 import useWindowWidth from "@/app/hooks/useWindowWidth";
+import { RootState } from "@/app/lib/store";
 interface Coin {
   name: string;
   id: string;
@@ -22,17 +23,17 @@ interface Coin {
   price_change_percentage_24h_in_currency: number;
   price_change_percentage_7d_in_currency: number;
 }
-const selectCoinList = (state) => state.coinList.data;
-const selectUserCoins = (state) => state.selectedCoins.selectedCoins;
-const selectCurrency = (state) => state.currentCurrency;
+const selectCoinList = (state: RootState): Coin[] => state.coinList.data;
+const selectUserCoins = (state: RootState): Coin[] =>
+  state.selectedCoins.selectedCoins;
+const selectCurrency = (state: RootState) => state.currentCurrency;
 function CoinSlider() {
   const coinList = useAppSelector(selectCoinList);
   const [coin1, coin2, coin3] = useAppSelector(selectUserCoins);
-  const windowWidth = useWindowWidth();
-  const sliderRef = useRef<Slider>(null);
-  const currentCurrency = useAppSelector(selectCurrency);
+  const sliderRef = useRef<Slider | null>(null);
+  const currentCurrency: string = useAppSelector(selectCurrency);
   const dispatch = useAppDispatch();
-  const handleAddCoin = (coin: Coin) => {
+  const handleAddCoin = (coin: Coin): void => {
     if (
       coin.id === coin1?.id ||
       coin.id === coin2?.id ||
@@ -43,19 +44,22 @@ function CoinSlider() {
     }
     dispatch(fetchCoinData(coin));
   };
-  const next = () => {
-    sliderRef.current.slickNext();
+  const next = (): void => {
+    if (sliderRef.current) {
+      sliderRef.current.slickNext();
+    }
   };
-  const prev = () => {
-    sliderRef.current.slickPrev();
+  const prev = (): void => {
+    if (sliderRef.current) {
+      sliderRef.current.slickPrev();
+    }
   };
   const sliderSettings = {
     speed: 300,
     slidesToShow: 5,
     slidesToScroll: 1,
-    draggable: windowWidth < 768 && true,
-    nextArrow: windowWidth >= 768 && <SliderNextArrow next={next} />,
-    prevArrow: windowWidth >= 768 && <SliderPrevArrow prev={prev} />,
+    nextArrow: <SliderNextArrow next={next} />,
+    prevArrow: <SliderPrevArrow prev={prev} />,
     responsive: [
       {
         breakpoint: 1320,

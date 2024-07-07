@@ -5,6 +5,7 @@ import useSearchCoin from "@/app/hooks/useSearchCoin";
 import useFormError from "@/app/hooks/useFormError";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { callPortfolioCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
+import { ModalFormData, SearchedCoin } from "@/app/types/types";
 export default function PortfolioModal({
   coinToEdit,
   edit,
@@ -24,15 +25,15 @@ export default function PortfolioModal({
   currentCoinAmount: number | string;
   currentPurchaseDate: string;
 }) {
-  const [modalInputData, setModalInputData] = useState({
+  const [modalInputData, setModalInputData] = useState<ModalFormData>({
     searchCoinValue: currentCoinName || "",
-    coinAmount: currentCoinAmount || "",
+    coinAmount: currentCoinAmount.toString() || "",
     purchasedDate: currentPurchaseDate || "",
   });
   const dispatch = useAppDispatch();
   const [selectedCoin, setSelectedCoin] = useState(coinToEdit || null);
   const [coinInputFocused, setCoinInputFocused] = useState(false);
-  const timerRef = useRef();
+  const timerRef = useRef<number>();
   const previousCoinRef = useRef(coinToEdit || null);
   const [selectedCoinError, coinAmountError, purchasedDateError] = useFormError(
     selectedCoin,
@@ -44,10 +45,10 @@ export default function PortfolioModal({
     coinInputFocused,
     timerRef
   );
-  const handleSelectedCoin = (coin) => {
+  const handleSelectedCoin = (coin: SearchedCoin) => {
     setSelectedCoin(coin);
     previousCoinRef.current = coin;
-    setModalInputData((prev) => {
+    setModalInputData((prev): ModalFormData => {
       return {
         ...prev,
         ["searchCoinValue"]: coin.name,
@@ -56,10 +57,10 @@ export default function PortfolioModal({
     setCoinInputFocused(false);
     setSearchedCoins(null);
   };
-  const handleCoinsFocused = () => {
+  const handleCoinsFocused = (): void => {
     setCoinInputFocused(true);
   };
-  const handleCoinBlur = (e) => {
+  const handleCoinBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
     if (!previousCoinRef.current) {
       return;
     } else if (previousCoinRef.current.name !== e.target.value) {
@@ -72,16 +73,12 @@ export default function PortfolioModal({
     }
     setCoinInputFocused(false);
   };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
-    let number: undefined | number;
-    if (name === "coinAmount") {
-      number = parseFloat(value);
-    }
     setModalInputData((prev) => {
       return {
         ...prev,
-        [name]: number ? number : value,
+        [name]: value,
       };
     });
   };
@@ -96,11 +93,15 @@ export default function PortfolioModal({
       return true;
     }
   };
-  const handleSaveAsset = (coin, coinAmount, purchasedDate) => {
+  const handleSaveAsset = (
+    coin: SearchedCoin,
+    coinAmount: string,
+    purchasedDate: string
+  ): void => {
     dispatch(
       callPortfolioCoinData({
         coin,
-        coinAmount: coinAmount,
+        coinAmount: parseFloat(coinAmount),
         purchasedDate,
       })
     );
@@ -157,24 +158,25 @@ export default function PortfolioModal({
                   />
                   {searchedCoins && (
                     <ul className="bg-[#F3F5F9] text-black dark:text-[#FFFFFF] dark:bg-[#191925] transition-all absolute z-10 max-h-[250px] w-[calc(100%-1px)] overflow-scroll top-10 left-0">
-                      {searchedCoins.map((coin: any) => (
-                        <li
-                          onClick={() => handleSelectedCoin(coin)}
-                          id={coin.id}
-                          className="flex cursor-pointer"
-                          key={coin.id}
-                        >
-                          <Image
-                            src={coin.thumb}
-                            width={24}
-                            height={24}
-                            alt="crypto-coin-image"
-                          />
-                          <p>
-                            {coin.name} {coin.symbol.toUpperCase()}
-                          </p>
-                        </li>
-                      ))}
+                      {searchedCoins &&
+                        searchedCoins?.map((coin: SearchedCoin) => (
+                          <li
+                            onClick={(): void => handleSelectedCoin(coin)}
+                            id={coin.id}
+                            className="flex cursor-pointer"
+                            key={coin.id}
+                          >
+                            <Image
+                              src={coin.thumb}
+                              width={24}
+                              height={24}
+                              alt="crypto-coin-image"
+                            />
+                            <p>
+                              {coin.name} {coin.symbol.toUpperCase()}
+                            </p>
+                          </li>
+                        ))}
                     </ul>
                   )}
                 </div>

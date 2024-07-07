@@ -9,25 +9,24 @@ import CoinStatistic from "@/app/components/CoinStatistic";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import handleCoinDates from "@/app/utils/handleCoinDates";
 import handleAllTimeDateDisplay from "@/app/utils/handleAllTimeDateDisplay";
-const selectCurrentCurrency = (state) => state.currentCurrency;
-const selectPortfolioCoins = (state) => state.portfolioCoins.coins;
+import { CoinData, PortfolioCoin } from "@/app/types/types";
+import { RootState } from "@/app/lib/store";
+const selectCurrentCurrency = (state: RootState) => state.currentCurrency;
+const selectPortfolioCoins = (state: RootState) => state.portfolioCoins.coins;
 export default function CoinPage({ coinId }: { coinId: string }) {
-  const currentCurrency = useAppSelector(selectCurrentCurrency);
-  const portfolioCoins = useAppSelector(selectPortfolioCoins);
-  const [coinData, setCoinData] = useState(null);
-  const [totalVolume24h, setTotalVolume24h] = useState(null);
-  const handleHTML = () => {
-    return { __html: coinData?.description?.en };
-  };
+  const currentCurrency: string = useAppSelector(selectCurrentCurrency);
+  const portfolioCoins: PortfolioCoin[] = useAppSelector(selectPortfolioCoins);
+  const [coinData, setCoinData] = useState<CoinData | null>(null);
+  const [totalVolume24h, setTotalVolume24h] = useState<null>(null);
   useEffect(() => {
-    const callCoinData = async () => {
+    const callCoinData = async (): Promise<void> => {
       const coinDataReq = await fetch(
         `https://api.coingecko.com/api/v3/coins/${coinId}?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
       );
       const coinData = await coinDataReq.json();
       setCoinData(coinData);
     };
-    const call24hrTotalVolume = async () => {
+    const call24hrTotalVolume = async (): Promise<void> => {
       const [currentTime, pastTime] = handleCoinDates(1);
       const totalVolumeReq = await fetch(
         `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
@@ -46,10 +45,13 @@ export default function CoinPage({ coinId }: { coinId: string }) {
     coinData && new Date(coinData?.market_data?.ath_date[currentCurrency]);
   const atlDate =
     coinData && new Date(coinData?.market_data?.atl_date[currentCurrency]);
-  const storedCoins = portfolioCoins.filter((coin) => coin.id === coinId);
+  const storedCoins: PortfolioCoin[] = portfolioCoins.filter(
+    (coin: PortfolioCoin) => coin.id === coinId
+  );
   const profit =
     storedCoins.length > 0 &&
-    storedCoins.reduce((init: number, currVal) => {
+    coinData &&
+    storedCoins.reduce((init: number, currVal: PortfolioCoin) => {
       return (init +=
         (coinData?.market_data?.current_price[currentCurrency] -
           currVal.purchasedDateData?.market_data?.current_price[
@@ -62,13 +64,15 @@ export default function CoinPage({ coinId }: { coinId: string }) {
       <div className="mb-8 xl:flex xl:gap-4">
         <div className="bg-[#FFFFFF] dark:bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
           <div className="flex mb-8">
-            <Image
-              className="mr-[24px]"
-              width={48}
-              height={48}
-              src={coinData?.image?.small}
-              alt="crypto-symbol-image"
-            />
+            {coinData && (
+              <Image
+                className="mr-[24px]"
+                width={48}
+                height={48}
+                src={coinData.image.large}
+                alt="crypto-symbol-image"
+              />
+            )}
             <div className="flex flex-col">
               <h3 className="text-bold text-lg">
                 {coinData?.name} ({coinData?.symbol?.toUpperCase()})
@@ -164,10 +168,14 @@ export default function CoinPage({ coinId }: { coinId: string }) {
           </div>
         </div>
         <div className="xl:w-[60%]">
-          <p
-            dangerouslySetInnerHTML={handleHTML()}
-            className="data-html text-sm text-center max-w-[600px] mx-auto mb-5 xl:text-left xl:mx-0 xl:mb-4 xl:mx-0 xl:max-w-full"
-          ></p>
+          {coinData && (
+            <p
+              dangerouslySetInnerHTML={
+                coinData && { __html: coinData.description.en }
+              }
+              className="data-html text-sm text-center max-w-[600px] mx-auto mb-5 xl:text-left xl:mx-0 xl:mb-4 xl:mx-0 xl:max-w-full"
+            ></p>
+          )}
           <div className="flex flex-col gap-2 max-w-[560px] mx-auto xl:flex-row xl:flex-wrap xl:max-w-full xl:mx-0">
             {coinData?.links?.blockchain_site
               .filter((link: string) => link.length)
@@ -180,10 +188,13 @@ export default function CoinPage({ coinId }: { coinId: string }) {
       </div>
       <hr className="mb-8"></hr>
       <div className="xl:flex xl:flex-wrap xl:gap-6">
-        <CoinStatisticCard className="bg-[#1E1932] rounded-xl max-w-[560px] mx-auto mb-4 px-8 py-10 xl:mx-0 xl:max-w-none xl:basis-[calc(50%-12px)] xl:mb-0">
+        <CoinStatisticCard>
           <CoinStatistic
             statisticText="Total Volume"
-            statisticData={coinData?.market_data?.total_volume[currentCurrency]}
+            statisticData={
+              coinData &&
+              coinData.market_data.total_volume[currentCurrency].toString()
+            }
             coinSymbol={null}
             currentCurrency={currentCurrency}
           />
@@ -197,10 +208,13 @@ export default function CoinPage({ coinId }: { coinId: string }) {
           )}
           <CoinStatistic
             statisticText="Volume/Market"
-            statisticData={(
-              coinData?.market_data?.total_volume[currentCurrency] /
-              coinData?.market_data?.market_cap[currentCurrency]
-            ).toFixed(5)}
+            statisticData={
+              coinData &&
+              (
+                coinData.market_data.total_volume[currentCurrency] /
+                coinData.market_data.market_cap[currentCurrency]
+              ).toFixed(5)
+            }
             coinSymbol={null}
             currentCurrency={null}
           />
@@ -208,24 +222,27 @@ export default function CoinPage({ coinId }: { coinId: string }) {
         <CoinStatisticCard>
           <CoinStatistic
             statisticText="Max Supply"
-            statisticData={coinData?.market_data?.max_supply || "N/A"}
-            coinSymbol={coinData?.symbol.toUpperCase()}
+            statisticData={
+              coinData?.market_data?.max_supply.toString() || "N/A"
+            }
+            coinSymbol={coinData && coinData?.symbol.toUpperCase()}
             currentCurrency={null}
           />
           <CoinStatistic
             statisticText="Circulating Supply"
-            statisticData={coinData?.market_data?.circulating_supply}
-            coinSymbol={coinData?.symbol.toUpperCase()}
+            statisticData={coinData?.market_data?.circulating_supply.toString()}
+            coinSymbol={coinData && coinData?.symbol.toUpperCase()}
             currentCurrency={null}
           />
           <div className="flex justify-between">
             <div className="flex items-center gap-1">
               <div className="w-2 h-2 rounded-full bg-red-400"></div>
               <span className="text-sm">
-                {handleTableProgressBar(
-                  coinData?.market_data?.circulating_supply,
-                  coinData?.market_data?.total_supply
-                )}
+                {coinData &&
+                  handleTableProgressBar(
+                    coinData.market_data.circulating_supply,
+                    coinData.market_data.total_supply
+                  )}
                 %
               </span>
             </div>
@@ -237,13 +254,16 @@ export default function CoinPage({ coinId }: { coinId: string }) {
           <div className="relative bg-white w-full h-2 rounded-xl">
             <div
               style={{
-                width: `${Math.min(
-                  handleTableProgressBar(
-                    coinData?.market_data?.circulating_supply,
-                    coinData?.market_data?.total_supply
-                  ),
-                  100
-                )}%`,
+                width: `${
+                  coinData &&
+                  Math.min(
+                    handleTableProgressBar(
+                      coinData.market_data.circulating_supply,
+                      coinData.market_data.total_supply
+                    ),
+                    100
+                  )
+                }%`,
               }}
               className="absolute bg-red-400 h-full top-0 left-0 rounded-xl"
             ></div>
@@ -252,15 +272,17 @@ export default function CoinPage({ coinId }: { coinId: string }) {
         <CoinStatisticCard>
           <CoinStatistic
             statisticText="Market Cap"
-            statisticData={coinData?.market_data?.market_cap[currentCurrency]}
+            statisticData={coinData?.market_data?.market_cap[
+              currentCurrency
+            ].toString()}
             coinSymbol={null}
             currentCurrency={currentCurrency}
           />
           <CoinStatistic
             statisticText="Fully Diluted Valuation"
-            statisticData={
-              coinData?.market_data?.fully_diluted_valuation[currentCurrency]
-            }
+            statisticData={coinData?.market_data?.fully_diluted_valuation[
+              currentCurrency
+            ].toString()}
             coinSymbol={null}
             currentCurrency={currentCurrency}
           />
