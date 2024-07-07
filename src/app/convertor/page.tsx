@@ -8,24 +8,26 @@ import TimeDurationSelector from "../components/TimeDurationSelector";
 import { CoinConvertor } from "../components/Convertors";
 import ConversionChart from "../components/ConversionChart";
 import CoinConvertorSwitch from "../components/Svgs/CoinConvertorSwitch";
-const selectCoinList = (state) => state.coinList.data;
-const selectCurrentCurrency = (state) => state.currentCurrency;
+import { RootState } from "../lib/store";
+import { CoinTableCoin } from "../types/types";
+const selectCoinList = (state: RootState) => state.coinList.data;
+const selectCurrentCurrency = (state: RootState) => state.currentCurrency;
 export default function Convertor() {
-  const coinList = useAppSelector(selectCoinList);
+  const coinList: CoinTableCoin[] = useAppSelector(selectCoinList);
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();
-  const [sellingCoin, setSellingCoin] = useState(null);
-  const [buyingCoin, setBuyingCoin] = useState(null);
-  const [sellingAmount, setSellingAmount] = useState(0);
-  const [buyingAmount, setBuyingAmount] = useState(0);
+  const [sellingCoin, setSellingCoin] = useState<CoinTableCoin | null>(null);
+  const [buyingCoin, setBuyingCoin] = useState<CoinTableCoin | null>(null);
+  const [sellingAmount, setSellingAmount] = useState<number>(0);
+  const [buyingAmount, setBuyingAmount] = useState<number>(0);
   const newDate = new Date();
-  const handleSellingCoin = (coin) => {
+  const handleSellingCoin = (coin: CoinTableCoin): void => {
     setSellingCoin(coin);
   };
-  const handleBuyingCoin = (coin) => {
+  const handleBuyingCoin = (coin: CoinTableCoin): void => {
     setBuyingCoin(coin);
   };
-  const handleCoinSwitch = () => {
+  const handleCoinSwitch = (): void => {
     const sellCoin = sellingCoin || coinList[0];
     const buyCoin = buyingCoin || coinList[1];
     const tempAmount = sellingAmount;
@@ -34,16 +36,24 @@ export default function Convertor() {
     setSellingAmount(buyingAmount);
     setBuyingAmount(tempAmount);
   };
-  const handleSellingAmount = (e, sellingCoin, buyingCoin) => {
-    setSellingAmount(e.target.value);
+  const handleSellingAmount = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    sellingCoin: CoinTableCoin,
+    buyingCoin: CoinTableCoin
+  ): void => {
+    setSellingAmount(parseFloat(e.target.value));
     const sellingPrice =
       e.target.value === ""
         ? 0
         : parseFloat(e.target.value) * sellingCoin.current_price;
     setBuyingAmount(sellingPrice / buyingCoin.current_price);
   };
-  const handleBuyingAmount = (e, buyingCoin, sellingCoin) => {
-    setBuyingAmount(e.target.value);
+  const handleBuyingAmount = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    buyingCoin: CoinTableCoin,
+    sellingCoin: CoinTableCoin
+  ): void => {
+    setBuyingAmount(parseFloat(e.target.value));
     const buyingPrice =
       e.target.value === ""
         ? 0
@@ -78,7 +88,7 @@ export default function Convertor() {
             sellingAmount={sellingAmount}
             buyingAmount={buyingAmount}
             handleSellingCoin={handleSellingCoin}
-            handleBuyingCoin={false}
+            handleBuyingCoin={handleBuyingCoin}
             handleSellingAmount={handleSellingAmount}
             handleBuyingAmount={handleBuyingAmount}
           />
@@ -91,7 +101,7 @@ export default function Convertor() {
             sellingAmount={sellingAmount}
             buyingAmount={buyingAmount}
             handleBuyingCoin={handleBuyingCoin}
-            handleSellingCoin={false}
+            handleSellingCoin={handleSellingCoin}
             handleBuyingAmount={handleBuyingAmount}
             handleSellingAmount={handleSellingAmount}
           />

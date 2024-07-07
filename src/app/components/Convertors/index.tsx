@@ -4,8 +4,10 @@ import { useAppSelector } from "@/app/lib/hooks";
 import DropDownIcon from "../Svgs/DropDownIcon";
 import CoinName from "../CoinName";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
-const selectCurrentCurrency = (state) => state.currentCurrency;
-const selectCoinList = (state) => state.coinList.data;
+import { CoinTableCoin } from "@/app/types/types";
+import { RootState } from "@/app/lib/store";
+const selectCurrentCurrency = (state: RootState) => state.currentCurrency;
+const selectCoinList = (state: RootState) => state.coinList.data;
 export function CoinConvertor({
   selling,
   sellingCoin,
@@ -18,19 +20,27 @@ export function CoinConvertor({
   handleBuyingAmount,
 }: {
   selling: boolean;
-  sellingCoin: any;
-  buyingCoin: any;
-  sellingAmount: any;
-  buyingAmount: any;
-  handleSellingCoin: any;
-  handleBuyingCoin: any;
-  handleSellingAmount: any;
-  handleBuyingAmount: any;
+  sellingCoin: CoinTableCoin;
+  buyingCoin: CoinTableCoin;
+  sellingAmount: number;
+  buyingAmount: number;
+  handleSellingCoin: (_coin: CoinTableCoin) => void;
+  handleBuyingCoin: (_coin: CoinTableCoin) => void;
+  handleSellingAmount: (
+    _e: React.ChangeEvent<HTMLInputElement>,
+    _sellingCoin: CoinTableCoin,
+    _buyingCoin: CoinTableCoin
+  ) => void;
+  handleBuyingAmount: (
+    _e: React.ChangeEvent<HTMLInputElement>,
+    _buyingCoin: CoinTableCoin,
+    _sellingCoin: CoinTableCoin
+  ) => void;
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
-  const coinList = useAppSelector(selectCoinList);
-  const [showCoinList, setShowCoinList] = useState(false);
-  const handleShowCoinList = () => {
+  const coinList: CoinTableCoin[] = useAppSelector(selectCoinList);
+  const [showCoinList, setShowCoinList] = useState<boolean>(false);
+  const handleShowCoinList = (): void => {
     setShowCoinList(!showCoinList);
   };
   return (
@@ -78,7 +88,7 @@ export function CoinConvertor({
               }`}
             >
               {showCoinList &&
-                coinList.map((coin) => (
+                coinList.map((coin: CoinTableCoin) => (
                   <li
                     className="cursor-pointer"
                     onClick={() =>

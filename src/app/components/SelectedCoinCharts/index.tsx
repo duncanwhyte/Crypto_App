@@ -13,6 +13,8 @@ import {
   Legend,
   Filler,
   BarElement,
+  Scale,
+  CoreScaleOptions,
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
 import { updateCoinData } from "@/app/lib/features/selectedCoins/selectedCoinsSlice";
@@ -190,16 +192,18 @@ export default function SelectedCoinsCharts() {
     },
     scales: {
       x: {
-        beforeFit(axis: any) {
-          const labels = axis.chart.config._config.data.labels;
-          const length = labels?.length - 1;
-          axis.ticks.push({
-            value: length,
-            label: handleCoinDateDisplay(
-              coin1?.coinData?.prices[length][0],
-              graphTimeDuration
-            ),
-          });
+        beforeFit: (axis: Scale<CoreScaleOptions>) => {
+          const labels = axis.chart.config.data.labels;
+          const length = labels && labels.length - 1;
+          if (labels && length) {
+            axis.ticks.push({
+              label: handleCoinDateDisplay(
+                coin1?.coinData?.prices[length][0],
+                graphTimeDuration
+              ),
+              value: length,
+            });
+          }
         },
         grid: {
           display: false,
@@ -241,16 +245,18 @@ export default function SelectedCoinsCharts() {
         },
       },
       x: {
-        beforeFit: (axis: any) => {
-          const labels = axis.chart.config._config.data.labels;
-          const length = labels?.length - 1;
-          axis.ticks.push({
-            label: handleCoinDateDisplay(
-              coin1?.coinData?.prices[length][0],
-              graphTimeDuration
-            ),
-            value: length,
-          });
+        beforeFit: (axis: Scale<CoreScaleOptions>) => {
+          const labels = axis.chart.config.data.labels;
+          const length = labels && labels.length - 1;
+          if (labels && length) {
+            axis.ticks.push({
+              label: handleCoinDateDisplay(
+                coin1?.coinData?.prices[length][0],
+                graphTimeDuration
+              ),
+              value: length,
+            });
+          }
         },
         stacked: true,
         grid: {
@@ -319,7 +325,7 @@ export default function SelectedCoinsCharts() {
         </div>
         <Line
           style={{ width: "100%" }}
-          options={lineChartOptions}
+          options={lineChartOptions as any}
           data={lineConfig}
         />
         <div>
@@ -392,7 +398,7 @@ export default function SelectedCoinsCharts() {
             </div>
           )}
         </div>
-        <Bar data={barConfig} options={barChartOptions} />
+        <Bar data={barConfig} options={barChartOptions as any} />
         <div>
           <div className="flex items-center space-x-2">
             {coin1 && coin2 && !coin3 && (

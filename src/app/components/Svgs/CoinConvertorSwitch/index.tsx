@@ -2,7 +2,7 @@ import { useTheme } from "next-themes";
 export default function CoinConvertorSwitch({
   handleCoinSwitch,
 }: {
-  handleCoinSwitch: any;
+  handleCoinSwitch: () => void;
 }) {
   const { resolvedTheme } = useTheme();
   return (

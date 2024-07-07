@@ -1,7 +1,7 @@
-export default function handleCoinLabelCount(screenSize) {
-    if (screenSize <= 960) {
-        return 5;
-    } else {
-        return 7;
-    }
+export default function handleCoinLabelCount(screenSize: number): number {
+  if (screenSize <= 960) {
+    return 5;
+  } else {
+    return 7;
+  }
 }

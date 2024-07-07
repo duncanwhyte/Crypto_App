@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
 import TimeDurationInput from "../TimeDurationInput";
-const selectGraphTimeDuration = (state) =>
+import { RootState } from "@/app/lib/store";
+const selectGraphTimeDuration = (state: RootState) =>
   state.graphTimeDuration.graphTimeDuration;
 export default function TimeDurationSelector() {
   const chartTimeDuration = useAppSelector(selectGraphTimeDuration);

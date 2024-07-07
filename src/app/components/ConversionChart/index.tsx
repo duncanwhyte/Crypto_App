@@ -10,6 +10,8 @@ import {
   Tooltip,
   Legend,
   Filler,
+  CoreScaleOptions,
+  Scale,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
@@ -20,6 +22,8 @@ import {
 import handleCoinDateDisplay from "@/app/utils/handleCoinDateDisplay";
 import handleCoinChartColor from "@/app/utils/handleCoinChartColor";
 import handleRenderConversionData from "@/app/utils/handleRenderConversionData";
+import { RootState } from "@/app/lib/store";
+import { CoinTableCoin, ConversionCoins } from "@/app/types/types";
 ChartJs.register(
   CategoryScale,
   LinearScale,
@@ -30,20 +34,28 @@ ChartJs.register(
   Legend,
   Filler
 );
-const conversionCoinsSelector = (state) =>
+const conversionCoinsSelector = (state: RootState) =>
   state.conversionCoins.conversionCoins;
-const selectGraphTimeDuration = (state) =>
+const selectGraphTimeDuration = (state: RootState) =>
   state.graphTimeDuration.graphTimeDuration;
-export default function ConversionChart({ sellingCoin, buyingCoin }) {
+export default function ConversionChart({
+  sellingCoin,
+  buyingCoin,
+}: {
+  sellingCoin: CoinTableCoin;
+  buyingCoin: CoinTableCoin;
+}) {
   const graphTimeDuration = useAppSelector(selectGraphTimeDuration);
-  const conversionCoins = useAppSelector(conversionCoinsSelector);
+  const conversionCoins: ConversionCoins = useAppSelector(
+    conversionCoinsSelector
+  );
   const dispatch = useAppDispatch();
   useEffect(() => {
     buyingCoin && dispatch(fetchBuyingCoinData(buyingCoin));
     sellingCoin && dispatch(fetchSellingCoinData(sellingCoin));
   }, [graphTimeDuration, dispatch, sellingCoin, buyingCoin]);
   const config = {
-    labels: conversionCoins?.sellingCoin?.prices?.map((price) => {
+    labels: conversionCoins?.sellingCoin?.prices?.map((price: number[]) => {
       return handleCoinDateDisplay(new Date(price[0]), graphTimeDuration);
     }),
     datasets: [
@@ -82,16 +94,18 @@ export default function ConversionChart({ sellingCoin, buyingCoin }) {
     },
     scales: {
       x: {
-        beforeFit(axis) {
-          const labels = axis.chart.config._config.data.labels;
-          const length = labels.length - 1;
-          axis.ticks.push({
-            value: length,
-            label: handleCoinDateDisplay(
-              conversionCoins?.sellingCoin?.prices[length][0],
-              graphTimeDuration
-            ),
-          });
+        beforeFit(axis: Scale<CoreScaleOptions>) {
+          const labels = axis.chart.config?.data.labels;
+          const length = labels && labels.length - 1;
+          if (labels && length) {
+            axis.ticks.push({
+              value: length,
+              label: handleCoinDateDisplay(
+                conversionCoins?.sellingCoin?.prices[length][0],
+                graphTimeDuration
+              ),
+            });
+          }
         },
         grid: {
           display: false,
@@ -113,7 +127,7 @@ export default function ConversionChart({ sellingCoin, buyingCoin }) {
   };
   return (
     <div>
-      <Line height={197} data={config} options={options} />
+      <Line height={197} data={config} options={options as any} />
     </div>
   );
 }
