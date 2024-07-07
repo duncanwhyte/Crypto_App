@@ -37,12 +37,12 @@ export default function CoinTable() {
           <th className="hidden lg:table-cell">#</th>
           <th>Name</th>
           <th>Price</th>
-          <th className="hidden lg:table-cell">1hr%</th>
-          <th className="hidden lg:table-cell">24hr%</th>
+          <th>1hr%</th>
+          <th>24hr%</th>
           <th className="hidden lg:table-cell">7d%</th>
           <th className="hidden lg:table-cell">24hr volume / Market Cap</th>
           <th className="hidden lg:table-cell">Circulating / Total Supply</th>
-          <th>Last 7d</th>
+          <th className="hidden lg:table-cell">Last 7d</th>
         </tr>
         {coinTableList.map(
           (
@@ -91,7 +91,7 @@ export default function CoinTable() {
                     </div>
                   </div>
                 </td>
-                <td className="pr-5">
+                <td className="pr-2.5 lg:pr-5">
                   {handleCurrencySymbol(currentCurrency)}
                   {currentPrice}
                 </td>
@@ -100,7 +100,7 @@ export default function CoinTable() {
                     priceChangePercent1hInCurrency > 0
                       ? "text-green-400"
                       : "text-red-500"
-                  } hidden lg:table-cell pr-5 text-center`}
+                  } pr-2.5 lg:pr-5 text-center`}
                 >
                   <div className="flex">
                     <Image
@@ -121,7 +121,7 @@ export default function CoinTable() {
                     priceChangePercent24hInCurrency > 0
                       ? "text-green-400"
                       : "text-red-500"
-                  } pr-5 hidden lg:table-cell`}
+                  } pr-2.5 lg:pr-5`}
                 >
                   <div className={"flex"}>
                     <Image
@@ -234,7 +234,7 @@ export default function CoinTable() {
                     ></div>
                   </div>
                 </td>
-                <td className={"relative rounded-r-3xl"}>
+                <td className={"relative rounded-r-3xl hidden lg:table-cell"}>
                   <CoinChart
                     chartColor={handleMarketTrendColor(
                       priceChangePercent1hInCurrency,

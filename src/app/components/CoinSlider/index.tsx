@@ -7,7 +7,6 @@ import CoinSlide from "../CoinSlide";
 import { useRef } from "react";
 import { SliderNextArrow, SliderPrevArrow } from "../SliderArrows/SliderArrows";
 import { fetchCoinData } from "@/app/lib/features/selectedCoins/selectedCoinsSlice";
-import useWindowWidth from "@/app/hooks/useWindowWidth";
 import { RootState } from "@/app/lib/store";
 interface Coin {
   name: string;
