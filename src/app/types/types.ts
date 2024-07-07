@@ -75,7 +75,7 @@ export interface CoinToRender {
   coinAmount: number;
   purchasedDate: string;
   purchasedDateData: CoinData;
-  currentDateData?: CoinData;
+  currentDateData: CoinData;
 }
 export interface UpdatedCoinArgument {
   uniqueId: number;

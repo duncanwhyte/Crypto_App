@@ -99,8 +99,9 @@ export default function Portfolio() {
         <div>
           <ul>
             {coinsToRender &&
-              coinsToRender.filter((coin: CoinToRender) => coin.currentDateData).map((coin: CoinToRender) => {
-                if (coin.currentDateData)
+              coinsToRender
+                .filter((coin: CoinToRender) => coin.currentDateData)
+                .map((coin: CoinToRender) => {
                   return (
                     <PortfolioCoinCard
                       coin={coin}
@@ -114,7 +115,7 @@ export default function Portfolio() {
                       handleCoinToEdit={handleCoinToEdit}
                     />
                   );
-              })}
+                })}
           </ul>
         </div>
         {showAssetModal &&
