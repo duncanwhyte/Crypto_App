@@ -292,7 +292,7 @@ export default function SelectedCoinsCharts() {
   const currentDate = new Date().toDateString();
   return (
     <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row xl:flex-row gap-8 mb-14 relative">
-      <div className="flex flex-col p-6 items-start w-full bg-[#FFFFFF] dark:bg-[#191932] rounded-xl">
+      <div className="flex flex-col p-4 md:p-6 items-start w-full bg-[#FFFFFF] dark:bg-[#191932] rounded-xl">
         <div className="mb-6">
           {coin1 && !coin2 && !coin3 ? (
             <>
@@ -323,7 +323,7 @@ export default function SelectedCoinsCharts() {
           data={lineConfig}
         />
         <div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 text-sm md:text-base">
             {coin1 && coin2 && !coin3 && (
               <div className="flex justify-center w-full">
                 <div className={"flex items-center space-x-2"}>

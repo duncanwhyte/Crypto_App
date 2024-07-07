@@ -44,7 +44,7 @@ export default function Navbar() {
     };
   }, [coinSearchVal]);
   return (
-    <nav className="bg-[#FFFFFF] dark:bg-[#13121A] px-20 py-2 flex justify-between items-center">
+    <nav className="bg-[#FFFFFF] dark:bg-[#13121A] px-1 md:px-20 py-2 flex justify-between items-center">
       <div className="flex items-center">
         <h1 className="text-[#353570] dark:text-[#FFFFFF] text-xl font-bold">
           CoinMon

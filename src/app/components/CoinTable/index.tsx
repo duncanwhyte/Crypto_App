@@ -57,14 +57,14 @@ export default function CoinTable() {
     <table ref={tableRef} className="w-full">
       <tbody>
         <tr>
-          <th className="">#</th>
+          <th className="hidden lg:table-cell">#</th>
           <th>Name</th>
           <th>Price</th>
-          <th>1hr%</th>
-          <th>24hr%</th>
-          <th>7d%</th>
-          <th>24hr volume / Market Cap</th>
-          <th>Circulating / Total Supply</th>
+          <th className="hidden lg:table-cell">1hr%</th>
+          <th className="hidden lg:table-cell">24hr%</th>
+          <th className="hidden lg:table-cell">7d%</th>
+          <th className="hidden lg:table-cell">24hr volume / Market Cap</th>
+          <th className="hidden lg:table-cell">Circulating / Total Supply</th>
           <th>Last 7d</th>
         </tr>
         {coinTableList.map(
@@ -93,17 +93,25 @@ export default function CoinTable() {
                 className="bg-[#FFFFFF] dark:bg-[#191925] m-b-2 align-left  border-solid border-t-8 border-b-8 border-[#F3F5F9] dark:border-[#13121A] w-full overflow-hidden"
                 key={id}
               >
-                <td className="px-5 rounded-l-3xl">{index + 1}</td>
-                <td className="pr-5">
-                  <div className="flex items-center">
+                <td className="px-2.5 lg:px-5 hidden rounded-l-3xl">
+                  {index + 1}
+                </td>
+                <td className="px-2.5 lg:pr-5 rounded-l-3xl lg:rounded-l-0">
+                  <div className="flex items-center lg:flex lg:items-center">
                     <Image
                       src={image}
                       width={30}
                       height={30}
                       alt="Crypto-Coin-Image"
                     />
-                    <Link href={`/coins/${id}`}>{name}</Link>(
-                    {`${symbol.toUpperCase()}`})
+                    <div className="flex flex-col items-center">
+                      <Link className="" href={`/coins/${id}`}>
+                        {name}
+                      </Link>
+                      <span className="-order-1">
+                        {}({`${symbol.toUpperCase()}`})
+                      </span>
+                    </div>
                   </div>
                 </td>
                 <td className="pr-5">
@@ -115,9 +123,9 @@ export default function CoinTable() {
                     priceChangePercent1hInCurrency > 0
                       ? "text-green-400"
                       : "text-red-500"
-                  } pr-5 text-center`}
+                  } hidden lg:table-cell pr-5 text-center`}
                 >
-                  <div className={"flex"}>
+                  <div className="flex">
                     <Image
                       src={priceChangeIcon}
                       className={`${
@@ -136,7 +144,7 @@ export default function CoinTable() {
                     priceChangePercent24hInCurrency > 0
                       ? "text-green-400"
                       : "text-red-500"
-                  } pr-5`}
+                  } pr-5 hidden lg:table-cell`}
                 >
                   <div className={"flex"}>
                     <Image
@@ -157,7 +165,7 @@ export default function CoinTable() {
                     priceChangePercent7dInCurrency > 0
                       ? "text-green-400"
                       : "text-red-500"
-                  } pr-5`}
+                  } hidden lg:table-cell pr-5`}
                 >
                   <div className={"flex"}>
                     <Image
@@ -173,7 +181,7 @@ export default function CoinTable() {
                     %
                   </div>
                 </td>
-                <td className="pr-5">
+                <td className="pr-5 hidden lg:table-cell">
                   <div className={"rounded-xl"}>
                     <div className={"flex justify-between"}>
                       <span className={"shrink"}>
@@ -211,7 +219,7 @@ export default function CoinTable() {
                     ></div>
                   </div>
                 </td>
-                <td className="pr-5">
+                <td className="pr-5 hidden lg:table-cell">
                   <div className={"rounded-xl"}>
                     <div className={"flex justify-between"}>
                       <span className={"shrink"}>

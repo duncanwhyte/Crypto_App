@@ -11,7 +11,7 @@ export default function HomePageNavigator() {
           pathName === "/"
             ? "bg-[#CCCCFA] dark:bg-[#6161D6] text-[#FFFFFF]"
             : "bg-[#FFFFFF] text-[#424286] dark:bg-[#232336] dark:text-[#FFFFFF]"
-        } flex justify-center w-56 py-3 rounded-lg transition-all hover:scale-110`}
+        } flex justify-center w-56 py-3 rounded-lg transition-all hover:scale-105 md:hover:scale-110`}
       >
         Coins
       </Link>
@@ -21,7 +21,7 @@ export default function HomePageNavigator() {
           pathName === "/convertor"
             ? "bg-[#CCCCFA] dark:bg-[#6161D6] text-[#FFFFFF]"
             : "bg-[#FFFFFF] text-[#424286] dark:bg-[#232336] dark:text-[#FFFFFF]"
-        } flex justify-center w-56 py-3 rounded-lg transition-all hover:scale-110`}
+        } flex justify-center w-56 py-3 rounded-lg transition-all hover:scale-105 md:hover:scale-110`}
       >
         Convertor
       </Link>
