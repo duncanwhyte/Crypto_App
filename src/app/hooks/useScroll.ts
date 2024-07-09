@@ -1,32 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
-const handleThrottle = (func, delay: number) => {
-  let timer;
-  return () => {
-    if (!timer) {
-      func();
-      timer = setTimeout(() => {
-        timer = null;
-      }, delay);
-    }
-  };
-};
-export default function useScroll(ref, cb) {
+export default function useScroll(
+  ref: HTMLTableElement | null,
+  cb: () => void
+) {
   useEffect(() => {
     const handleScroll = () => {
-      const { bottom } = ref.getBoundingClientRect();
-      if (bottom <= window.innerHeight + 100) cb();
-      return;
+      if (ref) {
+        const { bottom } = ref.getBoundingClientRect();
+        if (bottom <= window.innerHeight + 100) cb();
+      }
     };
+    const handleThrottle = (func: () => void, delay: number) => {
+      let timer: NodeJS.Timeout | null;
+      return () => {
+        if (!timer) {
+          func();
+          timer = setTimeout(() => {
+            timer = null;
+          }, delay);
+        }
+      };
+    };
+    const throttle = handleThrottle(handleScroll, 2000);
     if (ref) {
-      window.addEventListener("scroll", handleThrottle(handleScroll, 2000));
+      window.addEventListener("scroll", throttle);
     }
     return () => {
-      window.removeEventListener(
-        "scroll",
-        handleThrottle(handleScroll, 2000),
-        true
-      );
+      window.removeEventListener("scroll", throttle);
     };
   }, [ref]);
 }
