@@ -70,10 +70,10 @@ export default function CoinTable() {
                 className="bg-[#FFFFFF] dark:bg-[#191925] m-b-2 align-left  border-solid border-t-8 border-b-8 border-[#F3F5F9] dark:border-[#13121A] w-full overflow-hidden"
                 key={id}
               >
-                <td className="px-2.5 lg:px-5 hidden rounded-l-3xl">
+                <td className="px-2.5 lg:px-5 hidden lg:table-cell rounded-l-3xl lg:rounded-l-none">
                   {index + 1}
                 </td>
-                <td className="px-2.5 lg:pr-5 rounded-l-3xl lg:rounded-l-0">
+                <td className="px-2.5 lg:pr-5 rounded-l-3xl lg:rounded-l-none">
                   <div className="flex items-center lg:flex lg:items-center">
                     <Image
                       src={image}

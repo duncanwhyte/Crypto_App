@@ -67,7 +67,9 @@ export default function Navbar() {
         <div>
           <Link
             className={`flex items-center gap-1 text-[#353570] dark:text-[#FFFFFF] ${
-              pathName === "/portfolio" ? "text-[#FFFFF]" : "text-[#808080]"
+              pathName === "/portfolio"
+                ? "text-[#FFFFF]  lg:inline"
+                : "text-[#808080]"
             }`}
             href={"/portfolio"}
           >
