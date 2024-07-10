@@ -16,7 +16,7 @@ export const fetchCoinTableList = createAsyncThunk<
       coinTableList.order && `&order=${coinTableList.order}`
     }&price_change_percentage=1h,24h,7d&per_page=${
       coinTableList.coinsToDisplay
-    }`
+    }&sparkline=true`
   );
   const coinData: CoinTableCoin[] = await coinReq.json();
   return coinData;

@@ -24,12 +24,13 @@ export default function CoinTable() {
   const coinsToDisplay = useAppSelector(coinsToDisplaySelect);
   const tableRef = useRef(null);
   const dispatch = useAppDispatch();
+  const callMoreCoins = (): void => {
+    dispatch({ type: "coinTableList/callCoins" });
+  };
   useEffect(() => {
     dispatch(fetchCoinTableList());
   }, [coinsToDisplay]);
-  useScroll(tableRef?.current, () => {
-    dispatch({ type: "coinTableList/callCoins" });
-  });
+  useScroll(tableRef?.current, callMoreCoins);
   return (
     <table ref={tableRef} className="w-full">
       <tbody>
@@ -62,6 +63,7 @@ export default function CoinTable() {
               total_volume: totalVolume,
               circulating_supply: circulatingSupply,
               total_supply: totalSupply,
+              sparkline_in_7d: sparklineIn7D,
             }: CoinTableCoin,
             index: number
           ) => {
@@ -233,7 +235,7 @@ export default function CoinTable() {
                       priceChangePercent24hInCurrency,
                       priceChangePercent7dInCurrency
                     )}
-                    id={id}
+                    prices={sparklineIn7D.price}
                   />
                 </td>
               </tr>
