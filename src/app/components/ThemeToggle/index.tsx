@@ -18,7 +18,7 @@ export default function ThemeToggle() {
     <div
       onClick={handleThemeToggle}
       className={
-        "flex justify-center items-center dark:bg-[#191925] bg-[#CCCCFA] p-2.5 rounded-xl transition-all hover:bg-[#6161D6] hover:cursor-pointer"
+        "flex justify-center items-center dark:bg-[#232334] bg-[#CCCCFA] p-2.5 rounded-xl transition-all hover:bg-[#6161D6] hover:cursor-pointer"
       }
     >
       {resolvedTheme === "dark" ? (

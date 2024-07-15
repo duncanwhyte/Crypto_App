@@ -57,8 +57,8 @@ function CoinSlider() {
     speed: 300,
     slidesToShow: 5,
     slidesToScroll: 1,
-    nextArrow: <SliderNextArrow next={next} />,
-    prevArrow: <SliderPrevArrow prev={prev} />,
+    nextArrow: <SliderNextArrow chartArrow={false} next={next} />,
+    prevArrow: <SliderPrevArrow chartArrow={false} prev={prev} />,
     responsive: [
       {
         breakpoint: 1320,

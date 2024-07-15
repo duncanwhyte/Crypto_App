@@ -65,7 +65,7 @@ export default function Convertor() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentCurrency]);
   return (
-    <main className="px-20">
+    <main className="px-4 lg:px-20">
       <HomePageNavigator />
       <div className="mt-10 mb-6">
         <h3 className="text-xl text-[#424286] dark:text-[#FFFFFF]">
