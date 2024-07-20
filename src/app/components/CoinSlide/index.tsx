@@ -36,7 +36,7 @@ export default function CoinSlide({
         selected
           ? "bg-[#CCCCFA] dark:bg-[#6161D6] text-[#FFFFFF]"
           : "dark:bg-[#191925] bg-[#FFFFFF]"
-      } rounded-xl p-2.5 hover:bg-[#CCCCFA] max-w- md:p-4 hover:dark:bg-[#6161D6] transition-all cursor-pointer`}
+      } rounded-xl text-xs p-2.5 hover:bg-[#CCCCFA] md:p-4 hover:dark:bg-[#6161D6] transition-all cursor-pointer`}
     >
       <div className="flex justify-between items-center">
         <div className="w-8 h-8 mr-4 flex items-center gap-2">
@@ -53,7 +53,9 @@ export default function CoinSlide({
           />
           <div className="md:flex md:flex-col">
             <div className="flex md:flex md:gap-2">
-              <h3 className="md:hidden">{coinData.symbol.toUpperCase()}</h3>
+              <h3 className="text-sm lg:text-base md:hidden">
+                {coinData.symbol.toUpperCase()}
+              </h3>
               {windowWidth >= 768 && coinData.name}
               {windowWidth >= 768 && (
                 <span>({coinData.symbol.toUpperCase()})</span>
@@ -62,7 +64,7 @@ export default function CoinSlide({
             <div className="hidden md:w-full md:gap-2 md:flex md:justify-between">
               <p>
                 {handleCurrencySymbol(currency)}
-                {coinData.current_price}
+                {coinData.current_price.toFixed(2)}
                 {currency.toUpperCase()}
               </p>
               <div className="hidden items-center gap-2 md:flex">
@@ -88,13 +90,13 @@ export default function CoinSlide({
           </div>
         </div>
         <div className="flex flex-col md:flex-row">
-          <div className="flex flex-col md:flex md:justify-around w-full">
+          <div className="flex flex-col items-center md:flex md:justify-around w-full">
             <h3 className="hidden md:hidden">
               {coinData.name} ({coinData.symbol.toUpperCase()})
             </h3>
             <h3 className="md:hidden">
               {handleCurrencySymbol(currency)}
-              {coinData.current_price}
+              {coinData.current_price.toFixed(2)}
               {windowWidth >= 768 && currency.toUpperCase()}
             </h3>
             <div className="flex items-center gap-2 md:hidden">

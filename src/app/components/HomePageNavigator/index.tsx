@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 export default function HomePageNavigator() {
   const pathName = usePathname();
   return (
-    <div className="flex gap-5 justify-center">
+    <div className="flex gap-5 mb-6 justify-center">
       <Link
         href={"/"}
         className={`${

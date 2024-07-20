@@ -54,10 +54,13 @@ export default function Navbar() {
       clearTimeout(timer);
     };
   }, [coinSearchVal]);
+  const currencies = ["GBP", "USD", "EUR", "ETH", "BTC"].filter(
+    (currency) => currency !== currentCurrency.toUpperCase()
+  );
   return (
-    <nav className="bg-[#FFFFFF] dark:bg-[#13121A] px-4 md:px-6 lg:px-20 py-2 flex justify-between items-center">
+    <nav className="bg-[#FFFFFF] dark:bg-[#13121A] text-sm lg:text-base mb-6 px-4 md:px-6 lg:px-20 py-2 flex justify-between items-center">
       <div className="flex items-center">
-        <h1 className="text-[#353570] dark:text-[#FFFFFF] text-base md:text-xl font-bold">
+        <h1 className="hidden sm:block text-[#353570] text-base dark:text-[#FFFFFF] md:text-xl font-bold">
           CoinMon
         </h1>
       </div>
@@ -106,6 +109,19 @@ export default function Navbar() {
         </div>
       </div>
       <div className="flex items-center relative lg:gap-4">
+        {openMobileInput && (
+          <input
+            onChange={(e) => handleSearchCoin(e)}
+            className={`${
+              openMobileInput &&
+              "inline-block absolute h-full top-[80%] z-10 rounded-bl-xl rounded-r-xl"
+            } bg-[#CCCCFA] "top-[999px]" dark:bg-[#232334] transition-all md:px-12 md:py-3 text-black placeholder-black dark:text-[#FFFFFF] dark:placeholder-[#FFFFFF] ${
+              coinSearchVal && coinList && "rounded-b-xl"
+            }  outline-none`}
+            placeholder={`${windowWidth < 768 ? "Search..." : ""}`}
+            value={coinSearchVal}
+          />
+        )}
         <div className="md:relative">
           {windowWidth >= 768 && (
             <input
@@ -117,39 +133,28 @@ export default function Navbar() {
               value={coinSearchVal}
             />
           )}
-          {openMobileInput && (
-            <input
-              onChange={(e) => handleSearchCoin(e)}
-              className={`${
-                openMobileInput
-                  ? "inline-block absolute top-16 min-w-16 z-10"
-                  : "hidden"
-              } transition-all md:px-12 md:py-3 text-black placeholder-black dark:text-[#FFFFFF] dark:placeholder-[#FFFFFF]  ${
-                coinSearchVal && coinList ? "rounded-t-xl" : "rounded-xl"
-              }  bg-[#CCCCFA] dark:bg-[#232334] outline-none`}
-              placeholder={`${windowWidth < 768 ? "Search..." : ""}`}
-              value={coinSearchVal}
-            />
-          )}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            className="hidden md:inline w-5 h-5 stroke-black dark:stroke-[#FFFFFF] cursor-pointer absolute top-3.5 left-1 z-10 md:top-3.5 md:left-4 md:cursor-auto"
-            onClick={handleOpenMobileInput}
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-            />
-          </svg>
+          <div onClick={handleOpenMobileInput}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="hidden md:inline w-5 h-5 stroke-black dark:stroke-[#FFFFFF] cursor-pointer absolute top-3.5 left-1 z-10 md:top-3.5 md:left-4 md:cursor-auto"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
+            </svg>
+          </div>
           <ul
             className={`${
               coinList && coinSearchVal ? "opacity-100" : "opacity-0"
-            } absolute w-full max-h-44 p-2 bg-[#CCCCFA] dark:bg-[#232334] rounded-b-xl overflow-x-hidden overflow-y-scroll scroll-smooth`}
+            } absolute ${
+              openMobileInput && "w-[195px] top-[150%]"
+            } z-50 max-h-44 p-2 bg-[#CCCCFA] dark:bg-[#232334] rounded-b-xl overflow-x-hidden overflow-y-scroll scroll-smooth`}
           >
             {debouncedCoinVal &&
               coinList &&
@@ -175,21 +180,23 @@ export default function Navbar() {
         <div>
           <div className="flex items-center py-3 px-4 md:px-4 rounded-xl bg-[#CCCCFA] dark:bg-[#232334]">
             {windowWidth < 768 ? (
-              <div onClick={handleOpenMobileInput}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="w-5 h-5 stroke-black dark:stroke-[#FFFFFF] cursor-pointer md:top-3.5 md:left-4 md:cursor-auto"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                  />
-                </svg>
+              <div>
+                <div onClick={handleOpenMobileInput}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="w-5 h-5 stroke-black dark:stroke-[#FFFFFF] cursor-pointer md:top-3.5 md:left-4 md:cursor-auto"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    />
+                  </svg>
+                </div>
               </div>
             ) : (
               <div className="px-2 flex items-center justify-center rounded-full bg-[#424286] dark:bg-[#FFFFFF] text-[#CCCCFA66] dark:text-[#13121A]">
@@ -200,6 +207,7 @@ export default function Navbar() {
               className="flex items-center cursor-pointer"
               onClick={handleCurrencyDropdown}
             >
+              {currentCurrency.toUpperCase()}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -222,11 +230,14 @@ export default function Navbar() {
                     : "opacity-0 -z-10 top-0"
                 }`}
               >
-                <li value={"gbp"}>GBP</li>
-                <li value={"usd"}>USD</li>
-                <li value={"eur"}>EUR</li>
-                <li value={"btc"}>BTC</li>
-                <li value={"eth"}>ETH</li>
+                {currencies.map((currency) => (
+                  <li key={currency} className="flex items-center">
+                    <div className="px-2 flex items-center justify-center rounded-full bg-[#424286] dark:bg-[#FFFFFF] text-[#CCCCFA66] dark:text-[#13121A]">
+                      {handleCurrencySymbol(currency.toLowerCase())}
+                    </div>
+                    {currency}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

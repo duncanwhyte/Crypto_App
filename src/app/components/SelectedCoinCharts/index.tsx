@@ -321,7 +321,7 @@ export default function SelectedCoinsCharts() {
   }, []);
   const currentDate = new Date().toDateString();
   return (
-    <>
+    <div className="overflow-hidden">
       <ul className="relative md:hidden">
         <Slider
           ref={(slider: Slider) => {
@@ -408,7 +408,7 @@ export default function SelectedCoinsCharts() {
               <div></div>
             </div>
           </div>
-          <div className="w-full flex flex-col relative p-6 bg-[#FFFFFF] dark:bg-[#191932] rounded-xl">
+          <div className="w-full flex flex-col relative p-4 bg-[#FFFFFF] dark:bg-[#191932] rounded-xl">
             <div className="mb-6">
               {coin1 && !coin2 && !coin3 ? (
                 <div>
@@ -432,7 +432,6 @@ export default function SelectedCoinsCharts() {
                 </div>
               )}
             </div>
-            {}
             <Bar data={barConfig} options={barChartOptions as any} />
             <div>
               <div className="flex items-center space-x-2">
@@ -643,6 +642,6 @@ export default function SelectedCoinsCharts() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

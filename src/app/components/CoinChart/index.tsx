@@ -83,7 +83,11 @@ export default function CoinChart({
     tension: 0.5,
   };
   return (
-    <div className={"relative lg:w-[120px] h-20"}>
+    <div
+      className={
+        "relative flex items-center w-[100px] mx-auto md:mx-0 md:w-full h-20"
+      }
+    >
       <Line data={config} options={options} />
     </div>
   );

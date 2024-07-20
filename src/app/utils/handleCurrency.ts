@@ -7,7 +7,9 @@ export default function handleCurrency(number: number): string | number {
   }
   if (number >= 1.0e6) {
     return `${(number / 1.0e6).toFixed(2)}M`;
-  } else {
-    return number;
   }
+  if (number >= 1.0e5) {
+    return `${(number / 1.0e5).toFixed(2)}HT`;
+  }
+  return number;
 }

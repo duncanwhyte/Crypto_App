@@ -11,7 +11,7 @@ export default function TimeDurationInput({
     <div
       className={`relative ${
         selected === value && "bg-[#6161D6] dark:text-[#E4E4F0] text-[#181825]"
-      } flex justify-center items-center grow sm:px-3 sm:py-3 md:px-5 md:py-2 text-[#424286] dark:text-[#A7A7CC] text-sm rounded-xl hover:bg-[#6161D6] transition-all cursor-pointer`}
+      } flex justify-center items-center grow px-3 py-3 md:px-5 md:py-2 text-[#424286] dark:text-[#A7A7CC] text-sm rounded-xl hover:bg-[#6161D6] transition-all cursor-pointer`}
     >
       {time}
       <input

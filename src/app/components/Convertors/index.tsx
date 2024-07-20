@@ -45,7 +45,7 @@ export function CoinConvertor({
   };
   return (
     <div
-      className={`flex flex-col grow p-6 bg-[#FFFFFF] text-black dark:bg-[#191932] dark:text-[#FFFFFF]  ${
+      className={`flex flex-col lg:basis-[525px] grow p-6 bg-[#FFFFFF] text-black dark:bg-[#191932] dark:text-[#FFFFFF]  ${
         selling ? "mb-6" : "bg-[#1E1932]"
       } md:m-0 2xl:basis-[636px] rounded-xl`}
     >
