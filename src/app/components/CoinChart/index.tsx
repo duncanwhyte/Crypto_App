@@ -85,10 +85,10 @@ export default function CoinChart({
   return (
     <div
       className={
-        "relative flex items-center w-[100px] mx-auto md:mx-0 md:w-full h-20"
+        "relative flex items-center w-[90px] md:w-full mx-auto md:mx-0 h-20"
       }
     >
-      <Line data={config} options={options} />
+      <Line className="lg:mx-auto" data={config} options={options} />
     </div>
   );
 }

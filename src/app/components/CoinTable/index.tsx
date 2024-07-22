@@ -34,26 +34,30 @@ export default function CoinTable() {
   useScroll(tableRef?.current, callMoreCoins);
   return (
     <div className="w-full">
-      <table className="text-xs sm:text-base" ref={tableRef}>
+      <table className="md:w-full text-xs sm:text-base " ref={tableRef}>
         <tbody>
           <tr className="">
-            <th className="hidden xl:w-[7%] xl:table-cell xl:text-sm">#</th>
-            <th className="w-[50%] lg:w-[20%] xl:w-[16%] xl:text-sm">Name</th>
-            <th className="w-[10%] lg:w-[10%] xl:w-auto xl:text-sm">Price</th>
-            <th className="hidden lg:table-cell lg:w-[10%] xl:w-[7%] xl:text-sm">
+            <th className="hidden xl:w-[5%] xl:table-cell xl:text-sm">#</th>
+            <th className="w-[50%] sm:w-[25%] lg:w-[10%] xl:w-[10%] xl:text-sm">
+              Name
+            </th>
+            <th className="w-[5%] sm:w-[25%] lg:w-[10%] xl:w-[10%] xl:text-sm">
+              Price
+            </th>
+            <th className="hidden lg:table-cell lg:w-[10%] xl:w-[5%] xl:text-sm">
               1hr%
             </th>
-            <th className="hidden sm:table-cell lg:w-[10%] xl:w-[7%] xl:text-sm">
+            <th className="hidden sm:table-cell sm:w-[25%] lg:w-[10%] xl:w-[5%] xl:text-sm">
               24hr%
             </th>
-            <th className="hidden xl:table-cell xl:w-[7%] xl:text-sm">7d%</th>
-            <th className="hidden xl:table-cell xl:w-[16%] xl:text-sm">
+            <th className="hidden xl:table-cell xl:w-[5%] xl:text-sm">7d%</th>
+            <th className="hidden xl:table-cell xl:w-[10%] xl:text-sm">
               24hr volume / Market Cap
             </th>
-            <th className="hidden xl:table-cell xl:w-[16%] xl:text-sm">
+            <th className="hidden xl:table-cell xl:w-[10%] xl:text-sm">
               Circulating / Total Supply
             </th>
-            <th className="w-[40%] lg:w-[20%] xl:w-[7%] xl:text-sm xl:table-cell">
+            <th className="w-[40%] sm:w-[25%] lg:w-[10%] xl:w-[5%] xl:text-sm xl:table-cell">
               Last 7d
             </th>
           </tr>
@@ -84,28 +88,33 @@ export default function CoinTable() {
                   className="bg-[#FFFFFF] dark:bg-[#191925] m-b-2 xl:align-left border-solid border-t-8 border-b-8 border-[#F3F5F9] dark:border-[#13121A] w-full"
                   key={id}
                 >
-                  <td className="hidden xl:table-cell xl:w-[calc(10%-160px)] xl:px-[20px] xl:rounded-l-3xl">
+                  <td className="hidden xl:table-cell xl:pl-[20px] xl:rounded-l-3xl">
                     {index + 1}
                   </td>
-                  <td className="w-[50%] lg:w-[20%] p-3 xl:w-[calc(10%-160px)] xl:max-w-auto xl:px-0 xl:py-0 xl:pr-[20px] rounded-l-3xl xl:rounded-l-none">
-                    <div className="flex gap-4 items-center text-center xl:flex-row">
-                      <div className="">
+                  <td className="w-[50%] sm:w-[25%] lg:w-[10%] p-3 xl:px-0 xl:py-0 xl:pr-[20px] rounded-l-3xl xl:rounded-l-none">
+                    <div className="flex gap-4 justify-around sm:justify-center items-center xl:flex-row">
+                      <div className="w-7 h-7">
                         <Image
                           src={image}
-                          width={24}
-                          height={24}
+                          width={28}
+                          height={28}
                           alt="Crypto-Coin-Image"
                         />
                       </div>
-                      <div className="flex flex-col flex-col-reverse items-center">
-                        <Link href={`/coins/${id}`}>{name}</Link>
-                        <span className="">
+                      <div className="w-1/2 flex flex-col flex-col-reverse lg:flex-row lg:items-center items-start">
+                        <Link
+                          className="text-xs sm:text-sm lg:text-base"
+                          href={`/coins/${id}`}
+                        >
+                          {name}
+                        </Link>
+                        <span className="text-sm sm:text-base">
                           {}({`${symbol.toUpperCase()}`})
                         </span>
                       </div>
                     </div>
                   </td>
-                  <td className="w-[10%] lg:w-[10%] py-3 xl:w-[calc(10%-160px)] xl:pr-[20px] xl:py-0 text-center">
+                  <td className="w-[10%] sm-[25%] lg:w-[10%] lg:text-base py-3 xl:w-[calc(10%-160px)] xl:pr-[20px] xl:py-0 text-center">
                     {handleCurrencySymbol(currentCurrency)}
                     {currentPrice.toFixed(2)}
                   </td>
@@ -114,9 +123,9 @@ export default function CoinTable() {
                       priceChangePercent1hInCurrency > 0
                         ? "text-green-400"
                         : "text-red-500"
-                    } hidden py-3 lg:table-cell lg:w-[10%] xl:w-[calc(10%-160px)] xl:py-0 xl:pr-[20px]`}
+                    } hidden py-3 sm:w-[15%] lg:table-cell xl:w-[calc(10%-160px)] xl:py-0 xl:pr-[20px]`}
                   >
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center gap-1 justify-center">
                       {priceChangePercent1hInCurrency > 0 ? (
                         <PriceAscendingIcon />
                       ) : (
@@ -133,7 +142,7 @@ export default function CoinTable() {
                       priceChangePercent24hInCurrency > 0
                         ? "text-green-400"
                         : "text-red-500"
-                    } hidden sm:table-cell lg:w-[10%] py-3 pr-3 xl:w-[calc(10%-160px)] xl:pl-0 xl:pr-[20px] xl:py-0 xl:rounded-r-none`}
+                    } hidden sm:table-cell sm:w-[25%] lg:w-[10%] py-3 pr-3 xl:w-[calc(10%-160px)] xl:pl-0 xl:pr-[20px] xl:py-0 xl:rounded-r-none`}
                   >
                     <div className="flex items-center justify-center">
                       {priceChangePercent24hInCurrency > 0 ? (
@@ -244,7 +253,7 @@ export default function CoinTable() {
                       ></div>
                     </div>
                   </td>
-                  <td className="relative p-3 rounded-r-3xl w-[40%] lg:w-[20%] xl:pr-4 xl:pr-[20px] xl:w-auto xl:mx-auto xl:table-cell">
+                  <td className="relative p-3 rounded-r-3xl w-[40%] sm:w-[25%] lg:w-[10%] xl:pr-4 xl:pr-[20px] xl:w-auto xl:mx-auto xl:table-cell">
                     <CoinChart
                       chartColor={handleMarketTrendColor(
                         priceChangePercent1hInCurrency,

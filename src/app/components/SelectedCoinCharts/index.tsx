@@ -484,8 +484,11 @@ export default function SelectedCoinsCharts() {
           </div>
         </Slider>
       </ul>
-      <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row xl:flex-row gap-8 mb-14 relative">
-        <div className="hidden md:flex md:flex-col p-4 md:p-6 items-start w-full bg-[#FFFFFF] dark:bg-[#191932] rounded-xl">
+      <div className="flex flex-col sm:flex-col md:flex-col md:items-center lg:flex-row lg:justify-center xl:flex-row xl:justify-between lg:gap-6 xl:gap-7 mb-14 relative">
+        <div
+          className="hidden md:flex md:flex-col md:max-w-[80%] md:mb-6 lg:max-w-[calc(50%-32px)] xl:max-w-none p-4 xl:p-6 items-start
+         w-full bg-[#FFFFFF] dark:bg-[#191932] rounded-xl"
+        >
           <div className="mb-6">
             {coin1 && !coin2 && !coin3 ? (
               <>
@@ -511,7 +514,7 @@ export default function SelectedCoinsCharts() {
             )}
           </div>
           <Line
-            style={{ width: "100%" }}
+            className="w-full"
             options={lineChartOptions as any}
             data={lineConfig}
           />
@@ -565,7 +568,7 @@ export default function SelectedCoinsCharts() {
           </div>
         </div>
         {windowWidth >= 768 && (
-          <div className="w-full flex flex-col relative p-6 bg-[#FFFFFF] dark:bg-[#191932] rounded-xl">
+          <div className="w-full flex flex-col relative p-4 xl:p-6 md:max-w-[80%] md:mb-6 lg:max-w-[calc(50%-32px)] xl:max-w-none bg-[#FFFFFF] dark:bg-[#191932] rounded-xl">
             <div className="mb-6">
               {coin1 && !coin2 && !coin3 ? (
                 <div>
@@ -589,8 +592,11 @@ export default function SelectedCoinsCharts() {
                 </div>
               )}
             </div>
-            {}
-            <Bar data={barConfig} options={barChartOptions as any} />
+            <Bar
+              className="w-full"
+              data={barConfig}
+              options={barChartOptions as any}
+            />
             <div>
               <div className="flex items-center space-x-2">
                 {coin1 && coin2 && !coin3 && (
