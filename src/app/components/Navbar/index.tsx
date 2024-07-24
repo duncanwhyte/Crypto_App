@@ -64,7 +64,7 @@ export default function Navbar() {
     (currency) => currency !== currentCurrency.toUpperCase()
   );
   return (
-    <nav className="bg-[#FFFFFF] dark:bg-[#13121A] relative text-sm lg:text-base mb-6 px-4 md:px-6 lg:px-20 py-2 flex justify-between items-center">
+    <nav className="bg-[#FFFFFF] dark:bg-[#13121A] relative text-sm lg:text-base mb-6 px-4 md:px-6 lg:px-[72px] py-2 flex justify-between items-center">
       {openMobileInput && (
         <input
           onChange={(e) => handleSearchCoin(e)}
@@ -132,7 +132,7 @@ export default function Navbar() {
           </Link>
         </div>
       </div>
-      <div className="flex items-center md:relative lg:gap-4">
+      <div className="flex items-center md:relative gap-2 lg:gap-4">
         <div>
           {windowWidth >= 768 && (
             <input
@@ -193,7 +193,7 @@ export default function Navbar() {
         </div>
         <div>
           <div
-            className={`flex items-center relative py-3 px-4 md:px-4 rounded-t-xl ${
+            className={`flex items-center relative gap-1 py-3 px-4 md:px-4 rounded-t-xl ${
               openCurrencyDropdown || openMobileInput
                 ? "rounded-b-none"
                 : "rounded-b-xl"
@@ -225,7 +225,7 @@ export default function Navbar() {
               className="flex items-center cursor-pointer"
               onClick={handleCurrencyDropdown}
             >
-              {currentCurrency.toUpperCase()}
+              <span>{currentCurrency.toUpperCase()}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -253,7 +253,7 @@ export default function Navbar() {
                 <li
                   key={currency}
                   data-currency={currency}
-                  className="flex items-center gap-4 cursor-pointer"
+                  className="flex items-center gap-1 mb-4 cursor-pointer"
                 >
                   <div
                     data-currency={currency}

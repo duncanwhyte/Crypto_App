@@ -83,10 +83,10 @@ export default function Portfolio() {
       return newCoin;
     });
   return (
-    <main className="relative px-20">
+    <main className="relative text-base lg:text-sm xl:text-base px-4 md:px-6 lg:px-[72px]">
       <div>
-        <div className="flex justify-between mb-6">
-          <h1 className="text-[#353570] dark:text-[#FFFFFF] text-2xl">
+        <div className="flex justify-center lg:justify-between mb-6">
+          <h1 className="hidden lg:block text-[#353570] dark:text-[#FFFFFF] text-2xl">
             Portfolio
           </h1>
           <button

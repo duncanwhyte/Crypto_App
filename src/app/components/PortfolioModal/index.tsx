@@ -110,7 +110,7 @@ export default function PortfolioModal({
   return (
     <div className="w-[100vw] h-[100vh] flex justify-center items-center backdrop-blur-sm fixed top-0 left-0 z-10">
       <div
-        className={`bg-[#FFFFFF] dark:bg-[#13121A] w-[888px] p-8 rounded-xl transition-all ${
+        className={`bg-[#FFFFFF] dark:bg-[#13121A] w-[90%] max-w-[375px] lg:w-[888px] lg:max-w-none p-4 lg:p-8 rounded-xl transition-all ${
           showModal ? "translate-0" : "-translate-y-[1000px]"
         }`}
       >
@@ -118,25 +118,27 @@ export default function PortfolioModal({
           <h2>Select Coins</h2>
           <button onClick={handleShowModal}>(X)</button>
         </div>
-        <div className="flex justify-between">
-          <div className="bg-[#CCCCFA] dark:bg-[#191932] px-[60px] py-[65px] basis-[40%] mr-6 rounded-xl">
+        <div className="flex flex-col lg:flex lg:flex-row lg:justify-between">
+          <div className="bg-[#CCCCFA] dark:bg-[#191932] h-[226px] lg:h-auto mb-6 lg:mb-0 basis-[40%] rounded-xl">
             {selectedCoin && (
-              <div className="flex flex-col items-center">
-                <div className="p-4 rounded-lg">
-                  <Image
-                    src={selectedCoin.large}
-                    width={70}
-                    height={70}
-                    alt="selected-crypto-coin-image"
-                  />
+              <div className="bg-[#CCCCFA] dark:bg-[#191932] basis-[40%] mb-6 px-5 py-[30px] lg:w-auto lg:h-auto lg:mb-0 lg:p-0 lg:px-[60px] lg:py-[65px] lg:basis-[40%] lg:mr-6 rounded-xl">
+                <div className="flex flex-col items-center">
+                  <div className="p-4 rounded-lg">
+                    <Image
+                      src={selectedCoin.large}
+                      width={70}
+                      height={70}
+                      alt="selected-crypto-coin-image"
+                    />
+                  </div>
+                  <p className="">
+                    {selectedCoin.name} {selectedCoin.symbol.toUpperCase()}
+                  </p>
                 </div>
-                <p className="">
-                  {selectedCoin.name} {selectedCoin.symbol.toUpperCase()}
-                </p>
               </div>
             )}
           </div>
-          <div className="basis-[60%]">
+          <div className="lg:basis-[60%]">
             <form onSubmit={(e) => e.preventDefault()} className="">
               <div className="flex flex-col mb-6">
                 <div className="relative">
@@ -205,10 +207,10 @@ export default function PortfolioModal({
                   type="date"
                 />
               </div>
-              <div className="flex justify-between">
+              <div className="flex gap-4 justify-between">
                 <button
                   onClick={handleShowModal}
-                  className="bg-[#F3F5F9] dark:bg-[#232336] py-3 rounded-md basis-[232px]"
+                  className="bg-[#F3F5F9] dark:bg-[#232336] py-3 rounded-md basis-[40%] lg:basis-[232px]"
                 >
                   Cancel
                 </button>
@@ -231,7 +233,7 @@ export default function PortfolioModal({
                     checkFormValidation()
                       ? "bg-[#F3F5F9] dark:bg-[#6161D6]"
                       : "bg-[#CCCCFA] dark:bg-[#232336]"
-                  } transition-all py-3 p-2 rounded-md basis-[232px]`}
+                  } transition-all rounded-md basis-[60%] p-2 lg:py-3 lg:p-2 lg:basis-[232px]`}
                   disabled={
                     !selectedCoinError &&
                     !coinAmountError &&
