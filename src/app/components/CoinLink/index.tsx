@@ -32,7 +32,7 @@ export default function CoinLink({ link }: { link: string }) {
         />
       </svg>
       <a
-        className="text-[#424286] focus:text-[#424286] active:text-[#424286] dark:text-[#FFFFFF] dark:focus:text-[#FFFFFF] dark:active:text-[#FFFFFF]"
+        className="inline-block text-ellipsis max-w-[225px] overflow-hidden whitespace-nowrap text-[#424286] focus:text-[#424286] active:text-[#424286] dark:text-[#FFFFFF] dark:focus:text-[#FFFFFF] dark:active:text-[#FFFFFF]"
         href={link}
       >
         {link}

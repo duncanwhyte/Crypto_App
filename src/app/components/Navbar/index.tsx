@@ -132,7 +132,7 @@ export default function Navbar() {
           </Link>
         </div>
       </div>
-      <div className="flex items-center md:relative gap-2 lg:gap-4">
+      <div className="flex items-center md:relative gap-1 md:gap-2 lg:gap-4">
         <div>
           {windowWidth >= 768 && (
             <input
