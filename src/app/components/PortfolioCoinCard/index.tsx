@@ -37,7 +37,7 @@ export default function PortfolioCoinCard({
   return (
     <div>
       <div className="flex flex-col max-w-[343px] md:max-w-[460px] mx-auto mb-6 lg:max-w-none lg:mx-0 lg:flex-row">
-        <div className="bg-[#CCCCFA] dark:bg-[#1E1932] px-3 py-5 lg:p-0 lg:px-[25px] lg:py-[25px] flex items-center justify-center rounded-t-3xl lg:rounded-t-none lg:rounded-tl-3xl lg:rounded-bl-3xl basis-[40%] lg:basis-[20%]">
+        <div className="bg-[#CCCCFA] dark:bg-[#1E1932] px-5 py-5 lg:p-0 lg:px-[25px] lg:py-[25px] flex items-center justify-center rounded-t-3xl lg:rounded-t-none lg:rounded-tl-3xl lg:rounded-bl-3xl basis-[40%] lg:basis-[20%]">
           <div className="flex flex-col items-center">
             <Image
               width={80}

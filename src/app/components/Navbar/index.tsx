@@ -44,8 +44,10 @@ export default function Navbar() {
     setCoinSearchVal("");
   };
   const handleCurrencyChange = (e: React.SyntheticEvent<HTMLUListElement>) => {
-    if (e.target.dataset.currency) {
-      dispatch(changeCurrency(e.target.dataset.currency.toLowerCase()));
+    if (e.target instanceof HTMLLIElement) {
+      if (e.target.dataset.currency) {
+        dispatch(changeCurrency(e.target.dataset.currency.toLowerCase()));
+      }
     }
     setOpenCurrencyDropdown(!openCurrencyDropdown);
   };
@@ -71,7 +73,9 @@ export default function Navbar() {
           onBlur={() => {
             resetCoinSearch();
             if (!coinSearchVal) {
-              handleOpenMobileInput();
+              setTimeout(() => {
+                handleOpenMobileInput();
+              }, 500);
             }
           }}
           className={`${
@@ -166,7 +170,7 @@ export default function Navbar() {
           <ul
             className={`${
               coinList && debouncedCoinVal ? "opacity-100" : "opacity-0"
-            } absolute left-0 w-[calc(100vw-16px-8px)]  ${
+            } absolute left-0 w-[calc(100vw-10px)]  ${
               openMobileInput && "top-[100%] rounded-t-none rounded-b-xl"
             } z-50 md:w-[292px] lg:w-[316px] xl:w-[356px] max-h-44 p-2 bg-[#CCCCFA] dark:bg-[#232334] rounded-b-xl overflow-x-hidden overflow-y-scroll scroll-smooth`}
           >

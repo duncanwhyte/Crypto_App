@@ -116,12 +116,27 @@ export default function PortfolioModal({
       >
         <div className="flex justify-between mb-8">
           <h2>Select Coins</h2>
-          <button onClick={handleShowModal}>(X)</button>
+          <button onClick={handleShowModal}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="stroke-black dark:stroke-[#FFFFFF] size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </button>
         </div>
         <div className="flex flex-col lg:flex lg:flex-row lg:justify-between">
-          <div className="bg-[#CCCCFA] dark:bg-[#191932] h-[226px] lg:h-auto mb-6 lg:mb-0 basis-[40%] rounded-xl">
+          <div className="bg-[#CCCCFA] dark:bg-[#191932] lg:flex lg:flex-col lg:items-center lg:justify-center lg:h-auto mb-6 lg:mr-6 lg:mb-0 basis-[40%] rounded-xl">
             {selectedCoin && (
-              <div className="bg-[#CCCCFA] dark:bg-[#191932] basis-[40%] mb-6 px-5 py-[30px] lg:w-auto lg:h-auto lg:mb-0 lg:p-0 lg:px-[60px] lg:py-[65px] lg:basis-[40%] lg:mr-6 rounded-xl">
+              <div className="bg-[#CCCCFA] dark:bg-[#191932] basis-[40%] mb-6 lg:w-auto lg:h-auto lg:mb-0 lg:basis-[40%] rounded-xl">
                 <div className="flex flex-col items-center">
                   <div className="p-4 rounded-lg">
                     <Image
@@ -139,7 +154,10 @@ export default function PortfolioModal({
             )}
           </div>
           <div className="lg:basis-[60%]">
-            <form onSubmit={(e) => e.preventDefault()} className="">
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="xl:flex xl:flex-col"
+            >
               <div className="flex flex-col mb-6">
                 <div className="relative">
                   <input

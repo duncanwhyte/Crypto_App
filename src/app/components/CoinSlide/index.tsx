@@ -1,6 +1,5 @@
 import Image from "next/image";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
-import useWindowWidth from "@/app/hooks/useWindowWidth";
 import PriceAscendingIcon from "../Svgs/PriceAscendingIcon";
 import PriceDescendingIcon from "../Svgs/PriceDescendingIcon";
 interface Coin {
@@ -28,7 +27,6 @@ export default function CoinSlide({
   selected: boolean | undefined;
   currency: string;
 }) {
-  const windowWidth = useWindowWidth();
   return (
     <li
       onClick={() => handleAddCoin(coinData)}
@@ -36,38 +34,38 @@ export default function CoinSlide({
         selected
           ? "bg-[#CCCCFA] dark:bg-[#6161D6] text-[#FFFFFF]"
           : "dark:bg-[#191925] bg-[#FFFFFF]"
-      } rounded-xl text-xs p-2.5 hover:bg-[#CCCCFA] md:p-4 hover:dark:bg-[#6161D6] transition-all cursor-pointer`}
+      } rounded-xl min-w-[75px] sm:min-w-[168px] lg:min-w-auto text-xs p-2.5 hover:bg-[#CCCCFA] md:p-4 hover:dark:bg-[#6161D6] transition-all cursor-pointer`}
     >
-      <div className="flex justify-between items-center">
-        <div className="w-8 h-8 mr-4 flex items-center gap-2">
-          <Image
-            width={36}
-            height={36}
-            className={`w-8 h-8 ${
-              coinData.price_change_percentage_1h_in_currency > 0
-                ? "fill-green-500"
-                : "fill-red-500"
-            }`}
-            src={coinData.image}
-            alt="coin-image"
-          />
-          <div className="md:flex md:flex-col">
-            <div className="flex md:flex md:gap-2">
-              <h3 className="text-sm lg:text-base md:hidden">
+      <div className="flex justify-center sm:justify-around items-center">
+        <div className="flex items-center">
+          <div className="w-8 h-8 mr-4 flex items-center gap-2 lg:flex-col lg:items-center ">
+            <Image
+              width={36}
+              height={36}
+              className={`md:w-8 md:h-8 ${
+                coinData.price_change_percentage_1h_in_currency > 0
+                  ? "fill-green-500"
+                  : "fill-red-500"
+              }`}
+              src={coinData.image}
+              alt="coin-image"
+            />
+          </div>
+          <div className="lg:flex lg:flex-col ">
+            <h3 className="text-sm lg:text-base">
+              <span className="inline lg:hidden">
                 {coinData.symbol.toUpperCase()}
-              </h3>
-              {windowWidth >= 768 && coinData.name}
-              {windowWidth >= 768 && (
-                <span>({coinData.symbol.toUpperCase()})</span>
-              )}
-            </div>
-            <div className="hidden md:w-full md:gap-2 md:flex md:justify-between">
+              </span>
+              <span className="hidden lg:block lg:text-xs">
+                {coinData.name} ({coinData.symbol.toUpperCase()})
+              </span>
+            </h3>
+            <div className="hidden text-[#424286] dark:text-[#E8E8E8] lg:flex lg:items-center lg:gap-2">
               <p>
                 {handleCurrencySymbol(currency)}
-                {coinData.current_price.toFixed(2)}
-                {currency.toUpperCase()}
+                {coinData.current_price}
               </p>
-              <div className="hidden items-center gap-2 md:flex">
+              <div className="flex items-center gap-2">
                 {coinData.price_change_percentage_1h_in_currency > 0 ? (
                   <PriceAscendingIcon />
                 ) : (
@@ -89,17 +87,14 @@ export default function CoinSlide({
             </div>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row">
-          <div className="flex flex-col items-center md:flex md:justify-around w-full">
-            <h3 className="hidden md:hidden">
-              {coinData.name} ({coinData.symbol.toUpperCase()})
-            </h3>
-            <h3 className="md:hidden">
+        <div className="sm:flex sm:flex-col">
+          <div className="hidden sm:text-sm sm:flex sm:flex-col sm:items-center">
+            <p className="lg:hidden">
               {handleCurrencySymbol(currency)}
               {coinData.current_price.toFixed(2)}
-              {windowWidth >= 768 && currency.toUpperCase()}
-            </h3>
-            <div className="flex items-center gap-2 md:hidden">
+              <span className="hidden md:inline">{currency.toUpperCase()}</span>
+            </p>
+            <div className="hidden sm:flex sm:items-center sm:gap-2 lg:gap-0 lg:hidden">
               {coinData.price_change_percentage_1h_in_currency > 0 ? (
                 <PriceAscendingIcon />
               ) : (
