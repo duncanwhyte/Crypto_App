@@ -57,36 +57,19 @@ function CoinSlider() {
   };
   const sliderSettings = {
     speed: 300,
-    slidesToShow: 5,
-    slidesToScroll: 1,
+    slidesToShow: windowWidth >= 1024 ? 4 : 3,
     nextArrow:
       windowWidth >= 768 ? (
         <SliderNextArrow chartArrow={false} next={next} />
-      ) : null,
+      ) : (
+        <></>
+      ),
     prevArrow:
       windowWidth >= 768 ? (
         <SliderPrevArrow chartArrow={false} prev={prev} />
-      ) : null,
-    responsive: [
-      {
-        breakpoint: 1320,
-        settings: {
-          slidesToShow: 4,
-        },
-      },
-      {
-        breakpoint: 1090,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 860,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-    ],
+      ) : (
+        <></>
+      ),
   };
   return (
     <div className="mb-10">
@@ -94,7 +77,7 @@ function CoinSlider() {
         <h3>Select the currency to view the statistics</h3>
       </div>
       <div className="">
-        <ul className="list-none transition-all overflow-hidden lg:overflow-visible relative">
+        <ul className="list-none transition-all lg:overflow-visible relative">
           <Slider
             ref={(slider: Slider) => {
               sliderRef.current = slider;

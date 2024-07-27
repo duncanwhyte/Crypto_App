@@ -22,6 +22,7 @@ interface State {
   darkTheme: boolean;
   coinList: any;
 }
+const currencies = ["GBP", "USD", "EUR", "ETH", "BTC"];
 const selectCurrency = (state: State) => state.currentCurrency;
 const selectCoinList = (state: State) => state.coinList.data;
 export default function Navbar() {
@@ -62,9 +63,7 @@ export default function Navbar() {
       clearTimeout(timer);
     };
   }, [coinSearchVal]);
-  const currencies = ["GBP", "USD", "EUR", "ETH", "BTC"].filter(
-    (currency) => currency !== currentCurrency.toUpperCase()
-  );
+  currencies.filter((currency) => currency !== currentCurrency.toUpperCase());
   return (
     <nav className="bg-[#FFFFFF] dark:bg-[#13121A] relative text-sm lg:text-base mb-6 px-4 md:px-6 lg:px-[72px] py-2 flex justify-between items-center">
       {openMobileInput && (
@@ -253,21 +252,25 @@ export default function Navbar() {
                   : "opacity-0 pointer-events-none"
               }`}
             >
-              {currencies.map((currency) => (
-                <li
-                  key={currency}
-                  data-currency={currency}
-                  className="flex items-center gap-1 mb-4 cursor-pointer"
-                >
-                  <div
+              {currencies
+                .filter(
+                  (currency) => currency !== currentCurrency.toUpperCase()
+                )
+                .map((currency) => (
+                  <li
+                    key={currency}
                     data-currency={currency}
-                    className="px-2 flex items-center justify-center cursor-pointer rounded-full bg-[#424286] dark:bg-[#FFFFFF] text-[#CCCCFA66] dark:text-[#13121A]"
+                    className="flex items-center gap-1 mb-4 cursor-pointer"
                   >
-                    {handleCurrencySymbol(currency.toLowerCase())}
-                  </div>
-                  {currency}
-                </li>
-              ))}
+                    <div
+                      data-currency={currency}
+                      className="px-2 flex items-center justify-center cursor-pointer rounded-full bg-[#424286] dark:bg-[#FFFFFF] text-[#CCCCFA66] dark:text-[#13121A]"
+                    >
+                      {handleCurrencySymbol(currency.toLowerCase())}
+                    </div>
+                    {currency}
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
