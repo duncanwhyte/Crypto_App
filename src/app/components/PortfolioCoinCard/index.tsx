@@ -36,8 +36,8 @@ export default function PortfolioCoinCard({
   };
   return (
     <div>
-      <div className="flex mb-6">
-        <div className="bg-[#CCCCFA] dark:bg-[#1E1932] px-[25px] py-[25px] flex items-center justify-center rounded-l-3xl basis-[20%]">
+      <div className="flex flex-col max-w-[343px] md:max-w-[460px] mx-auto mb-6 lg:max-w-none lg:mx-0 lg:flex-row">
+        <div className="bg-[#CCCCFA] dark:bg-[#1E1932] px-5 py-5 lg:p-0 lg:px-[25px] lg:py-[25px] flex items-center justify-center rounded-t-3xl lg:rounded-t-none lg:rounded-tl-3xl lg:rounded-bl-3xl basis-[40%] lg:basis-[20%]">
           <div className="flex flex-col items-center">
             <Image
               width={80}
@@ -50,11 +50,14 @@ export default function PortfolioCoinCard({
               name={currentDateData?.name}
               symbol={currentDateData?.symbol}
             />
+            <p className="text-black dark:text-[#E8E8E8] lg:hidden">
+              Purchased {purchaseDate?.split("-").reverse().join(".")}
+            </p>
           </div>
         </div>
-        <div className="bg-[#FFFFFF] dark:bg-[#191932] text-black dark:text-[#FFFFFF] p-6 rounded-r-3xl basis-[80%]">
-          <div className="flex justify-between">
-            <h3 className="text-xl text-bold">Market price</h3>
+        <div className="bg-[#FFFFFF] dark:bg-[#191932] text-black dark:text-[#FFFFFF] p-3 lg:p-6 rounded-t-none rounded-b-3xl lg:rounded-l-none lg:rounded-r-3xl basis-[60%] lg:basis-[80%]">
+          <div className="flex justify-between mb-4 lg:mb-0">
+            <h3 className="text-base text-bold lg:text-xl">Market price</h3>
             <button
               onClick={() => handleRemoveCoin(id)}
               className="bg-red-400 p-2 rounded-md"
@@ -62,8 +65,8 @@ export default function PortfolioCoinCard({
               <DeletePortfolioCoinIcon />
             </button>
           </div>
-          <div className="flex mb-6">
-            <div className="flex flex-col items-start flex-1">
+          <div className="flex gap-2 lg:gap-0 mb-6">
+            <div className="flex flex-col items-center p-2 lg:p-0 lg:items-start flex-1 border border-black dark:border-[#FFFFFF] rounded-xl lg:border-0">
               <PortfolioCoinStatistic statistic={"Current price"}>
                 <p>
                   {handleCurrencySymbol(currentCurrency)}
@@ -73,7 +76,7 @@ export default function PortfolioCoinCard({
                 </p>
               </PortfolioCoinStatistic>
             </div>
-            <div className="flex flex-col items-start flex-1">
+            <div className="hidden lg:flex lg:flex-col lg:items-start lg:flex-1">
               <PortfolioCoinStatistic statistic={"Price change 24h"}>
                 <p>
                   {handleCurrencySymbol(currentCurrency)}
@@ -81,7 +84,7 @@ export default function PortfolioCoinCard({
                 </p>
               </PortfolioCoinStatistic>
             </div>
-            <div className="flex flex-col items-center flex-1">
+            <div className="hidden lg:flex lg:flex-col lg:items-center lg:flex-1">
               <PortfolioCoinStatistic statistic={"Market Cap vs Volume"}>
                 <div className="flex items-center">
                   <span>
@@ -115,7 +118,7 @@ export default function PortfolioCoinCard({
                 </div>
               </PortfolioCoinStatistic>
             </div>
-            <div className="flex flex-col items-center flex-1">
+            <div className="flex flex-col p-2 border border-black dark:border-[#FFFFFF] lg:p-0 lg:border-0 rounded-xl items-center flex-1">
               <PortfolioCoinStatistic statistic={"Profit"}>
                 <p
                   className={`${handleStatisticColor(
@@ -142,11 +145,11 @@ export default function PortfolioCoinCard({
               </PortfolioCoinStatistic>
             </div>
           </div>
-          <hr className="mb-6"></hr>
+          <hr className="hidden lg:mb-6"></hr>
           <div>
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl text-bold">
+                <h3 className="text-base text-bold lg:text-xl">
                   Your coin{coinAmount > 1 && "s"}
                 </h3>
                 <button
@@ -157,13 +160,13 @@ export default function PortfolioCoinCard({
                 </button>
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="flex flex-col items-start flex-1">
+            <div className="flex gap-2 lg:gap-0 justify-between">
+              <div className="flex flex-col items-center lg:items-start flex-1 p-2 border border-black dark:border-[#FFFFFF] rounded-xl lg:border-0 lg:p-0">
                 <PortfolioCoinStatistic statistic={"Coin amount"}>
                   <p>{coinAmount}</p>
                 </PortfolioCoinStatistic>
               </div>
-              <div className="flex flex-col items-start flex-1">
+              <div className="flex flex-col items-center lg:items-start flex-1 p-2 border border-black dark:border-[#FFFFFF] lg:border-0 rounded-xl lg:p-0">
                 <PortfolioCoinStatistic statistic={"Value amount"}>
                   <p>
                     {handleCurrencySymbol(currentCurrency)}
@@ -175,7 +178,7 @@ export default function PortfolioCoinCard({
                   </p>
                 </PortfolioCoinStatistic>
               </div>
-              <div className="flex flex-col items-center flex-1">
+              <div className="hidden lg:flex lg:flex-col lg:items-center md:flex-1">
                 <PortfolioCoinStatistic statistic={"Change since purchase"}>
                   <p
                     className={`${
@@ -203,7 +206,7 @@ export default function PortfolioCoinCard({
                   </p>
                 </PortfolioCoinStatistic>
               </div>
-              <div className="flex flex-col items-center flex-1">
+              <div className="hidden lg:flex lg:flex-col lg:items-center lg:flex-1">
                 <PortfolioCoinStatistic statistic={"Purchased date"}>
                   <p>{purchaseDate?.split("-").reverse().join(".")}</p>
                 </PortfolioCoinStatistic>

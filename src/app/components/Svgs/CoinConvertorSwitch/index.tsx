@@ -8,7 +8,7 @@ export default function CoinConvertorSwitch({
   return (
     <svg
       onClick={handleCoinSwitch}
-      className="cursor-pointer p-3 bg-[#F3F5F9] dark:bg-[#13121A] rounded-full w-[72px] h-[72px] left-1/2 top-1/2 -mt-[30px] -ml-[36px] md:p-3 md:bg-transparent md:dark:bg-transparent md:-mt-[36px] md:-ml-[46px] 2xl:-ml-[36px] absolute"
+      className="cursor-pointer p-3 bg-[#F3F5F9] dark:bg-[#13121A] rounded-full w-[72px] h-[72px] left-1/2 top-1/2 -mt-[30px] -ml-[calc(36px-16px)] lg:-ml-[calc(72px-36px)]  md:p-3 md:bg-transparent md:dark:bg-transparent md:-mt-[36px] md:-ml-[46px] 2xl:-ml-[36px] absolute"
       width="48"
       height="48"
       viewBox="0 0 48 48"

@@ -3,8 +3,8 @@ export default function HomeIcon({ pathName }: { pathName: string }) {
     <svg
       className={`${
         pathName === "/" || pathName === "/convertor"
-          ? "fill-[#353570] stroke-white dark:fill-white dark:stroke-black"
-          : "fill-none stroke-[#353570] dark:fill-none] dark:stroke-white"
+          ? "fill-[#353570] stroke-white dark:fill-white dark:stroke-[#6161D6] lg:dark:stroke-[#13121A]"
+          : "fill-none stroke-[#353570] dark:fill-none dark:stroke-white"
       }`}
       width={"24"}
       height={"24"}

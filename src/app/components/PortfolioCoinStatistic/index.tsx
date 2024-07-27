@@ -6,7 +6,7 @@ export default function PortfolioCoinStatistic({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col-reverse items-center lg:flex-col">
       <p>{statistic}</p>
       {children}
     </div>

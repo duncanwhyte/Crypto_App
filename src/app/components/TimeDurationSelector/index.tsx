@@ -36,7 +36,7 @@ export default function TimeDurationSelector() {
   return (
     <div
       onClick={handleClick}
-      className="mx-auto md:max-w-[463px] sm:max-w-[375px] space-x-2 flex justify-center p-1 dark:bg-[#232336] text-[#424286] bg-[#CCCCFA] rounded-xl"
+      className="mx-auto mb-[56px] md:max-w-[463px] sm:max-w-[375px] space-x-2 flex justify-center p-1 dark:bg-[#232336] text-[#424286] bg-[#CCCCFA] rounded-xl"
     >
       <TimeDurationInput
         time={"1H"}

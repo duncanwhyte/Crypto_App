@@ -60,9 +60,9 @@ export default function CoinPage({ coinId }: { coinId: string }) {
         currVal.coinAmount);
     }, 0);
   return (
-    <main className="">
+    <main className="p-4 xl:px-[72px]">
       <div className="mb-8 xl:flex xl:gap-4">
-        <div className="bg-[#FFFFFF] dark:bg-[#1E1932] px-8 py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
+        <div className="bg-[#FFFFFF] text-sm md:text-base dark:bg-[#1E1932] px-4 py-5 md:px-8 md:py-10 rounded-xl mx-auto mb-4 max-w-[560px] xl:mx-0 xl:mb-0 xl:max-w-[564px] xl:w-[40%] xl:flex xl:flex-col xl:justify-around">
           <div className="flex mb-8">
             {coinData && (
               <Image
@@ -74,7 +74,7 @@ export default function CoinPage({ coinId }: { coinId: string }) {
               />
             )}
             <div className="flex flex-col">
-              <h3 className="text-bold text-lg">
+              <h3 className="text-bold lg:text-lg">
                 {coinData?.name} ({coinData?.symbol?.toUpperCase()})
               </h3>
               <a href={coinData?.links?.homepage[0]}>
@@ -84,14 +84,14 @@ export default function CoinPage({ coinId }: { coinId: string }) {
           </div>
           <div className="flex flex-col">
             <>
-              <h2 className="text-2xl">
+              <h2 className="lg:text-2xl">
                 {handleCurrencySymbol(currentCurrency)}
                 {coinData?.market_data?.current_price[currentCurrency]}
               </h2>
             </>
             {profit && (
               <div className="flex items-center gap-4">
-                <p className="text-xl text-black dark:text-[#FFFFFF]">
+                <p className="lg:text-xl text-black dark:text-[#FFFFFF]">
                   Profit:
                 </p>
                 <span
@@ -122,14 +122,14 @@ export default function CoinPage({ coinId }: { coinId: string }) {
                 />
               </svg>
               <div className="flex flex-col justify-start self-start items-start">
-                <h3 className="text-lg">All Time High:</h3>
+                <h3 className="lg:text-lg">All Time High:</h3>
                 <p className="text-[#B9B9BA]">
                   {athDate && handleAllTimeDateDisplay(athDate)}
                 </p>
               </div>
             </div>
             <>
-              <h3 className="text-lg">
+              <h3 className="lg:text-lg">
                 {handleCurrencySymbol(currentCurrency)}
                 {coinData?.market_data?.ath[currentCurrency]}
               </h3>
@@ -153,14 +153,14 @@ export default function CoinPage({ coinId }: { coinId: string }) {
                 />
               </svg>
               <div className="flex flex-col items-start self-start">
-                <h3 className="text-lg">All Time Low:</h3>
+                <h3 className="lg:text-lg">All Time Low:</h3>
                 <p className="text-[#B9B9BA]">
                   {atlDate && handleAllTimeDateDisplay(atlDate)}
                 </p>
               </div>
             </div>
             <>
-              <h3 className="text-lg">
+              <h3 className="lg:text-lg">
                 {handleCurrencySymbol(currentCurrency)}
                 {coinData?.market_data?.atl[currentCurrency]}
               </h3>
@@ -223,7 +223,7 @@ export default function CoinPage({ coinId }: { coinId: string }) {
           <CoinStatistic
             statisticText="Max Supply"
             statisticData={
-              coinData?.market_data?.max_supply.toString() || "N/A"
+              coinData?.market_data?.max_supply?.toString() || "N/A"
             }
             coinSymbol={coinData && coinData?.symbol.toUpperCase()}
             currentCurrency={null}

@@ -24,12 +24,12 @@ export default function GlobalCoinMarketDisplay() {
   }, [dispatch, currentCurrency]);
   return (
     <div className="bg-[#353570] text-[#FFFFFF] dark:bg-[#1E1932]">
-      <ul className="flex items-center justify-center space-x-8 py-5">
-        <li className="flex items-center">
+      <ul className="flex items-center justify-between px-4 py-5 md:justify-center md:space-x-8 ">
+        <li className="flex items-center text-sm lg:text-base">
           <Image className="w-5 h-5 mr-1" src={coinsImg} alt="coins-image" />
           Coins {globalData?.active_cryptocurrencies}
         </li>
-        <li className="flex items-center">
+        <li className="flex items-center text-sm lg:text-base">
           <Image
             className="w-5 h-5 mr-1"
             src={marketsImg}
@@ -37,16 +37,16 @@ export default function GlobalCoinMarketDisplay() {
           />
           Markets {globalData?.markets}
         </li>
-        <li>
+        <li className="text-sm lg:text-base">
           {handleCurrencySymbol(currentCurrency)}
           {handleCurrency(globalData?.total_market_cap[`${currentCurrency}`])}
         </li>
-        <li className="flex items-center">
+        <li className="flex items-center text-sm lg:text-base">
           <span className="mr-1">
             {handleCurrencySymbol(currentCurrency)}
             {handleCurrency(globalData?.total_volume[`${currentCurrency}`])}
           </span>
-          <div className="w-12 h-2 overflow-hidden rounded-xl bg-neutral-400">
+          <div className="hidden lg:w-12 lg:h-2 lg:overflow-hidden lg:rounded-xl lg:bg-neutral-400">
             <div
               style={{
                 width: `${Math.round(
@@ -59,9 +59,9 @@ export default function GlobalCoinMarketDisplay() {
             ></div>
           </div>
         </li>
-        <li className="flex items-center">
+        <li className="hidden md:flex md:items-center">
           <Image className="mr-1" src={bitcoinImg} alt="bitcoin-image" />
-          <span className="mr-1">
+          <span className="md:mr-1">
             {Math.round(globalData?.market_cap_percentage["btc"])}%
           </span>
           <div className="w-12 h-2 overflow-hidden rounded-xl bg-neutral-400">
@@ -75,7 +75,7 @@ export default function GlobalCoinMarketDisplay() {
             ></div>
           </div>
         </li>
-        <li className="flex items-center">
+        <li className="hidden md:flex md:items-center">
           <Image className="mr-1" src={ethereumImg} alt="ethereum-image" />
           <span className="mr-1">
             {Math.round(globalData?.market_cap_percentage["eth"])}%

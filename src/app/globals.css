@@ -30,6 +30,12 @@ body {
 .slick-next::before, .slick-prev::before {
   display: none;
 }
+.slick-slide > div {
+  margin: 0 8px
+}
+.slick-list {
+  margin: 0 -8px;
+}
 ::-webkit-scrollbar {
   width: 10px;
 }

@@ -8,6 +8,7 @@ import { useRef } from "react";
 import { SliderNextArrow, SliderPrevArrow } from "../SliderArrows/SliderArrows";
 import { fetchCoinData } from "@/app/lib/features/selectedCoins/selectedCoinsSlice";
 import { RootState } from "@/app/lib/store";
+import useWindowWidth from "@/app/hooks/useWindowWidth";
 interface Coin {
   name: string;
   id: string;
@@ -29,6 +30,7 @@ const selectCurrency = (state: RootState) => state.currentCurrency;
 function CoinSlider() {
   const coinList = useAppSelector(selectCoinList);
   const [coin1, coin2, coin3] = useAppSelector(selectUserCoins);
+  const windowWidth = useWindowWidth();
   const sliderRef = useRef<Slider | null>(null);
   const currentCurrency: string = useAppSelector(selectCurrency);
   const dispatch = useAppDispatch();
@@ -55,30 +57,19 @@ function CoinSlider() {
   };
   const sliderSettings = {
     speed: 300,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    nextArrow: <SliderNextArrow next={next} />,
-    prevArrow: <SliderPrevArrow prev={prev} />,
-    responsive: [
-      {
-        breakpoint: 1320,
-        settings: {
-          slidesToShow: 4,
-        },
-      },
-      {
-        breakpoint: 1090,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 860,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-    ],
+    slidesToShow: windowWidth >= 1024 ? 4 : 3,
+    nextArrow:
+      windowWidth >= 768 ? (
+        <SliderNextArrow chartArrow={false} next={next} />
+      ) : (
+        <></>
+      ),
+    prevArrow:
+      windowWidth >= 768 ? (
+        <SliderPrevArrow chartArrow={false} prev={prev} />
+      ) : (
+        <></>
+      ),
   };
   return (
     <div className="mb-10">
@@ -86,7 +77,7 @@ function CoinSlider() {
         <h3>Select the currency to view the statistics</h3>
       </div>
       <div className="">
-        <ul className="list-none transition-all relative">
+        <ul className="list-none transition-all lg:overflow-visible relative">
           <Slider
             ref={(slider: Slider) => {
               sliderRef.current = slider;

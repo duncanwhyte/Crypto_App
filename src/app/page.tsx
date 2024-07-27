@@ -16,7 +16,7 @@ export default function Home() {
     dispatch(fetchCoinList());
   }, [currentCurrency, dispatch]);
   return (
-    <main className="px-20 pt-14 dark:text-white text-black">
+    <main className="px-4 text-sm md:text-base xl:px-[72px] dark:text-white text-black">
       <HomePageNavigator />
       <CoinSlider />
       <div className="">
