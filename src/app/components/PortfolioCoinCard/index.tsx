@@ -13,7 +13,6 @@ import { RootState } from "@/app/lib/store";
 const selectCurrentCurrency = (state: RootState) => state.currentCurrency;
 export default function PortfolioCoinCard({
   coin,
-  id,
   purchaseDate,
   coinAmount,
   currentDateData,
@@ -31,7 +30,7 @@ export default function PortfolioCoinCard({
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();
-  const handleRemoveCoin = (coinId: string) => {
+  const handleRemoveCoin = (coinId: number) => {
     dispatch({ type: "portfolioCoins/removeCoin", payload: coinId });
   };
   return (
@@ -59,7 +58,7 @@ export default function PortfolioCoinCard({
           <div className="flex justify-between mb-4 lg:mb-0">
             <h3 className="text-base text-bold lg:text-xl">Market price</h3>
             <button
-              onClick={() => handleRemoveCoin(id)}
+              onClick={() => handleRemoveCoin(coin.uniqueId)}
               className="bg-red-400 p-2 rounded-md"
             >
               <DeletePortfolioCoinIcon />
