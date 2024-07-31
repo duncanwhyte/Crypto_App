@@ -15,6 +15,9 @@ export default function useFormError(
       return false;
     },
     (): boolean => {
+      if (isNaN(parseFloat(coinAmount))) {
+        return true;
+      }
       if (parseFloat(coinAmount) < 0) {
         return true;
       }
