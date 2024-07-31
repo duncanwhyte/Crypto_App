@@ -12,18 +12,22 @@ const callCoinData = async (arg: any, thunkApi: any) => {
   const [currentTime, pastTime] = handleCoinDates(
     graphTimeDuration.graphTimeDuration
   );
+  const coinStatsReq = await fetch(
+    `https://api.coingecko.com/api/v3/coins/${arg.id}?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+  );
   const coinDataReq = await fetch(
     `https://api.coingecko.com/api/v3/coins/${arg.id}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
   );
+  const coinStatsData = await coinStatsReq.json();
   const coinData = await coinDataReq.json();
   const newCoin = {
     id: arg.id,
     name: arg.name,
     symbol: arg.symbol,
     // eslint-disable-next-line
-    total_volume: arg.total_volume,
+    total_volume: coinStatsData.market_data.total_volume,
     // eslint-disable-next-line
-    current_price: arg.current_price,
+    current_price: coinStatsData.market_data.current_price,
     coinData: {
       prices: coinData.prices,
       total_volumes: coinData.total_volumes, //eslint-disable-line
@@ -35,15 +39,15 @@ export const fetchCoinData = createAsyncThunk(
   "selectedCoins/getCoinData",
   callCoinData
 );
-export const updateCoinData = createAsyncThunk(
-  "selectedCoins/updateCoinData",
-  callCoinData
-);
 const initialState: State = {
   selectedCoins: [],
   isLoading: false,
   error: false,
 };
+export const updateCoinData = createAsyncThunk(
+  "selectedCoins/updateCoinData",
+  callCoinData
+);
 const selectedCoinsSlice = createSlice({
   name: "selectedCoins",
   initialState: initialState,
@@ -64,23 +68,23 @@ const selectedCoinsSlice = createSlice({
       state.isLoading = false;
       state.error = "Could't fetch coin...";
     });
-    builder.addCase(updateCoinData.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(updateCoinData.fulfilled, (state, action) => {
-      state.isLoading = true;
-      state.selectedCoins = state.selectedCoins.map((coin) => {
-        if (coin.id === action.payload.id) {
-          coin = action.payload;
-        }
-        return coin;
-      });
-      state.isLoading = false;
-    });
-    builder.addCase(updateCoinData.rejected, (state) => {
-      state.isLoading = false;
-      state.error = "Could't update coin...";
-    });
+    // builder.addCase(updateCoinData.pending, (state) => {
+    //   state.isLoading = true;
+    // });
+    // // builder.addCase(updateCoinData.fulfilled, (state, action) => {
+    // //   state.isLoading = true;
+    // //   state.selectedCoins = state.selectedCoins.map((coin) => {
+    // //     if (coin.id === action.payload.id) {
+    // //       coin = action.payload;
+    // //     }
+    // //     return coin;
+    // //   });
+    // //   state.isLoading = false;
+    // // });
+    // // builder.addCase(updateCoinData.rejected, (state) => {
+    // //   state.isLoading = false;
+    // //   state.error = "Could't update coin...";
+    // // });
     builder.addCase(deselectCoin, (state, action) => {
       state.selectedCoins = state.selectedCoins.filter(
         (coin) => coin.id !== action.payload
