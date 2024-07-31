@@ -70,26 +70,19 @@ export interface UpdatedCoin {
   purchasedDate: string;
   purchasedDateData: CoinData;
 }
-export interface CoinToRender {
-  uniqueId: number;
-  id: string;
-  coinAmount: number;
-  purchasedDate: string;
-  purchasedDateData: CoinData;
-  currentDateData: CoinData;
-}
 export interface UpdatedCoinArgument {
   uniqueId: number;
   id: string;
   coinAmount: number;
   purchasedDate: string;
 }
-export interface PortfolioCoin extends CoinToRender {
+export interface PortfolioCoin {
   uniqueId: number;
   id: string;
   coinAmount: number;
   purchasedDate: string;
   purchasedDateData: CoinData;
+  currentDateData?: CoinData;
 }
 export interface CoinData {
   links: { [key: string]: string[] };
