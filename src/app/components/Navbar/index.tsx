@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/app/lib/hooks";
 import HomeIcon from "../Svgs/HomeIcon/HomeIcon";
@@ -11,12 +11,8 @@ import ThemeToggle from "../ThemeToggle";
 import useWindowWidth from "@/app/hooks/useWindowWidth";
 import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import { changeCurrency } from "@/app/lib/features/currency/currencySlice";
-interface Coin {
-  id: string;
-  symbol: string;
-  name: string;
-  image: string;
-}
+import useSearchCoin from "@/app/hooks/useSearchCoin";
+import { SearchedCoin } from "@/app/types/types";
 interface State {
   currentCurrency: string;
   darkTheme: boolean;
@@ -24,7 +20,6 @@ interface State {
 }
 const currencies = ["GBP", "USD", "EUR", "ETH", "BTC"];
 const selectCurrency = (state: State) => state.currentCurrency;
-const selectCoinList = (state: State) => state.coinList.data;
 export default function Navbar() {
   const pathName = usePathname();
   const windowWidth = useWindowWidth();
@@ -32,17 +27,34 @@ export default function Navbar() {
   const [debouncedCoinVal, setDebouncedCoinVal] = useState("");
   const [openMobileInput, setOpenMobileInput] = useState(false);
   const [openCurrencyDropdown, setOpenCurrencyDropdown] = useState(false);
+  const [coinSearchFocus, setCoinSearchFocus] = useState(false);
+  const timerRef = useRef();
+  const [searchedCoins, setSearchCoins] = useSearchCoin(
+    coinSearchVal,
+    coinSearchFocus,
+    timerRef
+  );
   const currentCurrency = useAppSelector(selectCurrency);
-  const coinList = useAppSelector(selectCoinList);
   const dispatch = useAppDispatch();
   const handleOpenMobileInput = () => {
     setOpenMobileInput(!openMobileInput);
   };
+  const handleInputFocus = () => {
+    setCoinSearchFocus(true);
+  };
+  const handleInputBlur = () => {
+    setCoinSearchFocus(false);
+    setTimeout(() => {
+      if (openMobileInput) {
+        setOpenMobileInput(false);
+      }
+      setSearchCoins(null);
+      setCoinSearchVal("");
+      setDebouncedCoinVal("");
+    }, 700);
+  };
   const handleSearchCoin = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCoinSearchVal(e.target.value);
-  };
-  const resetCoinSearch = () => {
-    setCoinSearchVal("");
   };
   const handleCurrencyChange = (e: React.SyntheticEvent<HTMLUListElement>) => {
     if (e.target instanceof HTMLLIElement) {
@@ -69,18 +81,19 @@ export default function Navbar() {
       {openMobileInput && (
         <input
           onChange={(e) => handleSearchCoin(e)}
+          onFocus={handleInputFocus}
           onBlur={() => {
-            resetCoinSearch();
             if (!coinSearchVal) {
               setTimeout(() => {
                 handleOpenMobileInput();
               }, 500);
             }
+            handleInputBlur();
           }}
           className={`${
             openMobileInput && coinSearchVal && "inline-block lg:w-full"
           } h-full w-full bg-[#CCCCFA] dark:bg-[#232334] z-10 transition-all absolute left-0 md:px-12 md:py-3 text-black placeholder-black dark:text-[#FFFFFF] dark:placeholder-[#FFFFFF] ${
-            coinSearchVal && coinList && "rounded-top-none"
+            coinSearchVal && searchedCoins && "rounded-top-none"
           }  outline-none`}
           placeholder={`${windowWidth < 768 ? "Search..." : ""}`}
           value={coinSearchVal}
@@ -139,16 +152,18 @@ export default function Navbar() {
         <div>
           {windowWidth >= 768 && (
             <input
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
               onChange={(e) => handleSearchCoin(e)}
               className={`inline-block md:px-12 md:py-3 text-black placeholder-black md:min-w-[200px] lg:min-w-[300px] xl:min-w-[356px] dark:text-[#FFFFFF] dark:placeholder-[#FFFFFF]  ${
-                coinSearchVal && coinList ? "rounded-t-xl" : "rounded-xl"
+                coinSearchVal && searchedCoins ? "rounded-t-xl" : "rounded-xl"
               }  bg-[#CCCCFA] dark:bg-[#232334] outline-none`}
               placeholder={`${windowWidth < 768 ? "" : "Search..."}`}
               value={coinSearchVal}
             />
           )}
           <div
-            className="hidden md:inline-block"
+            className="hidden pointer-events-none md:inline-block"
             onClick={handleOpenMobileInput}
           >
             <svg
@@ -168,30 +183,28 @@ export default function Navbar() {
           </div>
           <ul
             className={`${
-              coinList && debouncedCoinVal ? "opacity-100" : "opacity-0"
-            } absolute left-0 w-[calc(100vw-10px)]  ${
+              searchedCoins && debouncedCoinVal ? "opacity-100" : "opacity-0"
+            } absolute left-0 w-[calc(100vw)] ${
               openMobileInput && "top-[100%] rounded-t-none rounded-b-xl"
             } z-50 md:w-[292px] lg:w-[316px] xl:w-[356px] max-h-44 p-2 bg-[#CCCCFA] dark:bg-[#232334] rounded-b-xl overflow-x-hidden overflow-y-scroll scroll-smooth`}
           >
             {debouncedCoinVal &&
-              coinList &&
-              coinList
-                .filter((coin: Coin) => coin.name.includes(debouncedCoinVal))
-                .map((coin: Coin) => (
-                  <Link
-                    className="flex items-center gap-5"
-                    key={coin.id}
-                    href={`/coins/${coin.id}`}
-                  >
-                    <Image
-                      width={24}
-                      height={24}
-                      src={`${coin.image}`}
-                      alt="Coin Image"
-                    />
-                    {coin.name}
-                  </Link>
-                ))}
+              searchedCoins &&
+              searchedCoins.map((coin: SearchedCoin) => (
+                <Link
+                  className="flex items-center gap-5"
+                  key={coin.id}
+                  href={`/coins/${coin.id}`}
+                >
+                  <Image
+                    width={24}
+                    height={24}
+                    src={`${coin.large}`}
+                    alt="Coin Image"
+                  />
+                  {coin.name}
+                </Link>
+              ))}
           </ul>
         </div>
         <div>
@@ -235,7 +248,9 @@ export default function Navbar() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-4 h-4 top-4 right-1"
+                className={`w-4 h-4 top-4 right-1 transition-all -rotate-0 ${
+                  openCurrencyDropdown && "-rotate-180"
+                }`}
               >
                 <path
                   strokeLinecap="round"
