@@ -68,23 +68,23 @@ const selectedCoinsSlice = createSlice({
       state.isLoading = false;
       state.error = "Could't fetch coin...";
     });
-    // builder.addCase(updateCoinData.pending, (state) => {
-    //   state.isLoading = true;
-    // });
-    // // builder.addCase(updateCoinData.fulfilled, (state, action) => {
-    // //   state.isLoading = true;
-    // //   state.selectedCoins = state.selectedCoins.map((coin) => {
-    // //     if (coin.id === action.payload.id) {
-    // //       coin = action.payload;
-    // //     }
-    // //     return coin;
-    // //   });
-    // //   state.isLoading = false;
-    // // });
-    // // builder.addCase(updateCoinData.rejected, (state) => {
-    // //   state.isLoading = false;
-    // //   state.error = "Could't update coin...";
-    // // });
+    builder.addCase(updateCoinData.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateCoinData.fulfilled, (state, action) => {
+      state.isLoading = true;
+      state.selectedCoins = state.selectedCoins.map((coin) => {
+        if (coin.id === action.payload.id) {
+          coin = action.payload;
+        }
+        return coin;
+      });
+      state.isLoading = false;
+    });
+    builder.addCase(updateCoinData.rejected, (state) => {
+      state.isLoading = false;
+      state.error = "Could't update coin...";
+    });
     builder.addCase(deselectCoin, (state, action) => {
       state.selectedCoins = state.selectedCoins.filter(
         (coin) => coin.id !== action.payload

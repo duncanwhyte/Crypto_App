@@ -297,18 +297,14 @@ export default function SelectedCoinsCharts() {
   };
   useEffect(() => {
     if (coin1) {
-      updateCoinData(coin1);
+      dispatch(updateCoinData(coin1));
     }
     if (coin2) {
-      updateCoinData(coin2);
+      dispatch(updateCoinData(coin2));
     }
     if (coin3) {
-      updateCoinData(coin3);
+      dispatch(updateCoinData(coin3));
     }
-  }, [graphTimeDuration]);
-  useEffect(() => {
-    dispatch(updateCoinData({ coin1, coin2, coin3 }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [graphTimeDuration]);
   useEffect(() => {
     const labels = handleCoinLabelCount(window.innerWidth);
