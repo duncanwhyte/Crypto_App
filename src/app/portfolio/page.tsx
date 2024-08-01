@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from "../lib/hooks";
 import { updateCurrentCoinData } from "@/app/lib/features/portfolioCoins/portfolioCoinsSlice";
 import { callCurrentDateData } from "../lib/features/portfolioCoins/portfolioCoinsSlice";
 import PortfolioCoinCard from "../components/PortfolioCoinCard";
-import { CoinData, CoinToRender, PortfolioCoin } from "../types/types";
+import { CoinData, PortfolioCoin } from "../types/types";
 const selectPortfolioCoins = (state: RootState) => state.portfolioCoins.coins;
 const selectCurrentPriceData = (state: RootState): CoinData[] =>
   state.portfolioCoins.currentDateData;
@@ -30,7 +30,7 @@ export default function Portfolio() {
   const handleOpenModal = (): void => {
     setShowAssetModal(!showAssetModal);
   };
-  const handleCoinToEdit = (coin: CoinToRender): void => {
+  const handleCoinToEdit = (coin: PortfolioCoin): void => {
     if (coin.currentDateData) {
       const coinToSet: CoinToEdit = {
         uniqueId: coin.uniqueId,
@@ -68,10 +68,10 @@ export default function Portfolio() {
   useEffect(() => {
     dispatch(callCurrentDateData());
   }, [dispatch, portfolioCoins]);
-  const coinsToRender: CoinToRender[] =
+  const coinsToRender =
     portfolioCoins &&
     currentPriceData &&
-    portfolioCoins.map((coin: PortfolioCoin): CoinToRender => {
+    portfolioCoins.map((coin: PortfolioCoin) => {
       const newCoin: PortfolioCoin = {
         ...coin,
       };
@@ -100,21 +100,23 @@ export default function Portfolio() {
           <ul>
             {coinsToRender &&
               coinsToRender
-                .filter((coin: CoinToRender) => coin.currentDateData)
-                .map((coin: CoinToRender) => {
-                  return (
-                    <PortfolioCoinCard
-                      coin={coin}
-                      key={coin.id}
-                      id={coin.id}
-                      coinAmount={coin.coinAmount}
-                      purchaseDate={coin.purchasedDate}
-                      currentDateData={coin.currentDateData}
-                      purchasedDateData={coin.purchasedDateData}
-                      showEditModal={showEditModal}
-                      handleCoinToEdit={handleCoinToEdit}
-                    />
-                  );
+                .filter((coin) => coin.currentDateData)
+                .map((coin) => {
+                  if (coin.currentDateData) {
+                    return (
+                      <PortfolioCoinCard
+                        coin={coin}
+                        key={coin.id}
+                        id={coin.id}
+                        coinAmount={coin.coinAmount}
+                        purchaseDate={coin.purchasedDate}
+                        currentDateData={coin.currentDateData}
+                        purchasedDateData={coin.purchasedDateData}
+                        showEditModal={showEditModal}
+                        handleCoinToEdit={handleCoinToEdit}
+                      />
+                    );
+                  }
                 })}
           </ul>
         </div>

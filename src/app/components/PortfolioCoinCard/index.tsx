@@ -8,30 +8,29 @@ import handleStatisticColor from "@/app/utils/handleStatisticColor";
 import handleTableProgressBar from "@/app/utils/handleTableProgressBar";
 import EditPortfolioIcon from "../Svgs/EditPortfolioCoinIcon";
 import DeletePortfolioCoinIcon from "../Svgs/DeletePortfolioCoinIcon";
-import { CoinData, CoinToRender } from "@/app/types/types";
+import { CoinData, PortfolioCoin } from "@/app/types/types";
 import { RootState } from "@/app/lib/store";
 const selectCurrentCurrency = (state: RootState) => state.currentCurrency;
 export default function PortfolioCoinCard({
   coin,
-  id,
   purchaseDate,
   coinAmount,
   currentDateData,
   purchasedDateData,
   handleCoinToEdit,
 }: {
-  coin: CoinToRender;
+  coin: PortfolioCoin;
   id: string;
   purchaseDate: string;
   coinAmount: number;
   currentDateData: CoinData;
   purchasedDateData: CoinData;
   showEditModal: boolean;
-  handleCoinToEdit: (_coin: CoinToRender) => void;
+  handleCoinToEdit: (_coin: PortfolioCoin) => void;
 }) {
   const currentCurrency = useAppSelector(selectCurrentCurrency);
   const dispatch = useAppDispatch();
-  const handleRemoveCoin = (coinId: string) => {
+  const handleRemoveCoin = (coinId: number) => {
     dispatch({ type: "portfolioCoins/removeCoin", payload: coinId });
   };
   return (
@@ -59,7 +58,7 @@ export default function PortfolioCoinCard({
           <div className="flex justify-between mb-4 lg:mb-0">
             <h3 className="text-base text-bold lg:text-xl">Market price</h3>
             <button
-              onClick={() => handleRemoveCoin(id)}
+              onClick={() => handleRemoveCoin(coin.uniqueId)}
               className="bg-red-400 p-2 rounded-md"
             >
               <DeletePortfolioCoinIcon />

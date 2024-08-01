@@ -192,25 +192,28 @@ export default function CoinTable() {
                           backgroundColor: `${handleMarketTrendColor(
                             priceChangePercent1hInCurrency,
                             priceChangePercent24hInCurrency,
-                            priceChangePercent7dInCurrency
+                            priceChangePercent7dInCurrency,
+                            true
                           )}`,
                         }}
-                        className={"h-2 rounded-xl opacity-50 overflow-hidden"}
-                      ></div>
-                      <div
-                        style={{
-                          width: `${handleTableProgressBar(
-                            totalVolume,
-                            marketCap
-                          )}%`,
-                          backgroundColor: `${handleMarketTrendColor(
-                            priceChangePercent1hInCurrency,
-                            priceChangePercent24hInCurrency,
-                            priceChangePercent7dInCurrency
-                          )}`,
-                        }}
-                        className={"h-2 relative bottom-2 rounded-xl"}
-                      ></div>
+                        className={"h-2 rounded-xl overflow-hidden"}
+                      >
+                        <div
+                          style={{
+                            width: `${handleTableProgressBar(
+                              totalVolume,
+                              marketCap
+                            )}%`,
+                            backgroundColor: `${handleMarketTrendColor(
+                              priceChangePercent1hInCurrency,
+                              priceChangePercent24hInCurrency,
+                              priceChangePercent7dInCurrency,
+                              false
+                            )}`,
+                          }}
+                          className={"h-full rounded-xl"}
+                        ></div>
+                      </div>
                     </div>
                   </td>
                   <td className="hidden xl:w-[calc(10%-100px)] xl:pr-[20px] xl:table-cell">
@@ -230,27 +233,28 @@ export default function CoinTable() {
                           backgroundColor: `${handleMarketTrendColor(
                             priceChangePercent1hInCurrency,
                             priceChangePercent24hInCurrency,
-                            priceChangePercent7dInCurrency
+                            priceChangePercent7dInCurrency,
+                            true
                           )}`,
                         }}
-                        className={
-                          "w-full h-2 rounded-xl opacity-50 overflow-hidden"
-                        }
-                      ></div>
-                      <div
-                        style={{
-                          width: `${handleTableProgressBar(
-                            circulatingSupply,
-                            totalSupply
-                          )}%`,
-                          backgroundColor: `${handleMarketTrendColor(
-                            priceChangePercent1hInCurrency,
-                            priceChangePercent24hInCurrency,
-                            priceChangePercent7dInCurrency
-                          )}`,
-                        }}
-                        className={"h-2 relative bottom-2 rounded-xl"}
-                      ></div>
+                        className={"w-full h-2 rounded-xl overflow-hidden"}
+                      >
+                        <div
+                          style={{
+                            width: `${handleTableProgressBar(
+                              circulatingSupply,
+                              totalSupply
+                            )}%`,
+                            backgroundColor: `${handleMarketTrendColor(
+                              priceChangePercent1hInCurrency,
+                              priceChangePercent24hInCurrency,
+                              priceChangePercent7dInCurrency,
+                              false
+                            )}`,
+                          }}
+                          className={"h-full rounded-xl"}
+                        ></div>
+                      </div>
                     </div>
                   </td>
                   <td className="relative p-3 rounded-r-3xl w-[40%] sm:w-[25%] lg:w-[10%] xl:pr-4 xl:pr-[20px] xl:w-auto xl:mx-auto xl:table-cell">
@@ -258,7 +262,8 @@ export default function CoinTable() {
                       chartColor={handleMarketTrendColor(
                         priceChangePercent1hInCurrency,
                         priceChangePercent24hInCurrency,
-                        priceChangePercent7dInCurrency
+                        priceChangePercent7dInCurrency,
+                        false
                       )}
                       prices={sparklineIn7D.price}
                     />
