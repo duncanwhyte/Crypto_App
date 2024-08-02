@@ -18,8 +18,8 @@ export default function Convertor() {
   const dispatch = useAppDispatch();
   const [sellingCoin, setSellingCoin] = useState<CoinTableCoin | null>(null);
   const [buyingCoin, setBuyingCoin] = useState<CoinTableCoin | null>(null);
-  const [sellingAmount, setSellingAmount] = useState<number>(0);
-  const [buyingAmount, setBuyingAmount] = useState<number>(0);
+  const [sellingAmount, setSellingAmount] = useState<number | string>(0);
+  const [buyingAmount, setBuyingAmount] = useState<number | string>(0);
   const newDate = new Date();
   const handleSellingCoin = (coin: CoinTableCoin): void => {
     setSellingCoin(coin);
@@ -41,24 +41,26 @@ export default function Convertor() {
     sellingCoin: CoinTableCoin,
     buyingCoin: CoinTableCoin
   ): void => {
-    setSellingAmount(parseFloat(e.target.value));
-    const sellingPrice =
-      e.target.value === ""
-        ? 0
-        : parseFloat(e.target.value) * sellingCoin.current_price;
-    setBuyingAmount(sellingPrice / buyingCoin.current_price);
+    setSellingAmount(e.target.value);
+    if (!isNaN(parseFloat(e.target.value)) && parseFloat(e.target.value) > 0) {
+      setBuyingAmount(
+        (parseFloat(e.target.value) * sellingCoin.current_price) /
+          buyingCoin.current_price
+      );
+    }
   };
   const handleBuyingAmount = (
     e: React.ChangeEvent<HTMLInputElement>,
     buyingCoin: CoinTableCoin,
     sellingCoin: CoinTableCoin
   ): void => {
-    setBuyingAmount(parseFloat(e.target.value));
-    const buyingPrice =
-      e.target.value === ""
-        ? 0
-        : parseFloat(e.target.value) * buyingCoin.current_price;
-    setSellingAmount(buyingPrice / sellingCoin.current_price);
+    setBuyingAmount(e.target.value);
+    if (!isNaN(parseFloat(e.target.value)) && parseFloat(e.target.value) > 0) {
+      setSellingAmount(
+        (parseFloat(e.target.value) * buyingCoin.current_price) /
+          sellingCoin.current_price
+      );
+    }
   };
   useEffect(() => {
     dispatch(fetchCoinList());

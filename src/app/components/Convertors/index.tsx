@@ -22,8 +22,8 @@ export function CoinConvertor({
   selling: boolean;
   sellingCoin: CoinTableCoin;
   buyingCoin: CoinTableCoin;
-  sellingAmount: number;
-  buyingAmount: number;
+  sellingAmount: number | string;
+  buyingAmount: number | string;
   handleSellingCoin: (_coin: CoinTableCoin) => void;
   handleBuyingCoin: (_coin: CoinTableCoin) => void;
   handleSellingAmount: (
@@ -54,8 +54,8 @@ export function CoinConvertor({
           You {selling ? "selling" : "buy"}
         </p>
       </>
-      <div>
-        <div>
+      <>
+        <>
           <div className="flex justify-between items-center relative mb-6">
             <>
               <div className="flex items-center">
@@ -101,18 +101,18 @@ export function CoinConvertor({
                 ))}
             </ul>
           </div>
-          <div>
+          <>
             <hr className=""></hr>
-          </div>
-          <div>
+          </>
+          <>
             <p className="text-[#353570] dark:text-[#FFFFFF]">
               1 {selling ? sellingCoin?.symbol : buyingCoin?.symbol} ={" "}
               {handleCurrencySymbol(currentCurrency)}
               {selling ? sellingCoin?.current_price : buyingCoin?.current_price}
             </p>
-          </div>
-        </div>
-      </div>
+          </>
+        </>
+      </>
     </div>
   );
 }
