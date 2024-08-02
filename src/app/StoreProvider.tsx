@@ -14,15 +14,11 @@ export default function StoreProvider({
     storeRef.current = makeStore();
   }
   const persistedStore = persistStore(storeRef.current);
-  if (typeof window === "undefined") {
-    return <Provider store={storeRef.current}>{children}</Provider>;
-  } else {
-    return (
-      <Provider store={storeRef.current}>
-        <PersistGate loading={null} persistor={persistedStore}>
-          {children}
-        </PersistGate>
-      </Provider>
-    );
-  }
+  return (
+    <Provider store={storeRef.current}>
+      <PersistGate loading={null} persistor={persistedStore}>
+        {children}
+      </PersistGate>
+    </Provider>
+  );
 }
