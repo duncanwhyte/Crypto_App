@@ -13,7 +13,7 @@ export const callPortfolioCoinData = createAsyncThunk<PortfolioCoin, CoinToAdd>(
   async (arg) => {
     const date = arg.purchasedDate.split("-").reverse().join("-");
     const historicalDataReq = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${arg.coin.id}/history?date=${date}&x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+      `https://api.coingecko.com/api/v3/coins/${arg.coin.id}/history?date=${date}&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
     );
     const historicalData: CoinData = await historicalDataReq.json();
     const newCoin: PortfolioCoin = {
@@ -41,7 +41,7 @@ export const callCurrentDateData = createAsyncThunk<
   const uniqueIds: string[] = Array.from(new Set(ids));
   const currentDataReq = uniqueIds.map(async (id) => {
     const request = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${id}?x_cg_demo_ai_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+      `https://api.coingecko.com/api/v3/coins/${id}?x_cg_demo_ai_key=${process.env.NEXT_PUBLIC_API_KEY}`
     );
     const response = await request.json();
     return response;
@@ -64,7 +64,7 @@ export const updateCurrentCoinData = createAsyncThunk<
   ) {
     const date = arg.purchasedDate.split("-").reverse().join("-");
     const historicalDataReq = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${arg.id}/history?date=${date}&x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+      `https://api.coingecko.com/api/v3/coins/${arg.id}/history?date=${date}&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
     );
     const historicalData = await historicalDataReq.json();
     const updatedCoin = {

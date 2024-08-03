@@ -4,7 +4,7 @@ export const fetchGlobalData = createAsyncThunk(
   "globalData/getGlobalData",
   async () => {
     const globalDataReq = await fetch(
-      "https://api.coingecko.com/api/v3/global?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q"
+      `https://api.coingecko.com/api/v3/global?x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
     );
     const globalData = await globalDataReq.json();
     return globalData;

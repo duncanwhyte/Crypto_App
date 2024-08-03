@@ -28,7 +28,7 @@ const callConversionData = async (
     graphTimeDuration.graphTimeDuration
   );
   const coinDataReq = await fetch(
-    `https://api.coingecko.com/api/v3/coins/${arg.id}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
+    `https://api.coingecko.com/api/v3/coins/${arg.id}/market_chart/range?x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
   );
   const coinData = await coinDataReq.json();
   const conversionCoin = {
