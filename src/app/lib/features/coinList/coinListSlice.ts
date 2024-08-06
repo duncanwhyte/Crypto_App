@@ -17,7 +17,7 @@ export const fetchCoinList = createAsyncThunk<
   const { coinList } = thunkApi.getState();
   const { selectedCoins } = thunkApi.getState();
   const coinReq = await fetch(
-    `https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&price_change_percentage=1h,24h,7d&per_page=${coinList.coinsToDisplay}`
+    `https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}&vs_currency=${currentCurrency}&price_change_percentage=1h,24h,7d&per_page=${coinList.coinsToDisplay}`
   );
   const coinData = await coinReq.json();
   if (selectedCoins.selectedCoins.length === 0) {
@@ -29,7 +29,7 @@ const initialState: CoinState = {
   data: [],
   isLoading: "idle",
   error: false,
-  coinsToDisplay: 10,
+  coinsToDisplay: 40,
 };
 const coinListSlice = createSlice({
   name: "coinList",

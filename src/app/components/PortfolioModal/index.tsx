@@ -249,8 +249,8 @@ export default function PortfolioModal({
                   }}
                   className={`${
                     checkFormValidation()
-                      ? "bg-[#F3F5F9] dark:bg-[#6161D6]"
-                      : "bg-[#CCCCFA] dark:bg-[#232336]"
+                      ? "bg-[#F3F5F9] dark:bg-[#232336]"
+                      : "bg-[#CCCCFA] dark:bg-[#6161D6]"
                   } transition-all rounded-md basis-[60%] p-2 lg:py-3 lg:p-2 lg:basis-[232px]`}
                   disabled={
                     !selectedCoinError &&

@@ -16,7 +16,7 @@ export default function useSearchCoin(
       return;
     }
     const coinsReq = await fetch(
-      `https://api.coingecko.com/api/v3/search?query=${searchValue}&x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+      `https://api.coingecko.com/api/v3/search?query=${searchValue}&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
     );
     const searchedCoinsData = await coinsReq.json();
     const filteredCoins: SearchedCoin[] = searchedCoinsData.coins.filter(
