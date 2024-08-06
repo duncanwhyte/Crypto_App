@@ -2,7 +2,7 @@ import { useTheme } from "next-themes";
 export default function DropDownIcon({
   handleShowCoinList,
 }: {
-  handleShowCoinList: any;
+  handleShowCoinList: () => void;
 }) {
   const { resolvedTheme } = useTheme();
   return (
