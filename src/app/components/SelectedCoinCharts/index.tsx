@@ -238,7 +238,6 @@ export default function SelectedCoinsCharts() {
           label: (context: any) => {
             const [coin1DataValue, coin2DataValue, coin3DataValue] =
               context.chart.tooltip.dataPoints;
-            console.log(coin1DataValue);
             if (coin1DataValue) {
               currentLineDataRef.current = {
                 ...currentLineDataRef.current,
