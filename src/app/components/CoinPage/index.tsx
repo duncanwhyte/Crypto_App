@@ -21,7 +21,7 @@ export default function CoinPage({ coinId }: { coinId: string }) {
   useEffect(() => {
     const callCoinData = async (): Promise<void> => {
       const coinDataReq = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${coinId}?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+        `https://api.coingecko.com/api/v3/coins/${coinId}?x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
       );
       const coinData = await coinDataReq.json();
       setCoinData(coinData);
@@ -29,7 +29,7 @@ export default function CoinPage({ coinId }: { coinId: string }) {
     const call24hrTotalVolume = async (): Promise<void> => {
       const [currentTime, pastTime] = handleCoinDates(1);
       const totalVolumeReq = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
+        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
       );
       const totalVolumeData = await totalVolumeReq.json();
       const totalVolume = totalVolumeData.total_volumes.reduce(

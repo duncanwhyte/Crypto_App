@@ -12,7 +12,9 @@ export const fetchCoinTableList = createAsyncThunk<
   const { currentCurrency } = thunkApi.getState();
   const { coinTableList } = thunkApi.getState();
   const coinReq = await fetch(
-    `https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}${
+    `https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=${
+      process.env.NEXT_PUBLIC_API_KEY
+    }&vs_currency=${currentCurrency}${
       coinTableList.order && `&order=${coinTableList.order}`
     }&price_change_percentage=1h,24h,7d&per_page=${
       coinTableList.coinsToDisplay

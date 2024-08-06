@@ -13,10 +13,10 @@ const callCoinData = async (arg: any, thunkApi: any) => {
     graphTimeDuration.graphTimeDuration
   );
   const coinStatsReq = await fetch(
-    `https://api.coingecko.com/api/v3/coins/${arg.id}?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q`
+    `https://api.coingecko.com/api/v3/coins/${arg.id}?x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const coinDataReq = await fetch(
-    `https://api.coingecko.com/api/v3/coins/${arg.id}/market_chart/range?x_cg_demo_api_key=CG-BGo9877QbEt6dRKHM2YL7z2q&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
+    `https://api.coingecko.com/api/v3/coins/${arg.id}/market_chart/range?x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}&vs_currency=${currentCurrency}&from=${pastTime}&to=${currentTime}`
   );
   const coinStatsData = await coinStatsReq.json();
   const coinData = await coinDataReq.json();
