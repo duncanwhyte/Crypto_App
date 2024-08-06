@@ -9,6 +9,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
+import { useTheme } from "next-themes";
 import { Line } from "react-chartjs-2";
 ChartJs.register(
   CategoryScale,
@@ -27,6 +28,7 @@ export default function CoinChart({
   chartColor: string;
   prices: number[];
 }) {
+  const { theme } = useTheme();
   const config = {
     labels: prices?.map((price: number) => price),
     datasets: [
@@ -41,7 +43,10 @@ export default function CoinChart({
           } = context.chart;
           const gradient = ctx.createLinearGradient(0, top, 0, bottom);
           gradient.addColorStop(0, `${chartColor}`);
-          gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
+          gradient.addColorStop(
+            1,
+            `${theme === "dark" ? "rgba(0, 0, 0, 0.0)" : "#FFFFFF"}`
+          );
           return gradient;
         },
         borderColor: `${chartColor}`,
