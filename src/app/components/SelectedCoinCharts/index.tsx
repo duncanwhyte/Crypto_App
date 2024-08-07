@@ -43,15 +43,19 @@ interface State {
   selectedCoins: any;
   graphTimeDuration: any;
 }
-interface LineDataPoints {
-  coin1DataValue?: string;
-  coin2DataValue?: string;
-  coin3DataValue?: string;
+interface LineElement {
+  id: number;
+  element: HTMLParagraphElement;
 }
-interface BarDataPoints {
-  coin1DataValue?: string;
-  coin2DataValue?: string;
-  coin3DataValue?: string;
+interface LineElementsRef {
+  coin1Elements: Set<HTMLParagraphElement> | null;
+  coin2Elements: Set<HTMLParagraphElement> | null;
+  coin3Elements: Set<HTMLParagraphElement> | null;
+}
+interface BarElementsRef {
+  coin1Elements: Set<HTMLParagraphElement> | null;
+  coin2Elements: Set<HTMLParagraphElement> | null;
+  coin3Elements: Set<HTMLParagraphElement> | null;
 }
 const selectCurrency = (state: State) => state.currentCurrency;
 const selectGraphTimeDuration = (state: State) =>
@@ -61,11 +65,30 @@ export default function SelectedCoinsCharts() {
   const currentCurrency = useAppSelector(selectCurrency);
   const windowWidth = useWindowWidth();
   const [coin1, coin2, coin3] = useAppSelector(selectUserCoins);
-  const currentLineDataRef = useRef<LineDataPoints | null>(null);
-  const currentBarDataRef = useRef<BarDataPoints | null>(null);
+  const currentLineDataRef = useRef<LineElementsRef>({
+    coin1Elements: new Set(),
+    coin2Elements: new Set(),
+    coin3Elements: new Set(),
+  });
+  const currentBarDataRef = useRef<BarElementsRef>({
+    coin1Elements: new Set(),
+    coin2Elements: new Set(),
+    coin3Elements: new Set(),
+  });
   const { theme } = useTheme();
   const sliderRef = useRef<Slider | null>(null);
   const graphTimeDuration = useAppSelector(selectGraphTimeDuration);
+  const addRef = (
+    ref,
+    el: HTMLParagraphElement | null,
+    set:
+      | keyof typeof currentLineDataRef.current
+      | keyof typeof currentBarDataRef.current
+  ) => {
+    if (el && ref.current) {
+      ref.current[set]?.add(el);
+    }
+  };
   const [labelCount, setLabelCount] = useState(7);
   const dispatch = useAppDispatch();
   const next = (): void => {
@@ -238,11 +261,32 @@ export default function SelectedCoinsCharts() {
           label: (context: any) => {
             const [coin1DataValue, coin2DataValue, coin3DataValue] =
               context.chart.tooltip.dataPoints;
-            if (coin1DataValue) {
-              currentLineDataRef.current = {
-                ...currentLineDataRef.current,
-                coin1DataValue: coin1DataValue.formattedValue,
-              };
+            if (coin1DataValue && currentLineDataRef.current.coin1Elements) {
+              Array.from(currentLineDataRef.current.coin1Elements).forEach(
+                (p) => {
+                  p.innerText = `${handleCurrencySymbol(currentCurrency)}${
+                    coin1DataValue.formattedValue
+                  }`;
+                }
+              );
+            }
+            if (coin2DataValue && currentLineDataRef.current.coin2Elements) {
+              Array.from(currentLineDataRef.current.coin2Elements).forEach(
+                (p) => {
+                  p.innerText = `${handleCurrencySymbol(currentCurrency)}${
+                    coin2DataValue.formattedValue
+                  }`;
+                }
+              );
+            }
+            if (coin3DataValue && currentLineDataRef.current.coin3Elements) {
+              Array.from(currentLineDataRef.current.coin3Elements).forEach(
+                (p) => {
+                  p.innerText = `${handleCurrencySymbol(currentCurrency)}${
+                    coin3DataValue.formattedValue
+                  }`;
+                }
+              );
             }
           },
         },
@@ -311,6 +355,33 @@ export default function SelectedCoinsCharts() {
           label: (context: any) => {
             const [coin1DataValue, coin2DataValue, coin3DataValue] =
               context.chart.tooltip.dataPoints;
+            if (coin1DataValue && currentBarDataRef.current.coin1Elements) {
+              Array.from(currentBarDataRef.current.coin1Elements).forEach(
+                (p) => {
+                  p.innerText = `${handleCurrencySymbol(currentCurrency)}${
+                    coin1DataValue.formattedValue
+                  }`;
+                }
+              );
+            }
+            if (coin2DataValue && currentBarDataRef.current.coin2Elements) {
+              Array.from(currentBarDataRef.current.coin2Elements).forEach(
+                (p) => {
+                  p.innerText = `${handleCurrencySymbol(currentCurrency)}${
+                    coin2DataValue.formattedValue
+                  }`;
+                }
+              );
+            }
+            if (coin3DataValue && currentBarDataRef.current.coin3Elements) {
+              Array.from(currentBarDataRef.current.coin3Elements).forEach(
+                (p) => {
+                  p.innerText = `${handleCurrencySymbol(currentCurrency)}${
+                    coin3DataValue.formattedValue
+                  }`;
+                }
+              );
+            }
           },
         },
       },
@@ -404,12 +475,14 @@ export default function SelectedCoinsCharts() {
                   <h3 className="text-xl text-[#191932] dark:text-[#D1D1D1]">
                     {coin1?.name} ({coin1?.symbol.toUpperCase()})
                   </h3>
-                  <p className="text-2xl font-bold">
+                  <p
+                    ref={(ref) => {
+                      addRef(currentLineDataRef, ref, "coin1Elements");
+                    }}
+                    className="text-2xl font-bold"
+                  >
                     {handleCurrencySymbol(currentCurrency)}
-                    {currentLineDataPoints &&
-                    currentLineDataPoints?.coin1DataValue
-                      ? currentLineDataPoints.coin1DataValue
-                      : coin1?.current_price[currentCurrency]}
+                    {coin1?.current_price[currentCurrency]}
                   </p>
                   <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {currentDate}
@@ -436,22 +509,26 @@ export default function SelectedCoinsCharts() {
                   <div className="flex justify-center w-full">
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#7878FA] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentLineDataRef, ref, "coin1Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin1?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentLineDataPoints &&
-                        currentLineDataPoints.coin1DataValue
-                          ? currentLineDataPoints.coin1DataValue
-                          : coin1?.current_price[currentCurrency]}
+                        {coin1?.current_price[currentCurrency]}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#9D62D9] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentLineDataRef, ref, "coin2Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin2?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentLineDataPoints &&
-                        currentLineDataPoints.coin2DataValue
-                          ? currentLineDataPoints.coin2DataValue
-                          : coin2?.current_price[currentCurrency]}
+                        {coin2?.current_price[currentCurrency]}
                       </p>
                     </div>
                   </div>
@@ -460,32 +537,38 @@ export default function SelectedCoinsCharts() {
                   <div className="flex items-center justify-center text-xs w-full">
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#7878FA] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentLineDataRef, ref, "coin1Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin1?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentLineDataPoints &&
-                        currentLineDataPoints.coin1DataValue
-                          ? currentLineDataPoints.coin1DataValue
-                          : coin1?.current_price[currentCurrency]}
+                        {coin1?.current_price[currentCurrency]}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#9D62D9] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentLineDataRef, ref, "coin2Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin2?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentLineDataPoints &&
-                        currentLineDataPoints?.coin2DataValue
-                          ? currentLineDataPoints.coin2DataValue
-                          : coin2?.current_price[currentCurrency]}
+                        {coin2?.current_price[currentCurrency]}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#4DEEE5] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentLineDataRef, ref, "coin3Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin3?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentLineDataPoints &&
-                        currentLineDataPoints.coin3DataValue
-                          ? currentLineDataPoints.coin3DataValue
-                          : coin3?.current_price[currentCurrency]}
+                        {coin3?.current_price[currentCurrency]}
                       </p>
                     </div>
                   </div>
@@ -500,11 +583,14 @@ export default function SelectedCoinsCharts() {
                   <h3 className="text-xl text-[#191932] dark:text-[#D1D1D1]">
                     Volume 24h
                   </h3>
-                  <p className="text-2xl font-bold">
+                  <p
+                    ref={(ref) => {
+                      addRef(currentBarDataRef, ref, "coin1Elements");
+                    }}
+                    className="text-2xl font-bold"
+                  >
                     {handleCurrencySymbol(currentCurrency)}
-                    {currentBarDataPoints && currentBarDataPoints.coin1DataValue
-                      ? currentBarDataPoints.coin1DataValue
-                      : coin1?.total_volume[currentCurrency]}
+                    {coin1?.total_volume[currentCurrency]}
                   </p>
                   <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {currentDate}
@@ -528,26 +614,26 @@ export default function SelectedCoinsCharts() {
                       className={"flex items-center justify-center space-x-2"}
                     >
                       <div className="w-4 h-4 rounded-sm bg-[#7878FA] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin1Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin1?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentBarDataPoints &&
-                        currentBarDataPoints.coin1DataValue
-                          ? currentBarDataPoints.coin1DataValue
-                          : handleCurrency(
-                              coin1?.total_volume[currentCurrency]
-                            )}
+                        {handleCurrency(coin1?.total_volume[currentCurrency])}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#9D62D9] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin2Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin2?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentBarDataPoints &&
-                        currentBarDataPoints.coin2DataValue
-                          ? currentBarDataPoints.coin2DataValue
-                          : handleCurrency(
-                              coin2?.total_volume[currentCurrency]
-                            )}
+                        {handleCurrency(coin2?.total_volume[currentCurrency])}
                       </p>
                     </div>
                   </>
@@ -558,38 +644,38 @@ export default function SelectedCoinsCharts() {
                       className={"flex items-center justify-center space-x-2"}
                     >
                       <div className="w-4 h-4 rounded-sm bg-[#7878FA] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin1Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin1?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentBarDataPoints &&
-                        currentBarDataPoints.coin1DataValue
-                          ? currentBarDataPoints.coin1DataValue
-                          : handleCurrency(
-                              coin1?.total_volume[currentCurrency]
-                            )}
+                        {handleCurrency(coin1?.total_volume[currentCurrency])}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#9D62D9] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin2Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin2?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentBarDataPoints &&
-                        currentBarDataPoints.coin2DataValue
-                          ? currentBarDataPoints.coin2DataValue
-                          : handleCurrency(
-                              coin2?.total_volume[currentCurrency]
-                            )}
+                        {handleCurrency(coin2?.total_volume[currentCurrency])}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#4DEEE5] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1]">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin3Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1]"
+                      >
                         {coin3?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentBarDataPoints &&
-                        currentBarDataPoints.coin3DataValue
-                          ? currentBarDataPoints.coin3DataValue
-                          : handleCurrency(
-                              coin3?.total_volume[currentCurrency]
-                            )}
+                        {handleCurrency(coin3?.total_volume[currentCurrency])}
                       </p>
                     </div>
                   </>
@@ -611,11 +697,14 @@ export default function SelectedCoinsCharts() {
                 <h3 className="text-xl text-[#191932] dark:text-[#D1D1D1]">
                   {coin1?.name} ({coin1?.symbol.toUpperCase()})
                 </h3>
-                <p className="text-2xl font-bold">
+                <p
+                  ref={(ref) => {
+                    addRef(currentLineDataRef, ref, "coin1Elements");
+                  }}
+                  className="text-2xl font-bold"
+                >
                   {handleCurrencySymbol(currentCurrency)}
-                  {currentLineDataPoints && currentLineDataPoints.coin1DataValue
-                    ? currentLineDataPoints.coin1DataValue
-                    : coin1?.current_price[currentCurrency]}
+                  {coin1?.current_price[currentCurrency]}
                 </p>
                 <p className="text-[#424286] dark:text-[#D1D1D1]">
                   {currentDate}
@@ -642,22 +731,26 @@ export default function SelectedCoinsCharts() {
                 <div className="flex space-x-2 justify-center text-sm w-full">
                   <div className={"flex items-center space-x-2"}>
                     <div className="w-4 h-4 rounded-sm bg-[#7878FA]"></div>
-                    <p className="text-[#424286] dark:text-[#D1D1D1]">
+                    <p
+                      ref={(ref) => {
+                        addRef(currentLineDataRef, ref, "coin1Elements");
+                      }}
+                      className="text-[#424286] dark:text-[#D1D1D1]"
+                    >
                       {coin1?.name} {handleCurrencySymbol(currentCurrency)}
-                      {currentLineDataPoints &&
-                      currentLineDataPoints.coin1DataValue
-                        ? currentLineDataPoints.coin1DataValue
-                        : coin1?.current_price[currentCurrency]}
+                      {coin1?.current_price[currentCurrency]}
                     </p>
                   </div>
                   <div className={"flex items-center space-x-2"}>
                     <div className="w-4 h-4 rounded-sm bg-[#9D62D9]"></div>
-                    <p className="text-[#424286] dark:text-[#D1D1D1]">
+                    <p
+                      ref={(ref) => {
+                        addRef(currentLineDataRef, ref, "coin2Elements");
+                      }}
+                      className="text-[#424286] dark:text-[#D1D1D1]"
+                    >
                       {coin2?.name} {handleCurrencySymbol(currentCurrency)}
-                      {currentLineDataPoints &&
-                      currentLineDataPoints.coin2DataValue
-                        ? currentLineDataPoints.coin2DataValue
-                        : coin2?.current_price[currentCurrency]}
+                      {coin2?.current_price[currentCurrency]}
                     </p>
                   </div>
                 </div>
@@ -666,32 +759,38 @@ export default function SelectedCoinsCharts() {
                 <div className="flex justify-center w-full lg:text-sm">
                   <div className={"flex items-center space-x-2"}>
                     <div className="w-4 h-4 rounded-sm bg-[#7878FA] text-xl"></div>
-                    <p className="text-[#424286] dark:text-[#D1D1D1]">
+                    <p
+                      ref={(ref) => {
+                        addRef(currentLineDataRef, ref, "coin1Elements");
+                      }}
+                      className="text-[#424286] dark:text-[#D1D1D1]"
+                    >
                       {coin1?.name} {handleCurrencySymbol(currentCurrency)}
-                      {currentLineDataPoints &&
-                      currentLineDataPoints.coin1DataValue
-                        ? currentLineDataPoints.coin1DataValue
-                        : coin1?.current_price[currentCurrency]}
+                      {coin1?.current_price[currentCurrency]}
                     </p>
                   </div>
                   <div className={"flex items-center space-x-2"}>
                     <div className="w-4 h-4 rounded-sm bg-[#9D62D9] text-xl"></div>
-                    <p className="text-[#424286] dark:text-[#D1D1D1]">
+                    <p
+                      ref={(ref) => {
+                        addRef(currentLineDataRef, ref, "coin2Elements");
+                      }}
+                      className="text-[#424286] dark:text-[#D1D1D1]"
+                    >
                       {coin2?.name} {handleCurrencySymbol(currentCurrency)}
-                      {currentLineDataPoints &&
-                      currentLineDataPoints.coin2DataValue
-                        ? currentLineDataPoints.coin2DataValue
-                        : coin2?.current_price[currentCurrency]}
+                      {coin2?.current_price[currentCurrency]}
                     </p>
                   </div>
                   <div className={"flex items-center space-x-2"}>
                     <div className="w-4 h-4 rounded-sm bg-[#4DEEE5] text-xl"></div>
-                    <p className="text-[#424286] dark:text-[#D1D1D1]">
+                    <p
+                      ref={(ref) => {
+                        addRef(currentLineDataRef, ref, "coin3Elements");
+                      }}
+                      className="text-[#424286] dark:text-[#D1D1D1]"
+                    >
                       {coin3?.name} {handleCurrencySymbol(currentCurrency)}
-                      {currentLineDataPoints &&
-                      currentLineDataPoints.coin3DataValue
-                        ? currentLineDataPoints.coin3DataValue
-                        : coin3?.current_price[currentCurrency]}
+                      {coin3?.current_price[currentCurrency]}
                     </p>
                   </div>
                 </div>
@@ -707,11 +806,14 @@ export default function SelectedCoinsCharts() {
                   <h3 className="text-xl text-[#191932] dark:text-[#D1D1D1]">
                     Volume 24h
                   </h3>
-                  <p className="text-2xl font-bold">
+                  <p
+                    ref={(ref) => {
+                      addRef(currentBarDataRef, ref, "coin1Elements");
+                    }}
+                    className="text-2xl font-bold"
+                  >
                     {handleCurrencySymbol(currentCurrency)}
-                    {currentBarDataPoints && currentBarDataPoints.coin1DataValue
-                      ? currentBarDataPoints.coin1DataValue
-                      : coin1?.total_volume[currentCurrency]}
+                    {coin1?.total_volume[currentCurrency]}
                   </p>
                   <p className="text-[#424286] dark:text-[#D1D1D1]">
                     {currentDate}
@@ -737,26 +839,26 @@ export default function SelectedCoinsCharts() {
                   <>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#7878FA] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin1Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm"
+                      >
                         {coin1?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentBarDataPoints &&
-                        currentBarDataPoints.coin1DataValue
-                          ? currentBarDataPoints.coin1DataValue
-                          : handleCurrency(
-                              coin1?.total_volume[currentCurrency]
-                            )}
+                        {handleCurrency(coin1?.total_volume[currentCurrency])}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#9D62D9] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin2Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm"
+                      >
                         {coin2?.name} {handleCurrencySymbol(currentCurrency)}
-                        {currentBarDataPoints &&
-                        currentBarDataPoints.coin2DataValue
-                          ? currentBarDataPoints.coin2DataValue
-                          : handleCurrency(
-                              coin2?.total_volume[currentCurrency]
-                            )}
+                        {handleCurrency(coin2?.total_volume[currentCurrency])}
                       </p>
                     </div>
                   </>
@@ -765,21 +867,36 @@ export default function SelectedCoinsCharts() {
                   <>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#7878FA] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin1Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm"
+                      >
                         {coin1?.name} {handleCurrencySymbol(currentCurrency)}
                         {handleCurrency(coin1?.total_volume[currentCurrency])}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#9D62D9] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin2Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm"
+                      >
                         {coin2?.name} {handleCurrencySymbol(currentCurrency)}
                         {handleCurrency(coin2?.total_volume[currentCurrency])}
                       </p>
                     </div>
                     <div className={"flex items-center space-x-2"}>
                       <div className="w-4 h-4 rounded-sm bg-[#4DEEE5] text-xl"></div>
-                      <p className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm">
+                      <p
+                        ref={(ref) => {
+                          addRef(currentBarDataRef, ref, "coin3Elements");
+                        }}
+                        className="text-[#424286] dark:text-[#D1D1D1] lg:text-sm"
+                      >
                         {coin3?.name} {handleCurrencySymbol(currentCurrency)}
                         {handleCurrency(coin3?.total_volume[currentCurrency])}
                       </p>
