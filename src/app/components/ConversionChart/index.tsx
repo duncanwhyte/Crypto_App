@@ -13,6 +13,7 @@ import {
   CoreScaleOptions,
   Scale,
 } from "chart.js";
+import { useTheme } from "next-themes";
 import { Line } from "react-chartjs-2";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import {
@@ -49,6 +50,7 @@ export default function ConversionChart({
   const conversionCoins: ConversionCoins = useAppSelector(
     conversionCoinsSelector
   );
+  const { theme } = useTheme();
   const dispatch = useAppDispatch();
   useEffect(() => {
     buyingCoin && dispatch(fetchBuyingCoinData(buyingCoin));
@@ -84,12 +86,29 @@ export default function ConversionChart({
   const options = {
     responsiveness: true,
     maintainAspectRatio: false,
+    interaction: {
+      intersect: false,
+      mode: "index",
+    },
     plugins: {
       title: {
         display: false,
       },
       legend: {
         display: false,
+      },
+      crosshair: {
+        line: {
+          color: theme === "dark" ? "#FFF" : "",
+          dashPattern: [5, 5],
+          width: 1,
+        },
+        sync: {
+          enabled: false,
+        },
+        zoom: {
+          enabled: false,
+        },
       },
     },
     scales: {
