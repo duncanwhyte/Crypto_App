@@ -83,7 +83,7 @@ export function CoinConvertor({
               />
             </>
             <ul
-              className={`bg-[#CCCCFA] text-[#FFFFFF] dark:bg-[#232336] absolute w-full rounded-xl z-10 px-6 top-7 transition-all ${
+              className={`bg-[#CCCCFA] text-[#FFFFFF] dark:bg-[#232336] absolute w-full rounded-xl z-10 px-6 top-7 max-h-[300px] overflow-scroll transition-all ${
                 showCoinList ? "opacity-100" : "opacity-0"
               }`}
             >
