@@ -1,3 +1,4 @@
+import handleCurrencySymbol from "@/app/utils/handleCurrencySymbol";
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -22,11 +23,15 @@ ChartJs.register(
   Filler
 );
 export default function CoinChart({
+  symbol,
   chartColor,
   prices,
+  currentCurrency,
 }: {
+  symbol: string;
   chartColor: string;
   prices: number[];
+  currentCurrency: string;
 }) {
   const { theme } = useTheme();
   const config = {
@@ -58,15 +63,48 @@ export default function CoinChart({
   };
   const options = {
     responsive: true,
+    interaction: {
+      intersect: false,
+      mode: "index",
+    },
     plugins: {
       title: {
         display: false,
       },
-      tooltip: {
-        enabled: false,
-      },
       legend: {
         display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: (context: {
+            formattedValue: string;
+            parsed: { y: number };
+          }) => {
+            context.formattedValue = `${handleCurrencySymbol(currentCurrency)}${
+              context.formattedValue
+            }`;
+            return (
+              handleCurrencySymbol(currentCurrency) +
+              context.parsed.y.toFixed(2)
+            );
+          },
+          title: () => {
+            return symbol;
+          },
+        },
+      },
+      crosshair: {
+        line: {
+          color: theme === "dark" ? "#FFF" : "",
+          dashPattern: [5, 5],
+          width: 1,
+        },
+        sync: {
+          enabled: false,
+        },
+        zoom: {
+          enabled: false,
+        },
       },
     },
     scales: {
@@ -93,7 +131,7 @@ export default function CoinChart({
         "relative flex items-center w-[90px] md:w-full mx-auto md:mx-0 h-20"
       }
     >
-      <Line className="lg:mx-auto" data={config} options={options} />
+      <Line className="lg:mx-auto" data={config} options={options as any} />
     </div>
   );
 }
