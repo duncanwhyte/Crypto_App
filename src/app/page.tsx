@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import HomePageNavigator from "./components/HomePageNavigator";
 import CoinSlider from "./components/CoinSlider";
 import { useAppSelector, useAppDispatch } from "./lib/hooks";

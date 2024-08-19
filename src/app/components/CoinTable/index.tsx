@@ -259,6 +259,7 @@ export default function CoinTable() {
                   </td>
                   <td className="relative p-3 rounded-r-3xl w-[40%] sm:w-[25%] lg:w-[10%] xl:pr-4 xl:pr-[20px] xl:w-auto xl:mx-auto xl:table-cell">
                     <CoinChart
+                      symbol={symbol.toUpperCase()}
                       chartColor={handleMarketTrendColor(
                         priceChangePercent1hInCurrency,
                         priceChangePercent24hInCurrency,
@@ -266,6 +267,7 @@ export default function CoinTable() {
                         false
                       )}
                       prices={sparklineIn7D.price}
+                      currentCurrency={currentCurrency}
                     />
                   </td>
                 </tr>
