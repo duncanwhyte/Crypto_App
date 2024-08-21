@@ -81,7 +81,7 @@ export default function Convertor() {
           }).format(newDate)}
         </p>
       </div>
-      <div className="mb-16 mx-auto relative">
+      <div className="mb-16 relative">
         <div className="flex flex-col md:flex-row md:justify-between md:mx-auto">
           <CoinConvertor
             selling={true}

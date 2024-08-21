@@ -15,6 +15,38 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".scrollbar-webkit": {
+          "&::-webkit-scrollbar": {
+            width: "1vw",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#FFFFFF",
+            borderRadius: "10px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#6161D6",
+            borderRadius: "10px",
+          },
+        },
+        ".dark-scrollbar-webkit": {
+          "&::-webkit-scrollbar": {
+            width: "1vw",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#232334",
+            borderRadius: "10px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#6161D6",
+            borderRadius: "10px",
+          },
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };
 export default config;

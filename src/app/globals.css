@@ -36,18 +36,6 @@ body {
 .slick-list {
   margin: 0 -8px;
 }
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #232334;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-  background: #6161D6;
-  border-radius: 10px;
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;

@@ -95,7 +95,7 @@ export default function CoinChart({
       },
       crosshair: {
         line: {
-          color: theme === "dark" ? "#FFF" : "",
+          color: theme === "dark" ? "#FFF" : "#000",
           dashPattern: [5, 5],
           width: 1,
         },

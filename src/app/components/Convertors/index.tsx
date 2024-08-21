@@ -45,7 +45,7 @@ export function CoinConvertor({
   };
   return (
     <div
-      className={`flex flex-col lg:basis-[525px] grow p-6 bg-[#FFFFFF] text-black dark:bg-[#191932] dark:text-[#FFFFFF]  ${
+      className={`flex flex-col p-6 bg-[#FFFFFF] w-full md:w-[50%-24px] text-black dark:bg-[#191932] dark:text-[#FFFFFF]  ${
         selling ? "mb-6" : "bg-[#1E1932]"
       } md:m-0 2xl:basis-[636px] rounded-xl`}
     >
@@ -70,7 +70,10 @@ export function CoinConvertor({
                   name={selling ? sellingCoin?.name : buyingCoin?.name}
                   symbol={selling ? sellingCoin?.symbol : buyingCoin?.symbol}
                 />
-                <DropDownIcon handleShowCoinList={handleShowCoinList} />
+                <DropDownIcon
+                  showCoinList={showCoinList}
+                  handleShowCoinList={handleShowCoinList}
+                />
               </div>
               <input
                 onChange={
@@ -83,7 +86,7 @@ export function CoinConvertor({
               />
             </>
             <ul
-              className={`bg-[#CCCCFA] text-[#FFFFFF] dark:bg-[#232336] absolute w-full rounded-xl z-10 px-6 top-7 max-h-[300px] overflow-scroll transition-all ${
+              className={`bg-[#CCCCFA] text-[#FFFFFF] dark:bg-[#232336] absolute w-full rounded-xl z-10 px-6 top-7 max-h-[300px] overflow-y-scroll transition-all ${
                 showCoinList ? "opacity-100" : "opacity-0"
               }`}
             >
