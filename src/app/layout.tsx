@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import GlobalCoinMarketDisplay from "./components/GlobalCoinMarketDisplay";
 import Providers from "../../Providers";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Crypto App",
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-[#F3F5F9] dark:bg-[#13121A]`}>
+        <SpeedInsights />
         <Providers>
           <GlobalCoinMarketDisplay />
           <Navbar />

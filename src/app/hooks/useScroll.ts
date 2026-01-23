@@ -8,7 +8,7 @@ export default function useScroll(
     const handleScroll = () => {
       if (ref) {
         const { bottom } = ref.getBoundingClientRect();
-        if (bottom <= window.innerHeight + 100) cb();
+        if (bottom <= window.innerHeight + 150) cb();
       }
     };
     const handleThrottle = (func: () => void, delay: number) => {

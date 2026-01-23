@@ -23,7 +23,7 @@ export default function GlobalCoinMarketDisplay() {
     dispatch(fetchGlobalData());
   }, [dispatch, currentCurrency]);
   return (
-    <div className="bg-[#353570] text-[#FFFFFF] dark:bg-[#1E1932]">
+    <header className="bg-[#353570] text-[#FFFFFF] dark:bg-[#1E1932]">
       <ul className="flex items-center justify-between px-4 py-5 md:justify-center md:space-x-8 ">
         <li className="flex items-center text-sm lg:text-base">
           <Image className="w-5 h-5 mr-1" src={coinsImg} alt="coins-image" />
@@ -92,6 +92,6 @@ export default function GlobalCoinMarketDisplay() {
           </div>
         </li>
       </ul>
-    </div>
+    </header>
   );
 }
